@@ -5,6 +5,8 @@ on:
     paths:
       - 'BadMC_Launcher/**'
       - 'BadMC_Launcher.Tests/**'
+    branches-ignore:
+      - Backup
 
   pull_request:
     types: [opened, synchronize, reopened]

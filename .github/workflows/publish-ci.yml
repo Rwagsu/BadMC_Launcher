@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'BadMC_Launcher/**'
+    branches-ignore:
+      - Backup
 
   workflow_call:
     secrets:

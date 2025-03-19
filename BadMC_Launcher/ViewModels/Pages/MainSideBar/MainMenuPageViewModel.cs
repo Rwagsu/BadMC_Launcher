@@ -6,14 +6,15 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using BadMC_Launcher.Classes;
-using BadMC_Launcher.Classes.MainSearch;
-using BadMC_Launcher.Enums;
+using BadMC_Launcher.Classes.ViewClasses;
+using BadMC_Launcher.Classes.ViewClasses.MainSearch;
+using BadMC_Launcher.Enums.MessengerTokenEnum;
 using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Interfaces;
 using BadMC_Launcher.Models.Datas.ViewDatas;
 using BadMC_Launcher.Services.ViewServices;
-using BadMC_Launcher.Views.Pages.MainSideBarPages;
-using BadMC_Launcher.Views.Pages.SettingsPages;
+using BadMC_Launcher.Views.Pages.MainSideBar;
+using BadMC_Launcher.Views.Pages.Settings;
 using CommunityToolkit.Labs.WinUI;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -21,7 +22,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.Windows.ApplicationModel.Resources;
 
-namespace BadMC_Launcher.ViewModels.Pages.MainSideBarPages;
+namespace BadMC_Launcher.ViewModels.Pages.MainSideBar;
 public partial class MainMenuPageViewModel : ObservableObject {
     public MainMenuPageViewModel() {
         MainMenuItems = MainMenuData.MainMenuItems;
@@ -52,26 +53,26 @@ public partial class MainMenuPageViewModel : ObservableObject {
 
     //TODO: 该写Blog了，还能这样的啊？？？Σ(っ °Д °;)っ
     [RelayCommand]
-    public void MainMenuSearchButtonClicked(AutoSuggestBoxQuerySubmittedEventArgs args) {
+    private void MainMenuSearchButtonClicked(AutoSuggestBoxQuerySubmittedEventArgs args) {
         MainMenuSearch(args.QueryText);
     }
     
     [RelayCommand]
-    public void SearchTextChanged(AutoSuggestBoxTextChangedEventArgs args) {
+    private void SearchTextChanged(AutoSuggestBoxTextChangedEventArgs args) {
         if (SearchFilterRealTimeToggleIsOn && args.Reason == AutoSuggestionBoxTextChangeReason.UserInput) {
             MainMenuSearch(SearchText);
         }
     }
 
     [RelayCommand]
-    public void MainMenuSearchSuggestionChosen(AutoSuggestBoxSuggestionChosenEventArgs args) {
+    private void MainMenuSearchSuggestionChosen(AutoSuggestBoxSuggestionChosenEventArgs args) {
         if (args.SelectedItem is MainMenuSearchResultItem selectedItem) {
             selectedItem.Navigate.Invoke();
         }
     }
     
     [RelayCommand]
-    public void MainMenuSearchFilterTokenViewSelected(TokenView parameter) {
+    private void MainMenuSearchFilterTokenViewSelected(TokenView parameter) {
          parameter.SelectedItems.ForEach(item => {
              if (item is IMainMenuSharchFilterItem mainMenuSharchFilterItem) {
                  SearchFilterSelectedItems.Add(mainMenuSharchFilterItem);
@@ -80,11 +81,11 @@ public partial class MainMenuPageViewModel : ObservableObject {
     }
     
     [RelayCommand]
-    public void SettingsButtonClicked() {
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<Type>(typeof(SettingsDashboardPage)), MessengerTokenEnum.MainPage_PageNavigateToken.ToString());
+    private void SettingsButtonClicked() {
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<Type>(typeof(SettingsDashboardPage)), MainPageMessengerTokenEnum.PageNavigateToken.ToString());
     }
 
-    public void MainMenuSearch(string queryText) {
+    private void MainMenuSearch(string queryText) {
         var searchItems = new ObservableDataList<MainMenuSearchResultItem>();
         foreach (var item in SearchFilterSelectedItems) {
             foreach (var searchMainMenuSearchResultItem in item.Search(queryText)) {

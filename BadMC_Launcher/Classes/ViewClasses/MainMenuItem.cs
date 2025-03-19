@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadMC_Launcher.Classes;
+namespace BadMC_Launcher.Classes.ViewClasses;
 public class MainMenuItem {
     public required string ItemName { get; set; }
 

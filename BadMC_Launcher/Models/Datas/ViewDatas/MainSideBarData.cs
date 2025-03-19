@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BadMC_Launcher.Classes;
+using BadMC_Launcher.Classes.ViewClasses;
 
 namespace BadMC_Launcher.Models.Datas.ViewDatas;
 internal static class MainSideBarData {

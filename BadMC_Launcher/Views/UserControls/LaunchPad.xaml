@@ -102,20 +102,20 @@
                                             <ColumnDefinition Width="48" />
                                         </Grid.ColumnDefinitions>
                                         <!-- Select the .minecraft folder path -->
-                                        <ComboBox x:Name="MinecraftPathComboBox"
+                                        <ComboBox x:Name="MinecraftFolderComboBox"
                                                   Grid.Column="0"
                                                   Height="36"
                                                   Margin="8,0,8,0"
                                                   HorizontalAlignment="Stretch"
                                                   VerticalAlignment="Center"
-                                                  ItemTemplate="{StaticResource MinecraftPathItemsTemplateSecondary}"
-                                                  ItemsSource="{Binding MinecraftPathList}"
-                                                  SelectedItem="{Binding MinecraftPathListSelectedItem, Mode=TwoWay}">
+                                                  ItemTemplate="{StaticResource MinecraftFolderItemsTemplateSecondary}"
+                                                  ItemsSource="{Binding MinecraftFolderList}"
+                                                  SelectedItem="{Binding MinecraftFolderListSelectedItem, Mode=TwoWay}">
 
                                             <!-- Custom Command -->
                                             <Interactivity:Interaction.Behaviors>
-                                                <Interactivity:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=MinecraftPathComboBox}">
-                                                    <Interactivity:InvokeCommandAction Command="{Binding MinecraftPathsListSelectedCommand}" CommandParameter="{Binding ElementName=MinecraftPathComboBox}" />
+                                                <Interactivity:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=MinecraftFolderComboBox}">
+                                                    <Interactivity:InvokeCommandAction Command="{Binding MinecraftFoldersListSelectedCommand}" CommandParameter="{Binding ElementName=MinecraftFolderComboBox}" />
                                                 </Interactivity:EventTriggerBehavior>
                                             </Interactivity:Interaction.Behaviors>
                                         </ComboBox>

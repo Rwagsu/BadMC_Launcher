@@ -127,16 +127,16 @@
     <value>未选择本体_( ﾟДﾟ)ﾉ</value>
   </data>
   <data name="MinecraftConfig_MinecraftTitleNameResource" xml:space="preserve">
-    <value>BadMC Launcher - 让我们一起MINECRAFT！</value>
+    <value>使用 BadMCL（不是 BMCL！！!）启动</value>
   </data>
   <data name="LaunchPad_MinecraftListRefreshResource.Text" xml:space="preserve">
     <value>刷新</value>
   </data>
   <data name="LaunchPad_MinecraftListsManagerResource.Text" xml:space="preserve">
-    <value>管理 .minecraft 文件夹</value>
+    <value>管理 Minecraft 本体文件夹</value>
   </data>
   <data name="LaunchPad_ViewLocalMinecraftFolderResource.Text" xml:space="preserve">
-    <value>浏览 .minecraft 文件夹</value>
+    <value>浏览 Minecraft 本体文件夹</value>
   </data>
   <data name="LaunchPad_MinecraftEmptyListTipsTextResource.Text" xml:space="preserve">
     <value>找不到任何本体.</value>
@@ -170,5 +170,51 @@
   </data>
   <data name="MainPage_MainSideBarNavigationView.PaneTitle" xml:space="preserve">
     <value>让我们一起 BadMC Launcher！ 🥳😝😈</value>
+  </data>
+  <data name="SettingsDashboardPage_SideBar.PaneTitle" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="LaunchSettingsPage_PageName" xml:space="preserve">
+    <value>Minecraft 设置</value>
+  </data>
+  <data name="LaunchSettingsPage_MinecraftFolderSettingsCard.Header" xml:space="preserve">
+    <value>管理 Minecraft 本体文件夹</value>
+  </data>
+  <data name="LaunchSettingsPage_TipsInfoBar.Title" xml:space="preserve">
+    <value>更低的优先级</value>
+  </data>
+  <data name="LaunchSettingsPage_TipsInfoBar.Message" xml:space="preserve">
+    <value>该设置的优先级将比特定于本体的自定义设置更低.
+如果这个设置的某些项已在特定于本体的自定义设置中更改，该项将不会对这个本体生效.</value>
+  </data>
+  <data name="LaunchSettingsPage_MinecraftFolderSettingsCard.Description" xml:space="preserve">
+    <value>对本体以及资源的存储位置进行管理.</value>
+  </data>
+  <data name="LaunchSettingsPage_JavaPathSettingsCard.Header" xml:space="preserve">
+    <value>管理 Java 运行时内存</value>
+  </data>
+  <data name="LaunchSettingsPage_JavaPathSettingsCard.Description" xml:space="preserve">
+    <value>为 Minecraft Java 设置 Java 运行时.</value>
+  </data>
+  <data name="LaunchSettingsPage_MemorySizeSettingsCard.Header" xml:space="preserve">
+    <value>Java 运行时内存</value>
+  </data>
+  <data name="LaunchSettingsPage_MemorySizeSettingsCard.Description" xml:space="preserve">
+    <value>设置运行 Minecraft Java 时所使用的内存.</value>
+  </data>
+  <data name="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch.OnContent" xml:space="preserve">
+    <value>自动分配</value>
+  </data>
+  <data name="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch.OffContent" xml:space="preserve">
+    <value>手动设置</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ViewContentDialog.Title" xml:space="preserve">
+    <value>管理 Minecraft 本体文件夹</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ViewContentDialog.PrimaryButtonText" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_AddItemMenuButton.Text" xml:space="preserve">
+    <value>添加新的 Minecraft 本体文件夹</value>
   </data>
 </root>

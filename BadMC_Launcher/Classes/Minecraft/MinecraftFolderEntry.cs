@@ -12,14 +12,14 @@ using MinecraftLaunch.Components.Parser;
 using Uno.Extensions.Specialized;
 
 namespace BadMC_Launcher.Classes.Minecraft;
-public class MinecraftPathEntry {
+public class MinecraftFolderEntry {
     private MinecraftParser? minecraftParser;
     private string minecraftName = string.Empty;
     private string? activeMinecraftEntryId;
     private ObservableDataList<string> starredMinecraftIds = new();
     private IEnumerable<MinecraftEntry> minecraftList = new List<MinecraftEntry>();
 
-    public MinecraftPathEntry() {
+    public MinecraftFolderEntry() {
     }
     public required string MinecraftId {
         get => minecraftName;
@@ -29,7 +29,7 @@ public class MinecraftPathEntry {
         }
     }
 
-    public required string MinecraftPath { get; init; }
+    public required string MinecraftFolderPath { get; init; }
 
     public string? ActiveMinecraftEntryId {
         get => activeMinecraftEntryId;
@@ -53,7 +53,7 @@ public class MinecraftPathEntry {
 
     public void SetMinecrafts() {
         if (minecraftParser == null) {
-            minecraftParser = new MinecraftParser(MinecraftPath);
+            minecraftParser = new MinecraftParser(MinecraftFolderPath);
         }
         minecraftList = new List<MinecraftEntry>();
         minecraftParser.GetMinecrafts().ForEach(item => ((List<MinecraftEntry>)minecraftList).Add(item));
@@ -62,7 +62,7 @@ public class MinecraftPathEntry {
     public IEnumerable<MinecraftEntry> GetMinecrafts() {
         if (!minecraftList.Any()) {
             if (minecraftParser == null) {
-                minecraftParser = new MinecraftParser(MinecraftPath);
+                minecraftParser = new MinecraftParser(MinecraftFolderPath);
             }
             minecraftList = new List<MinecraftEntry>();
             minecraftParser.GetMinecrafts().ForEach(item => ( (List<MinecraftEntry>)minecraftList ).Add(item));
@@ -72,7 +72,7 @@ public class MinecraftPathEntry {
 
     public MinecraftParser GetMinecraftParser() {
         if (minecraftParser == null) {
-            minecraftParser = new MinecraftParser(MinecraftPath);
+            minecraftParser = new MinecraftParser(MinecraftFolderPath);
         }
         return minecraftParser;
     }

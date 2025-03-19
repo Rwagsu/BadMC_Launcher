@@ -121,7 +121,7 @@
     <value>BadMC Launcher</value>
   </data>
   <data name="MinecraftConfig_MinecraftTitleNameResource" xml:space="preserve">
-    <value>BadMC Launcher - Let's MINECRAFT!</value>
+    <value>Launch with BadMCL (NOT BMCL!!!)</value>
   </data>
   <data name="LaunchPad_LaunchButtonTagDefaultResource" xml:space="preserve">
     <value>No ontology selected_( ﾟДﾟ)ﾉ</value>
@@ -133,10 +133,10 @@
     <value>Refresh</value>
   </data>
   <data name="LaunchPad_MinecraftListsManagerResource.Text" xml:space="preserve">
-    <value>Manage .minecraft folders</value>
+    <value>Manage Minecraft ontologies folders</value>
   </data>
   <data name="LaunchPad_ViewLocalMinecraftFolderResource.Text" xml:space="preserve">
-    <value>Browse .minecraft folder</value>
+    <value>Browse Minecraft ontologies folders</value>
   </data>
   <data name="LaunchPad_MinecraftEmptyListTipsTextResource.Text" xml:space="preserve">
     <value>Can't find any ontologies.</value>
@@ -170,5 +170,51 @@
   </data>
   <data name="MainPage_MainSideBarNavigationView.PaneTitle" xml:space="preserve">
     <value>Let's BadMC Launcher！ 🥳😝😈</value>
+  </data>
+  <data name="SettingsDashboardPage_SideBar.PaneTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="LaunchSettingsPage_PageName" xml:space="preserve">
+    <value>Minecraft settings</value>
+  </data>
+  <data name="LaunchSettingsPage_MinecraftFolderSettingsCard.Header" xml:space="preserve">
+    <value>Manage Minecraft ontologies folders</value>
+  </data>
+  <data name="LaunchSettingsPage_TipsInfoBar.Title" xml:space="preserve">
+    <value>Lower priority</value>
+  </data>
+  <data name="LaunchSettingsPage_TipsInfoBar.Message" xml:space="preserve">
+    <value>This setting will have a lower priority than ontology-specific customizations.
+If something in this setting has been changed in an ontology-specific customization, that item will not take effect for this ontology.</value>
+  </data>
+  <data name="LaunchSettingsPage_MinecraftFolderSettingsCard.Description" xml:space="preserve">
+    <value>Management of ontologies and resource storage locations.</value>
+  </data>
+  <data name="LaunchSettingsPage_JavaPathSettingsCard.Header" xml:space="preserve">
+    <value>Managing Java Runtime Memory</value>
+  </data>
+  <data name="LaunchSettingsPage_JavaPathSettingsCard.Description" xml:space="preserve">
+    <value>Setting the Java Runtime for Minecraft Java.</value>
+  </data>
+  <data name="LaunchSettingsPage_MemorySizeSettingsCard.Header" xml:space="preserve">
+    <value>Java Runtime Memory</value>
+  </data>
+  <data name="LaunchSettingsPage_MemorySizeSettingsCard.Description" xml:space="preserve">
+    <value>Set the memory used when running Minecraft Java.</value>
+  </data>
+  <data name="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch.OnContent" xml:space="preserve">
+    <value>Automatic distribution</value>
+  </data>
+  <data name="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch.OffContent" xml:space="preserve">
+    <value>Manual settings</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ViewContentDialog.Title" xml:space="preserve">
+    <value>Manage Minecraft ontologies folders</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ViewContentDialog.PrimaryButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_AddItemMenuButton.Text" xml:space="preserve">
+    <value>Adding a new Minecraft ontologies folder</value>
   </data>
 </root>

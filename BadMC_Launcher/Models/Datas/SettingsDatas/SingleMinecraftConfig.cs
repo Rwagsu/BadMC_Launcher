@@ -9,13 +9,15 @@ namespace BadMC_Launcher.Models.Datas.SettingsDatas;
 internal class SingleMinecraftConfig {
     internal string? targetMinecraftEntryPath;
 
-    internal bool isFullscreen;
+    internal bool? isFullscreen;
 
-    internal bool isEnableIndependencyCore;
+    internal bool? isEnableIndependencyCore;
 
-    internal int minMemorySize;
+    internal bool? isAutoMemorySize;
 
-    internal int maxMemorySize;
+    internal int? minMemorySize;
+
+    internal int? maxMemorySize;
 
     internal JavaEntry? javaPath;
 

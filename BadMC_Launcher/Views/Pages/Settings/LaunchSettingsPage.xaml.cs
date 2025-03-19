@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using BadMC_Launcher.ViewModels.Pages.SettingsPages;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -11,18 +12,19 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using BadMC_Launcher.ViewModels.Pages.Settings;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace BadMC_Launcher.Views.Pages.SettingsPages;
+namespace BadMC_Launcher.Views.Pages.Settings;
+
 /// <summary>
 /// An empty page that can be used on its own or navigated to within a Frame.
 /// </summary>
-public sealed partial class SettingsDashboardPage : Page {
-    public SettingsDashboardPage() {
-        this.InitializeComponent();
-        DataContext = new SettingsDashboardPageViewModel();
+public sealed partial class LaunchSettingsPage : Page {
+	public LaunchSettingsPage() {
+		InitializeComponent();
+        DataContext = new LaunchSettingsPageViewModel();
     }
 }
+

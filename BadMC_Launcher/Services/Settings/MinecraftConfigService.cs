@@ -23,6 +23,7 @@ using BadMC_Launcher.Models.Datas.SettingsDatas;
 using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Classes.Minecraft;
 using BadMC_Launcher.Models.Datas;
+using BadMC_Launcher.Models.Datas.Mappings;
 
 namespace BadMC_Launcher.Servicess.Settings;
 public class MinecraftConfigService : IConfigClass {
@@ -31,7 +32,7 @@ public class MinecraftConfigService : IConfigClass {
     public MinecraftConfigService() {
         if (MinecraftConfig.minecraftAccounts is ObservableDataList<Account> minecraftAccountsObservableDataList
             && MinecraftConfig.javaPaths is ObservableDataList<string> javaPathsObservableDataList
-            && MinecraftConfig.minecraftPaths is ObservableDataList<MinecraftPathEntry> minecraftPathsObservableDataList) {
+            && MinecraftConfig.minecraftPaths is ObservableDataList<MinecraftFolderEntry> minecraftPathsObservableDataList) {
 
             //Triggers an event when a property is changed
             minecraftAccountsObservableDataList.CollectionChanged += OnCollectionChanged;
@@ -58,7 +59,7 @@ public class MinecraftConfigService : IConfigClass {
             SyncSettingSet();
         }
     }
-    public IEnumerable<MinecraftPathEntry> MinecraftPaths {
+    public IEnumerable<MinecraftFolderEntry> MinecraftFolders {
         get => MinecraftConfig.minecraftPaths;
         set {
             MinecraftConfig.minecraftPaths = value;
@@ -78,10 +79,10 @@ public class MinecraftConfigService : IConfigClass {
         }
     }
 
-    public string? ActiveMinecraftPath {
-        get => MinecraftConfig.activeMinecraftPath;
+    public string? ActiveMinecraftFolderPath {
+        get => MinecraftConfig.activeMinecraftFolder;
         set {
-            MinecraftConfig.activeMinecraftPath = value;
+            MinecraftConfig.activeMinecraftFolder = value;
 
             //Write to Json
             SyncSettingSet();
@@ -112,6 +113,16 @@ public class MinecraftConfigService : IConfigClass {
         get => MinecraftConfig.isEnableIndependencyCore;
         set {
             MinecraftConfig.isEnableIndependencyCore = value;
+
+            //Write to Json
+            SyncSettingSet();
+        }
+    }
+
+    public bool IsAutoMemorySize {
+        get => MinecraftConfig.isAutoMemorySize;
+        set {
+            MinecraftConfig.isAutoMemorySize = value;
 
             //Write to Json
             SyncSettingSet();
@@ -166,16 +177,17 @@ public class MinecraftConfigService : IConfigClass {
     }
 
     public bool SyncSettingGet() {
-        if (App.GetService<FileService>().ReadConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigServiceContext.Default.MinecraftConfigService, out var jsonClass) && jsonClass != null) {
+        if (App.GetService<FileService>().ReadConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigServiceContext.Default.MinecraftConfigService, out var jsonClass, UpdateMapping.MinecraftConfig) && jsonClass != null) {
             //TODO: 解蜜
             MinecraftConfig.minecraftAccounts = jsonClass.MinecraftAccounts;
             MinecraftConfig.javaPaths = jsonClass.JavaPaths;
-            MinecraftConfig.minecraftPaths = jsonClass.MinecraftPaths;
+            MinecraftConfig.minecraftPaths = jsonClass.MinecraftFolders;
             MinecraftConfig.activeJavaPath = jsonClass.ActiveJavaPath;
-            MinecraftConfig.activeMinecraftPath = jsonClass.ActiveMinecraftPath;
+            MinecraftConfig.activeMinecraftFolder = jsonClass.ActiveMinecraftFolderPath;
             MinecraftConfig.activeMinecraftAccount = jsonClass.ActiveMinecraftAccount;
             MinecraftConfig.isFullscreen = jsonClass.IsFullscreen;
             MinecraftConfig.isEnableIndependencyCore = jsonClass.IsEnableIndependencyCore;
+            MinecraftConfig.isAutoMemorySize = jsonClass.IsAutoMemorySize;
             MinecraftConfig.minMemorySize = jsonClass.MinMemorySize;
             MinecraftConfig.maxMemorySize = jsonClass.MaxMemorySize;
             MinecraftConfig.launcherName = jsonClass.LauncherName;
@@ -197,7 +209,7 @@ public class MinecraftConfigService : IConfigClass {
         }
         MinecraftConfigService classValue = this;
         //TODO: 加蜜
-        return App.GetService<FileService>().WriteConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), classValue, MinecraftConfigServiceContext.Default.MinecraftConfigService);
+        return App.GetService<FileService>().WriteConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigServiceContext.Default.MinecraftConfigService, classValue);
             
     }
 }

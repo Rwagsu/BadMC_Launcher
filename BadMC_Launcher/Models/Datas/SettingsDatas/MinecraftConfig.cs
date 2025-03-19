@@ -15,17 +15,19 @@ internal static class MinecraftConfig {
 
     internal static IEnumerable<string> javaPaths = new ObservableDataList<string>();
 
-    internal static IEnumerable<MinecraftPathEntry> minecraftPaths = new ObservableDataList<MinecraftPathEntry>();
+    internal static IEnumerable<MinecraftFolderEntry> minecraftPaths = new ObservableDataList<MinecraftFolderEntry>();
 
     internal static JavaEntry? activeJavaPath;
 
-    internal static string? activeMinecraftPath;
+    internal static string? activeMinecraftFolder;
 
     internal static Account? activeMinecraftAccount;
 
     internal static bool isFullscreen = false;
 
     internal static bool isEnableIndependencyCore = false;
+
+    internal static bool isAutoMemorySize = true;
 
     internal static int minMemorySize = 512;
 

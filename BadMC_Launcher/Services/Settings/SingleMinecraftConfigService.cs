@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using BadMC_Launcher.Models.Datas.SettingsDatas;
 using BadMC_Launcher.Interfaces;
 using MinecraftLaunch.Base.Models.Game;
-using MinecraftLaunch.Components.Parser;
 
 namespace BadMC_Launcher.Servicess.Settings;
 public class SingleMinecraftConfigService : IConfigClass {
@@ -23,7 +22,7 @@ public class SingleMinecraftConfigService : IConfigClass {
         }
     }
 
-    public bool IsFullscreen {
+    public bool? IsFullscreen {
         get => singleMinecraftConfigInstance.isFullscreen;
         set {
             singleMinecraftConfigInstance.isFullscreen = value;
@@ -33,7 +32,7 @@ public class SingleMinecraftConfigService : IConfigClass {
         }
     }
 
-    public bool IsEnableIndependencyCore {
+    public bool? IsEnableIndependencyCore {
         get => singleMinecraftConfigInstance.isEnableIndependencyCore;
         set {
             singleMinecraftConfigInstance.isEnableIndependencyCore = value;
@@ -43,7 +42,17 @@ public class SingleMinecraftConfigService : IConfigClass {
         }
     }
 
-    public int MinMemorySize {
+    public bool? IsAutoMemorySize {
+        get => singleMinecraftConfigInstance.isAutoMemorySize;
+        set {
+            singleMinecraftConfigInstance.isAutoMemorySize = value;
+
+            //Write to Json
+            SyncSettingSet();
+        }
+    }
+
+    public int? MinMemorySize {
         get => singleMinecraftConfigInstance.minMemorySize;
         set {
             singleMinecraftConfigInstance.minMemorySize = value;
@@ -53,7 +62,7 @@ public class SingleMinecraftConfigService : IConfigClass {
         }
     }
 
-    public int MaxMemorySize {
+    public int? MaxMemorySize {
         get => singleMinecraftConfigInstance.maxMemorySize;
         set {
             singleMinecraftConfigInstance.maxMemorySize = value;
@@ -99,6 +108,7 @@ public class SingleMinecraftConfigService : IConfigClass {
                 if(App.GetService<FileService>().ReadConfig<SingleMinecraftConfigService>(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, out var jsonClass) && jsonClass != null) {
                     singleMinecraftConfigInstance.isFullscreen = jsonClass.IsFullscreen;
                     singleMinecraftConfigInstance.isEnableIndependencyCore = jsonClass.IsEnableIndependencyCore;
+                    singleMinecraftConfigInstance.isAutoMemorySize = jsonClass.IsAutoMemorySize;
                     singleMinecraftConfigInstance.minMemorySize = jsonClass.MinMemorySize;
                     singleMinecraftConfigInstance.maxMemorySize = jsonClass.MaxMemorySize;
                     singleMinecraftConfigInstance.javaPath = jsonClass.JavaPath;
@@ -114,7 +124,7 @@ public class SingleMinecraftConfigService : IConfigClass {
 
     public bool SyncSettingSet() {
         if (TargetMinecraftEntryPath != null) {
-            return App.GetService<FileService>().WriteConfig<SingleMinecraftConfigService>(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), this, SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService);
+            return App.GetService<FileService>().WriteConfig<SingleMinecraftConfigService>(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, this);
         }
         //TODO: Toast
         return false;

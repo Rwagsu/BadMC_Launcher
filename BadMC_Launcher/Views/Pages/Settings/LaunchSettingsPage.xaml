@@ -1,0 +1,102 @@
+﻿<Page x:Class="BadMC_Launcher.Views.Pages.Settings.LaunchSettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:BadMC_Launcher.Views.Pages.Settings.LaunchSettingsPage"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
+    <StackPanel Margin="18,0" Spacing="8">
+        <!-- Tips -->
+        <InfoBar x:Uid="LaunchSettingsPage_TipsInfoBar"
+                 IsClosable="False"
+                 IsOpen="True"
+                 Severity="Informational" />
+
+        <!-- Minecraft folder Setting -->
+        <controls:SettingsCard x:Name="MinecraftFolderSettingsCard"
+                               x:Uid="LaunchSettingsPage_MinecraftFolderSettingsCard"
+                               Command="{Binding MinecraftFolderSettingsCardClickedCommand}"
+                               IsClickEnabled="True">
+            <!-- Icons -->
+            <controls:SettingsCard.HeaderIcon>
+                <FontIcon Glyph="&#xE8F7;" />
+            </controls:SettingsCard.HeaderIcon>
+            <controls:SettingsCard.ActionIcon>
+                <FontIcon Glyph="&#xE78B;" />
+            </controls:SettingsCard.ActionIcon>
+
+            <StackPanel Orientation="Vertical" Spacing="4">
+                <TextBlock HorizontalAlignment="Right"
+                           Style="{ThemeResource BodyStrongTextBlockStyle}"
+                           Text="{Binding MinecraftFolder.MinecraftId}"
+                           TextTrimming="CharacterEllipsis" />
+                <TextBlock HorizontalAlignment="Right"
+                           Text="{Binding MinecraftFolder.MinecraftFolderPath}"
+                           TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+        </controls:SettingsCard>
+
+        <!-- Java path Setting -->
+        <controls:SettingsCard x:Name="JavaPathSettingsCard"
+                               x:Uid="LaunchSettingsPage_JavaPathSettingsCard"
+                               Command="{Binding JavaPathSettingsCardClickedCommand}"
+                               IsClickEnabled="True">
+            <!-- Icons -->
+            <controls:SettingsCard.HeaderIcon>
+                <FontIcon Glyph="&#xF133;" />
+            </controls:SettingsCard.HeaderIcon>
+            <controls:SettingsCard.ActionIcon>
+                <FontIcon Glyph="&#xE78B;" />
+            </controls:SettingsCard.ActionIcon>
+
+            <StackPanel Orientation="Vertical" Spacing="4">
+                <TextBlock HorizontalAlignment="Right"
+                           Style="{ThemeResource BodyStrongTextBlockStyle}"
+                           Text="{Binding Java.MajorVersion}" />
+                <TextBlock HorizontalAlignment="Right" Text="{Binding Java.JavaPath}" />
+            </StackPanel>
+        </controls:SettingsCard>
+
+        <!-- Memory size Setting -->
+        <controls:SettingsExpander x:Uid="LaunchSettingsPage_MemorySizeSettingsCard">
+            <!-- Icons -->
+            <controls:SettingsExpander.HeaderIcon>
+                <FontIcon Glyph="&#xE9D9;" />
+            </controls:SettingsExpander.HeaderIcon>
+
+            <!-- Settings ttems -->
+            <controls:SettingsExpander.Items>
+                <!-- Java path Setting -->
+                <controls:SettingsCard x:Name="MemorySettingCard" x:Uid="LaunchSettingsPage_JavaPathSettingsCard">
+                    <!-- Icons -->
+                    <controls:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE67A;" />
+                    </controls:SettingsCard.HeaderIcon>
+
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <NumberBox PlaceholderText="Enter an integer:"
+                                   LargeChange="100"
+                                   SmallChange="16"
+                                   SpinButtonPlacementMode="Compact"
+                                   Value="1" />
+                    </StackPanel>
+                </controls:SettingsCard>
+            </controls:SettingsExpander.Items>
+
+            <!-- Content -->
+            <ToggleSwitch x:Name="IsAutoMemorySizeSwitchToggle"
+                          x:Uid="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch"
+                          IsOn="{Binding IsAutoMemorySize, Mode=Twoway}">
+                <Interactivity:Interaction.Behaviors>
+                    <Interactivity:EventTriggerBehavior EventName="Toggled" SourceObject="{Binding ElementName=IsAutoMemorySizeSwitchToggle}">
+                        <Interactivity:InvokeCommandAction Command="{Binding IsAutoMemorySizeSwitchToggledCommand}" />
+                    </Interactivity:EventTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
+            </ToggleSwitch>
+
+        </controls:SettingsExpander>
+
+    </StackPanel>
+</Page>

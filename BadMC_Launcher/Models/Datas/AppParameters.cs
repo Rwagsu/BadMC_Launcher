@@ -18,11 +18,4 @@ public static class AppParameters {
         Width = 948,
         Height = 624
     };
-
-    public readonly static JsonSerializerOptions JsonOptions = new JsonSerializerOptions {
-        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-        WriteIndented = true
-    };
-
-    
 }

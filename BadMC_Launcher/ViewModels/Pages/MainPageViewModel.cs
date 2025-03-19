@@ -10,7 +10,8 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Media.Animation;
 using Uno.UI.RemoteControl;
-using BadMC_Launcher.Enums;
+using BadMC_Launcher.Classes.ViewClasses;
+using BadMC_Launcher.Enums.MessengerTokenEnum;
 
 namespace BadMC_Launcher.ViewModels.Pages;
 
@@ -53,7 +54,7 @@ public partial class MainPageViewModel : ObservableObject {
     public partial Visibility MainSideBarToolVisibility { get; set; }
 
     [RelayCommand]
-    public void MainSideBarFrameNavigated(object parameter) {
+    private void MainSideBarFrameNavigated(object parameter) {
         if (parameter is Frame frame) {
             if (frame.Content == null) {
                 MainSideBarToolVisibility = Visibility.Collapsed;
@@ -65,32 +66,32 @@ public partial class MainPageViewModel : ObservableObject {
     }
 
     [RelayCommand]
-    public void MainSideBarSelectionChanged(object parameter) {
+    private void MainSideBarSelectionChanged(object parameter) {
         if (parameter is NavigationView mainSideBar && mainSideBar.SelectedItem != null) {
-            SendInvokeFuncMessage(((MainSideBarItem)mainSideBar.SelectedItem).NavigatePage, MessengerTokenEnum.MainPage_FlyoutPageNavigateToken);
+            SendInvokeFuncMessage(((MainSideBarItem)mainSideBar.SelectedItem).NavigatePage, MainPageMessengerTokenEnum.FlyoutPageNavigateToken);
         }
     }
 
     [RelayCommand(CanExecute = nameof(MainSideBarFrameCanGoBack))]
-    public void BackButton(Frame parameter) {
+    private void BackButton(Frame parameter) {
         if (parameter.CanGoBack) {
             parameter.GoBack();
         }
     }
 
     [RelayCommand]
-    public void CloseButton(Frame parameter) {
+    private void CloseButton(Frame parameter) {
         parameter.Content = null;
         MainSideBarToolVisibility = Visibility.Collapsed;
     }
 
     [RelayCommand]
-    public void MainSideBarFlyoutClosed() {
+    private void MainSideBarFlyoutClosed() {
         MainSideBarSelectedItem = null;
     }
 
     internal void SetCanGoBack() {
-        var mainSideBarFrame = SendGetValueMessage<Frame>(MessengerTokenEnum.MainPage_MainSideBarFrameToken);
+        var mainSideBarFrame = SendGetValueMessage<Frame>(MainPageMessengerTokenEnum.MainSideBarFrameToken);
         if (mainSideBarFrame != null) {
             MainSideBarFrameCanGoBack = mainSideBarFrame.Response.CanGoBack;
             if (mainSideBarFrame.Response.Content == null) {
@@ -102,11 +103,11 @@ public partial class MainPageViewModel : ObservableObject {
         }
     }
 
-    public void SendInvokeFuncMessage<T>(T value, MessengerTokenEnum tokenEnum) {
+    private void SendInvokeFuncMessage<T>(T value, Enum tokenEnum) {
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<T>(value), tokenEnum.ToString());
     }
 
-    public RequestMessage<T> SendGetValueMessage<T>(MessengerTokenEnum tokenEnum) {
+    private RequestMessage<T> SendGetValueMessage<T>(Enum tokenEnum) {
         return WeakReferenceMessenger.Default.Send(new RequestMessage<T>(), tokenEnum.ToString());
     }
 }

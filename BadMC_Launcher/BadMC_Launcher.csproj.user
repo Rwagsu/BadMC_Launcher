@@ -2,9 +2,10 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_UnoSelectedTargetFramework>net9.0-windows10.0.26100</_UnoSelectedTargetFramework>
-    <ActiveDebugProfile>BadMC_Launcher (WinAppSDK Unpackaged)</ActiveDebugProfile>
+    <ActiveDebugProfile>BadMC_Launcher (WinAppSDK Packaged)</ActiveDebugProfile>
     <ActiveDebugFramework>net9.0-windows10.0.26100</ActiveDebugFramework>
     <IsFirstTimeProjectOpen>False</IsFirstTimeProjectOpen>
+    <_LastSelectedProfileId>C:\Users\stars\Documents\Development\Tasks\Projects\Applications\BadMC_Launcher\BadMC_Launcher\Properties\PublishProfiles\win-x64.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-maccatalyst|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
@@ -42,10 +43,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-desktop|ARM64'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.26100|AnyCPU'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
+  </PropertyGroup>
   <ItemGroup>
     <ApplicationDefinition Update="App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Update="Package.appxmanifest">
@@ -53,13 +62,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Views\Pages\SettingsPages\SettingsDashboardPage.xaml">
+    <Page Update="Views\ContentDialogs\Settings\MinecraftFolderContentDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Pages\Settings\LaunchSettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Pages\Settings\SettingsDashboardPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Styles\Templates\ItemTemplate\MinecraftItemsTemplate.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Styles\Templates\ItemTemplate\MinecraftPathItemsTemplate.xaml">
+    <Page Update="Views\Styles\Templates\ItemTemplate\MinecraftFolderItemsTemplate.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Styles\ButtonStyle.xaml">

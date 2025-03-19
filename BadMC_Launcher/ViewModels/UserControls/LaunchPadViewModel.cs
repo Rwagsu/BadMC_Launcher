@@ -15,15 +15,15 @@ using BadMC_Launcher.Extensions;
 namespace BadMC_Launcher.ViewModels.UserControls;
 public partial class LaunchPadViewModel : ObservableObject {
     MinecraftConfigService MinecraftService = App.GetService<MinecraftConfigService>();
-    MinecraftPathEntry? minecraftPathEntry;
+    MinecraftFolderEntry? minecraftPathEntry;
     ObservableCollection<MinecraftItem> minecraftList = new ObservableCollection<MinecraftItem>();
 
     public LaunchPadViewModel() {
         //Check Active Minecraft Path
-        if (MinecraftService.ActiveMinecraftPath != null) {
+        if (MinecraftService.ActiveMinecraftFolderPath != null) {
 
             //Get Minecraft Entry
-            minecraftPathEntry = MinecraftService.MinecraftPaths.First(item => item.MinecraftPath == MinecraftService.ActiveMinecraftPath);
+            minecraftPathEntry = MinecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == MinecraftService.ActiveMinecraftFolderPath);
             if (minecraftPathEntry != null) {
 
                 //Get Minecraft Items
@@ -41,11 +41,11 @@ public partial class LaunchPadViewModel : ObservableObject {
                         MinecraftListSelectedItem = MinecraftList.FirstOrDefault(item => item.MinecraftId == minecraftItem.MinecraftId);
                     }
                 }
-                MinecraftPathListSelectedItem = minecraftPathEntry;
+                MinecraftFolderListSelectedItem = minecraftPathEntry;
 
             }
         }
-        MinecraftPathList = new ObservableCollection<MinecraftPathEntry>(MinecraftService.MinecraftPaths);
+        MinecraftFolderList = new ObservableCollection<MinecraftFolderEntry>(MinecraftService.MinecraftFolders);
         SetLaunchButtonEntry();
     }
 
@@ -62,10 +62,10 @@ public partial class LaunchPadViewModel : ObservableObject {
 
     //MinecraftFolderPathsList
     [ObservableProperty]
-    public partial ObservableCollection<MinecraftPathEntry>? MinecraftPathList { get; set; }
+    public partial ObservableCollection<MinecraftFolderEntry>? MinecraftFolderList { get; set; }
 
     [ObservableProperty]
-    public partial MinecraftPathEntry? MinecraftPathListSelectedItem { get; set; }
+    public partial MinecraftFolderEntry? MinecraftFolderListSelectedItem { get; set; }
 
     [ObservableProperty]
     public partial MinecraftItem? MinecraftListSelectedItem { get; set; }
@@ -80,8 +80,8 @@ public partial class LaunchPadViewModel : ObservableObject {
     public void RefreshMinecraftList() {
         //Get Configs From Json File
         MinecraftService.SyncSettingGet();
-        minecraftPathEntry = MinecraftService.MinecraftPaths.FirstOrDefault(item => item.MinecraftPath == MinecraftService.ActiveMinecraftPath);
-        if (MinecraftService.ActiveMinecraftPath != null && minecraftPathEntry != null) {
+        minecraftPathEntry = MinecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == MinecraftService.ActiveMinecraftFolderPath);
+        if (MinecraftService.ActiveMinecraftFolderPath != null && minecraftPathEntry != null) {
             minecraftPathEntry.GetMinecrafts();
             MinecraftList = minecraftList;
             SetLaunchButtonEntry();
@@ -90,9 +90,9 @@ public partial class LaunchPadViewModel : ObservableObject {
 
     [RelayCommand]
     public void ViewLoaclMinecraftFolder() {
-        if (MinecraftService.ActiveMinecraftPath != null) {
+        if (MinecraftService.ActiveMinecraftFolderPath != null) {
             try {
-                using (Process.Start(new ProcessStartInfo(MinecraftService.ActiveMinecraftPath) {
+                using (Process.Start(new ProcessStartInfo(MinecraftService.ActiveMinecraftFolderPath) {
                     UseShellExecute = true,
                     Verb = "open"
                 })) {
@@ -118,7 +118,7 @@ public partial class LaunchPadViewModel : ObservableObject {
     public void MinecraftListSelected(object parameter) {
         if (parameter is ListView listView) {
             var item = (MinecraftItem)listView.SelectedItem;
-            if (item != null && MinecraftService.ActiveMinecraftPath != null && minecraftPathEntry != null) {
+            if (item != null && MinecraftService.ActiveMinecraftFolderPath != null && minecraftPathEntry != null) {
                 minecraftPathEntry.ActiveMinecraftEntryId = item.MinecraftId;
                 SetLaunchButtonEntry();
             }
@@ -126,12 +126,12 @@ public partial class LaunchPadViewModel : ObservableObject {
     }
 
     [RelayCommand]
-    public void MinecraftPathsListSelected(object parameter) {
+    public void MinecraftFoldersListSelected(object parameter) {
         if (parameter is ComboBox comboBox) {
-            var item = (MinecraftPathEntry)comboBox.SelectedItem;
-            MinecraftService.ActiveMinecraftPath = item.MinecraftPath;
-            minecraftPathEntry = MinecraftService.MinecraftPaths.FirstOrDefault(item => item.MinecraftPath == MinecraftService.ActiveMinecraftPath);
-            if (MinecraftService.ActiveMinecraftPath != null && minecraftPathEntry != null) {
+            var item = (MinecraftFolderEntry)comboBox.SelectedItem;
+            MinecraftService.ActiveMinecraftFolderPath = item.MinecraftFolderPath;
+            minecraftPathEntry = MinecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == MinecraftService.ActiveMinecraftFolderPath);
+            if (MinecraftService.ActiveMinecraftFolderPath != null && minecraftPathEntry != null) {
                 MinecraftList = (ObservableCollection<MinecraftItem>)minecraftPathEntry.GetMinecraftItems();
                 if (minecraftPathEntry.ActiveMinecraftEntryId != null) {
                     MinecraftListSelectedItem = minecraftPathEntry.GetMinecraftItem(minecraftPathEntry.ActiveMinecraftEntryId);

@@ -1,13 +1,16 @@
 using BadMC_Launcher.Classes;
-using BadMC_Launcher.Classes.MainSearch;
+using BadMC_Launcher.Classes.ViewClasses;
+using BadMC_Launcher.Classes.ViewClasses.MainSearch;
 using BadMC_Launcher.Models.Datas;
 using BadMC_Launcher.Services;
 using BadMC_Launcher.Services.ViewServices;
 using BadMC_Launcher.Servicess;
 using BadMC_Launcher.Servicess.Settings;
 using BadMC_Launcher.ViewModels.Pages;
+using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages;
-using BadMC_Launcher.Views.Pages.MainSideBarPages;
+using BadMC_Launcher.Views.Pages.MainSideBar;
+using BadMC_Launcher.Views.Pages.Settings;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -28,6 +31,7 @@ public partial class App : Application {
     public static new App Current => (App)Application.Current;
 
     protected Window? MainWindow { get; private set; }
+
     public IHost? Host { get; private set; }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args) {
@@ -89,8 +93,12 @@ public partial class App : Application {
                     services.AddSingleton<ThemeSettingService>();
                     services.AddSingleton<MainSideBarManagerService>();
                     services.AddSingleton<MainMenuService>();
+                    services.AddSingleton<SettingsService>();
                     services.AddSingleton<AppAssetsService>();
                     services.AddTransient<SingleMinecraftConfigService>();
+
+                    //Register ContentDialogs
+                    services.AddTransient<MinecraftFolderContentDialog>();
                 })
             );
         MainWindow = builder.Window;
@@ -99,6 +107,10 @@ public partial class App : Application {
         //Get Configs
         GetSettings();
 
+        //Regist Pages
+        GlobalRegister();
+
+        //Set MainWindow Configs
         MainWindow.AppWindow.Title = GetService<ThemeSettingService>().WindowName;
         MainWindow.AppWindow.Resize(AppParameters.windowSize);
         MainWindow.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
@@ -130,10 +142,6 @@ public partial class App : Application {
             // parameter
             rootFrame.Navigate(typeof(MainPage), args.Arguments);
         }
-
-        //Regist Pages
-        GlobalRegister();
-
         // Ensure the current window is active
         MainWindow.Activate();
     }
@@ -158,23 +166,31 @@ public partial class App : Application {
     }
 
     private void GlobalRegister() {
-        //Register MainSideBarItem
+        //Register MainSideBarItems
         GetService<MainSideBarManagerService>().Register(new MainSideBarItem() {
-            ItemName = App.GetService<ResourceLoader>().GetString("MainPage_MainMenuNameResource"),
+            ItemName = GetService<ResourceLoader>().GetString("MainPage_MainMenuNameResource"),
             ItemIcon = new FontIcon() { Glyph = "\uE74C" },
-            NavigatePage = typeof(MainMenuPage),
+            NavigatePage = typeof(MainMenuPage)
         });
 
         GetService<MainSideBarManagerService>().Register(new MainSideBarItem() {
-            ItemName = App.GetService<ResourceLoader>().GetString("MainPage_MainMenuNameResource"),
+            ItemName = GetService<ResourceLoader>().GetString("MainPage_MainMenuNameResource"),
             ItemIcon = new FontIcon() { Glyph = "\uE74C" },
-            NavigatePage = typeof(MainMenuPage),
+            NavigatePage = typeof(MainMenuPage)
         });
 
-        //Register MainMenuSearchFilterItem
-        GetService<MainMenuService>().Register(new MainMenuSearchMinecraftEntryFilter() {
+        //Register MainMenuSearchFilterItems
+        GetService<MainMenuService>().SearchFilterRegister(new MainMenuSearchMinecraftEntryFilter() {
             ItemName = GetService<ResourceLoader>().GetString("MainMenuPage_SearchFilterMinecraftEntryNameResource"),
             IconGlyph = "\uE7FC"
+        });
+
+        //Register SettingsSideBarItems
+        GetService<SettingsService>().SideBarRegister(new SettingsSideBarItem() {
+            ItemName = GetService<ResourceLoader>().GetString("LaunchSettingsPage_PageName"),
+            ItemIcon = new FontIcon() { Glyph = "\uE7FC" },
+            NavigatePage = typeof(LaunchSettingsPage),
+            PageHead = GetService<ResourceLoader>().GetString("LaunchSettingsPage_PageName"),
         });
     }
 }

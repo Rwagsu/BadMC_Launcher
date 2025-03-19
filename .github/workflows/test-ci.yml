@@ -1,10 +1,10 @@
-name: CI
+name: Run application unit test
 
 on:
   push:
-    branches:
-      - main
-      - release/**
+    paths:
+      - 'BadMC_Launcher/**'
+      - 'BadMC_Launcher.Tests/**'
 
   pull_request:
     types: [opened, synchronize, reopened]

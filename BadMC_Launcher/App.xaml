@@ -10,11 +10,14 @@
                 <!-- Load Uno.UI.Toolkit resources -->
                 <ToolkitResources xmlns="using:Uno.Toolkit.UI" />
                 <ResourceDictionary Source="/Views/Styles/ButtonStyle.xaml" />
-                <ResourceDictionary Source="/Views/Styles/Templates/ItemTemplate/MinecraftPathItemsTemplate.xaml" />
+                <ResourceDictionary Source="/Views/Styles/Templates/ItemTemplate/MinecraftFolderItemsTemplate.xaml" />
                 <ResourceDictionary Source="/Views/Styles/Templates/ItemTemplate/MinecraftItemsTemplate.xaml" />
                 <ResourceDictionary Source="/Views/Styles/Templates/MainMenuSearchTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!-- Add resources here -->
+            <!--<Style x:Key="TheBestTestColor">
+                <Setter Property="Background" Value="Aqua"/>
+            </Style>-->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -12,20 +12,15 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using BadMC_Launcher.ViewModels.Pages.MainSideBarPages;
+using BadMC_Launcher.ViewModels.ContentDialogs.Settings;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+namespace BadMC_Launcher.Views.ContentDialogs.Settings;
 
-namespace BadMC_Launcher.Views.Pages.MainSideBarPages;
-
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
-public sealed partial class MainMenuPage : Page
-{
-	public MainMenuPage()
-	{
+public sealed partial class MinecraftFolderContentDialog : ContentDialog {
+	public MinecraftFolderContentDialog() {
 		this.InitializeComponent();
-       DataContext = new MainMenuPageViewModel();
-	}
+        DataContext = new MinecraftFolderContentDialogViewModel();
+
+    }
+
 }

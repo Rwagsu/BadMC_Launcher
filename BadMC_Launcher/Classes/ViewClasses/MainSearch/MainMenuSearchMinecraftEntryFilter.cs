@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BadMC_Launcher.Classes.ViewClasses;
 using BadMC_Launcher.Classes.Minecraft;
 using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Interfaces;
@@ -10,7 +11,7 @@ using BadMC_Launcher.Servicess.Settings;
 using MinecraftLaunch.Base.Models.Game;
 using Uno.Extensions.Specialized;
 
-namespace BadMC_Launcher.Classes.MainSearch;
+namespace BadMC_Launcher.Classes.ViewClasses.MainSearch;
 public class MainMenuSearchMinecraftEntryFilter : IMainMenuSharchFilterItem {
     public required string ItemName { get; init; }
 
@@ -18,9 +19,9 @@ public class MainMenuSearchMinecraftEntryFilter : IMainMenuSharchFilterItem {
 
     public IEnumerable<MainMenuSearchResultItem> Search(string searchText) {
         var returnList = new List<MainMenuSearchResultItem>();
-        //Get MinecraftPaths
-        App.GetService<MinecraftConfigService>().MinecraftPaths.ForEach(minecraftPath => {
-            MinecraftPathEntry pathEntry = minecraftPath;
+        //Get MinecraftFolders
+        App.GetService<MinecraftConfigService>().MinecraftFolders.ForEach(minecraftPath => {
+            MinecraftFolderEntry pathEntry = minecraftPath;
             foreach (var minecraftEntry in pathEntry.GetMinecrafts().Where(item => item.Id.Contains(searchText))) {
                 var viewItem = pathEntry.GetMinecraftItem(minecraftEntry);
                 if (viewItem != null) {

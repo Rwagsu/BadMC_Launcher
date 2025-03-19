@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace BadMC_Launcher.Classes.MainSearch;
+namespace BadMC_Launcher.Classes.ViewClasses.MainSearch;
 
 public class MainMenuSearchResultItem : IEquatable<MainMenuSearchResultItem> {
     public required string ItemTitle { get; init; }

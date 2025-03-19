@@ -1,4 +1,4 @@
-using BadMC_Launcher.Enums;
+using BadMC_Launcher.Enums.MessengerTokenEnum;
 using BadMC_Launcher.Servicess.Settings;
 using BadMC_Launcher.ViewModels.Pages;
 using CommunityToolkit.Mvvm.Messaging;
@@ -14,15 +14,16 @@ public sealed partial class MainPage : Page {
         DataContext = new MainPageViewModel();
 
         //Register NavigationToPage Messengers
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<Type>, string>(this, MessengerTokenEnum.MainPage_PageNavigateToken.ToString(), MainFramePageNavigate);
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<Type>, string>(this, MessengerTokenEnum.MainPage_FlyoutPageNavigateToken.ToString(), MainFlyoutFramePageNavigate);
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<Type>, string>(this, MainPageMessengerTokenEnum.PageNavigateToken.ToString(), MainFrameNavigate);
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<Type>, string>(this, MainPageMessengerTokenEnum.FlyoutPageNavigateToken.ToString(), MainFlyoutFrameNavigate);
 
         //Register Frame Messengers
-        WeakReferenceMessenger.Default.Register<RequestMessage<Frame>, string>(this, MessengerTokenEnum.MainPage_MainSideBarFrameToken.ToString(), (r, m) => m.Reply(MainSideBarFrame));
-        WeakReferenceMessenger.Default.Register<RequestMessage<Frame>, string>(this, MessengerTokenEnum.MainPage_MainSideBarFlyoutFrameToken.ToString(), (r, m) => m.Reply(MainSideBarFlyoutFrame));
+        WeakReferenceMessenger.Default.Register<RequestMessage<Frame>, string>(this, MainPageMessengerTokenEnum.MainSideBarFrameToken.ToString(), (r, m) => m.Reply(MainSideBarFrame));
+        WeakReferenceMessenger.Default.Register<RequestMessage<Frame>, string>(this, MainPageMessengerTokenEnum.MainSideBarFlyoutFrameToken.ToString(), (r, m) => m.Reply(MainSideBarFlyoutFrame));
+        WeakReferenceMessenger.Default.Register<RequestMessage<XamlRoot?>, string>(this, MainPageMessengerTokenEnum.XamlRootToken.ToString(), (r, m) => m.Reply(this.XamlRoot));
     }
 
-    public void MainFramePageNavigate(object recipient, ValueChangedMessage<Type> message) {
+    public void MainFrameNavigate(object recipient, ValueChangedMessage<Type> message) {
         MainSideBarFlyout.Hide();
         if (MainSideBarFrame.Content != null && MainSideBarFrame.Content.GetType() == message.Value) {
             return;
@@ -33,7 +34,7 @@ public sealed partial class MainPage : Page {
         }
     }
 
-    public void MainFlyoutFramePageNavigate(object recipient, ValueChangedMessage<Type> message) {
+    public void MainFlyoutFrameNavigate(object recipient, ValueChangedMessage<Type> message) {
         if (MainSideBarFrame.Content != null && MainSideBarFrame.Content.GetType() == message.Value) {
             return;
         }
@@ -42,6 +43,5 @@ public sealed partial class MainPage : Page {
             MainSideBarFlyoutFrame.Navigate(message.Value, null, new SuppressNavigationTransitionInfo());
             FlyoutBase.ShowAttachedFlyout(AppTitleBar);
         }
-        Debug.WriteLine(message.Value);
     }
 }

@@ -13,8 +13,8 @@ using MinecraftLaunch.Base.Models.Game;
 using MinecraftLaunch.Components.Parser;
 
 namespace BadMC_Launcher.Extensions;
-public static class MinecraftPathEntryExtension {
-    public static MinecraftItem? GetMinecraftItem(this MinecraftPathEntry minecraftPath, string minecraftEntryId) {
+public static class MinecraftFolderEntryExtension {
+    public static MinecraftItem?  GetMinecraftItem(this MinecraftFolderEntry minecraftPath, string minecraftEntryId) {
         try {
             return minecraftPath.GetMinecraftItem(minecraftPath.GetMinecraftParser().GetMinecraft(minecraftEntryId));
         }
@@ -24,14 +24,14 @@ public static class MinecraftPathEntryExtension {
         return null;
     }
 
-    public static MinecraftItem? GetMinecraftItem(this MinecraftPathEntry minecraftPath, MinecraftEntry minecraftEntry) {
+    public static MinecraftItem? GetMinecraftItem(this MinecraftFolderEntry minecraftPath, MinecraftEntry minecraftEntry) {
         try {
             if (minecraftEntry != null) {
                 var isStarred = false;
                 var minecraftEntryImageEnum = minecraftEntry.GetMinecraftImageEnum();
                 BitmapImage? image = null;
                 if (minecraftEntryImageEnum == MinecraftEntryImageEnum.Custom) {
-                    var path = Path.Combine(minecraftEntry.MinecraftFolderPath, @"BadBCConfigs\icon.png");
+                    var path = Path.Combine(minecraftEntry.MinecraftFolderPath, @"MConfigs\icon.png");
                     if (File.Exists(path)) {
                         image = new(new Uri(path));
                     }
@@ -66,7 +66,7 @@ public static class MinecraftPathEntryExtension {
         return null;
     }
 
-    public static IEnumerable<MinecraftItem> GetMinecraftItems(this MinecraftPathEntry minecraftPath) {
+    public static IEnumerable<MinecraftItem> GetMinecraftItems(this MinecraftFolderEntry minecraftPath) {
         var minecraftParser = minecraftPath.GetMinecraftParser();
         var items = new ObservableCollection<MinecraftItem>();
         foreach (var entry in minecraftParser.GetMinecrafts()) {

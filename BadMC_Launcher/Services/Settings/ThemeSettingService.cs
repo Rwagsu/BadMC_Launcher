@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using BadMC_Launcher.Interfaces;
-using CommunityToolkit.Mvvm.Messaging.Messages;
-using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.UI.Xaml.Media.Imaging;
-using BadMC_Launcher.Models.Datas.SettingsDatas;
-using BadMC_Launcher.Models.Datas;
 using BadMC_Launcher.Enums;
+using BadMC_Launcher.Interfaces;
+using BadMC_Launcher.Models.Datas;
+using BadMC_Launcher.Models.Datas.SettingsDatas;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace BadMC_Launcher.Servicess.Settings;
 public class ThemeSettingService : IConfigClass {
@@ -112,7 +113,7 @@ public class ThemeSettingService : IConfigClass {
     }
 
     public bool SyncSettingSet() {
-        if (App.GetService<FileService>().WriteConfig(Path.Combine(AppDataPath.ConfigsPath, @"Settings\ThemeSettings.json"), this, ThemeSettingServiceContext.Default.ThemeSettingService)) {
+        if (App.GetService<FileService>().WriteConfig(Path.Combine(AppDataPath.ConfigsPath, @"Settings\ThemeSettings.json"), ThemeSettingServiceContext.Default.ThemeSettingService, this)) {
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ThemeSettingService>(this), "MinecraftConfigChanged");
             return true;
         }

@@ -4,8 +4,7 @@ using BadMC_Launcher.Classes.ViewClasses.MainSearch;
 using BadMC_Launcher.Models.Datas;
 using BadMC_Launcher.Services;
 using BadMC_Launcher.Services.ViewServices;
-using BadMC_Launcher.Servicess;
-using BadMC_Launcher.Servicess.Settings;
+using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.ViewModels.Pages;
 using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages;
@@ -30,7 +29,7 @@ public partial class App : Application {
 
     public static new App Current => (App)Application.Current;
 
-    protected Window? MainWindow { get; private set; }
+    public Window? MainWindow { get; private set; }
 
     public IHost? Host { get; private set; }
 

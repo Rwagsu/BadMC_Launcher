@@ -69,7 +69,7 @@
                     </Flyout.FlyoutPresenterStyle>
                     <Interactivity:Interaction.Behaviors>
                         <Interactivity:EventTriggerBehavior EventName="Closed">
-                            <Interactivity:InvokeCommandAction Command="{Binding MainSideBarFlyoutClosedCommand}" />
+                            <Interactivity:InvokeCommandAction Command="{Binding DeselectItemCommand}" />
                         </Interactivity:EventTriggerBehavior>
                     </Interactivity:Interaction.Behaviors>
                     <Frame x:Name="MainSideBarFlyoutFrame"
@@ -111,7 +111,7 @@
 
                 <Interactivity:Interaction.Behaviors>
                     <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
-                        <Interactivity:InvokeCommandAction Command="{Binding MainSideBarSelectionChangedCommand}" CommandParameter="{Binding ElementName=MainSideBar}" />
+                        <Interactivity:InvokeCommandAction Command="{Binding ShowFlyoutPageCommand}" CommandParameter="{Binding ElementName=MainSideBar}" />
                     </Interactivity:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
 
@@ -136,8 +136,6 @@
                                                                  From="0,150,0"
                                                                  To="0"
                                                                  Duration="0:0:0.3" />
-
-                                <!-- Animation Behaviors -->
                             </animations:AnimationSet>
 
                             <!-- Frame Closed -->
@@ -180,13 +178,13 @@
                                 <Interactivity:DataTriggerBehavior Binding="{Binding Content, ElementName=MainSideBarFrame, Converter={StaticResource EmptyStringToObjectConverter}}"
                                                                    ComparisonCondition="Equal"
                                                                    Value="False">
-                                    <Interactivity:InvokeCommandAction Command="{Binding MainSideBarFrameNavigatedCommand}" CommandParameter="{Binding ElementName=MainSideBarFrame}" />
+                                    <Interactivity:InvokeCommandAction Command="{Binding ChangeToolVisibilityCommand}" CommandParameter="{Binding ElementName=MainSideBarFrame}" />
                                     <behaviors:StartAnimationAction Animation="{Binding ElementName=FrameOutAnimation}" />
                                 </Interactivity:DataTriggerBehavior>
 
                                 <!-- Frame Navigated Event -->
                                 <Interactivity:EventTriggerBehavior EventName="Navigated">
-                                    <Interactivity:InvokeCommandAction Command="{Binding MainSideBarFrameNavigatedCommand}" CommandParameter="{Binding ElementName=MainSideBarFrame}" />
+                                    <Interactivity:InvokeCommandAction Command="{Binding ChangeToolVisibilityCommand}" CommandParameter="{Binding ElementName=MainSideBarFrame}" />
                                 </Interactivity:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                         </Frame>
@@ -200,27 +198,27 @@
                                     Spacing="6"
                                     Visibility="{Binding MainSideBarToolVisibility}">
                             <!-- Back to Page -->
-                            <Button Width="36"
-                                    Height="36"
-                                    Command="{Binding BackButtonCommand}"
-                                    CommandParameter="{Binding ElementName=MainSideBarFrame}"
-                                    Style="{StaticResource ButtonTransparentStyle}">
+                            <HyperlinkButton Width="36"
+                                             Height="36"
+                                             Command="{Binding PageGoBackCommand}"
+                                             Padding="0"
+                                             CommandParameter="{Binding ElementName=MainSideBarFrame}">
                                 <AnimatedIcon x:Name="SearchAnimatedIcon"
-                                              Width="16"
-                                              Height="16">
+                                              Width="18"
+                                              Height="18">
                                     <AnimatedIcon.FallbackIconSource>
-                                        <FontIconSource FontSize="14" Glyph="&#xE72B;" />
+                                        <FontIconSource FontSize="16" Glyph="&#xE72B;" />
                                     </AnimatedIcon.FallbackIconSource>
                                     <AnimatedIcon.Source>
                                         <animatedvisuals:AnimatedBackVisualSource />
                                     </AnimatedIcon.Source>
                                 </AnimatedIcon>
-                            </Button>
+                            </HyperlinkButton>
 
                             <!-- Close Page -->
                             <Button Width="36"
                                     Height="36"
-                                    Command="{Binding CloseButtonCommand}"
+                                    Command="{Binding ClosePageCommand}"
                                     CommandParameter="{Binding ElementName=MainSideBarFrame}"
                                     Style="{StaticResource ButtonTransparentStyle}">
                                 <FontIcon Width="16"

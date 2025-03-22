@@ -19,187 +19,184 @@
             <!-- Card -->
 
             <!-- Launch Button -->
-            <Button x:Name="LaunchButton"
-                    Height="80"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Bottom"
-                    HorizontalContentAlignment="Stretch"
-                    BorderBrush="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding LaunchButtonCommand}"
-                    CornerRadius="0"
-                    Style="{StaticResource AccentButtonStyle}">
-                <Grid Margin="0,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="60" />
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0"
-                            Width="52"
-                            Height="52"
-                            HorizontalAlignment="Center"
-                            BorderBrush="{ThemeResource ControlFillColorDefaultBrush}"
-                            BorderThickness="4"
-                            CornerRadius="8">
-                        <Border.Background>
-                            <ImageBrush ImageSource="{Binding GameEntryImage}" Stretch="UniformToFill" />
-                        </Border.Background>
-                    </Border>
-                    <StackPanel Grid.Column="1"
-                                Margin="8,0,0,0"
-                                Spacing="2">
-                        <TextBlock x:Uid="LaunchPad_LaunchButtonNameResource"
-                                   FontSize="22"
-                                   FontWeight="Bold" />
-                        <TextBlock FontSize="16"
-                                   FontWeight="Bold"
-                                   Text="{Binding GameEntryName}"
-                                   TextTrimming="CharacterEllipsis" />
-                    </StackPanel>
-                    <!-- Select ontology -->
-                    <Button Grid.Column="2"
-                            Width="36"
-                            Height="36"
-                            HorizontalAlignment="Right"
-                            Background="Transparent"
-                            BorderBrush="Transparent"
-                            BorderThickness="0">
-                        <!-- Animated Icons -->
-                        <AnimatedIcon Width="20"
-                                      Height="20"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"
-                                      Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}">
-                            <AnimatedIcon.FallbackIconSource>
-                                <FontIconSource Glyph="&#xE70E;" />
-                            </AnimatedIcon.FallbackIconSource>
-                            <AnimatedIcon.Source>
-                                <animatedvisuals:AnimatedChevronUpDownSmallVisualSource />
-                            </AnimatedIcon.Source>
-                        </AnimatedIcon>
-                        <!-- Pop-up list of Minecraft ontologies -->
-                        <Button.Flyout>
-                            <Flyout Placement="TopEdgeAlignedRight">
-                                <Flyout.FlyoutPresenterStyle>
-                                    <Style TargetType="FlyoutPresenter">
-                                        <Setter Property="Padding" Value="0" />
-                                        <Setter Property="CornerRadius" Value="8" />
-                                        <Setter Property="Margin" Value="0,-24" />
-                                    </Style>
-                                </Flyout.FlyoutPresenterStyle>
-                                <Grid Width="432" Height="432">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="48" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <!-- Menu -->
-                                    <Grid Grid.Row="0"
-                                          Margin="0,4,0,0"
-                                          HorizontalAlignment="Stretch">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="48" />
-                                        </Grid.ColumnDefinitions>
-                                        <!-- Select the .minecraft folder path -->
-                                        <ComboBox x:Name="MinecraftFolderComboBox"
-                                                  Grid.Column="0"
-                                                  Height="36"
-                                                  Margin="8,0,8,0"
-                                                  HorizontalAlignment="Stretch"
-                                                  VerticalAlignment="Center"
-                                                  ItemTemplate="{StaticResource MinecraftFolderItemsTemplateSecondary}"
-                                                  ItemsSource="{Binding MinecraftFolderList}"
-                                                  SelectedItem="{Binding MinecraftFolderListSelectedItem, Mode=TwoWay}">
+            <Grid Height="80"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="60" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="LaunchButton"
+                        Grid.ColumnSpan="2"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding LaunchMinecraftJavaCommand}"
+                        CornerRadius="0"
+                        Style="{StaticResource AccentButtonStyle}">
+                    <Grid Margin="0,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0"
+                                Width="52"
+                                Height="52"
+                                HorizontalAlignment="Center"
+                                BorderBrush="{ThemeResource ControlFillColorDefaultBrush}"
+                                BorderThickness="4"
+                                CornerRadius="8">
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding GameEntryImage}" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                        <StackPanel Grid.Column="1"
+                                    Margin="8,0,60,0"
+                                    Spacing="2">
+                            <TextBlock x:Uid="LaunchPad_LaunchButtonNameResource"
+                                       FontSize="22"
+                                       FontWeight="Bold" />
+                            <TextBlock FontSize="16"
+                                       FontWeight="Bold"
+                                       Text="{Binding GameEntryName}"
+                                       TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </Grid>
+                </Button>
 
-                                            <!-- Custom Command -->
-                                            <Interactivity:Interaction.Behaviors>
-                                                <Interactivity:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=MinecraftFolderComboBox}">
-                                                    <Interactivity:InvokeCommandAction Command="{Binding MinecraftFoldersListSelectedCommand}" CommandParameter="{Binding ElementName=MinecraftFolderComboBox}" />
-                                                </Interactivity:EventTriggerBehavior>
-                                            </Interactivity:Interaction.Behaviors>
-                                        </ComboBox>
-                                        <Button Grid.Column="1"
-                                                Width="36"
-                                                Height="36"
-                                                VerticalAlignment="Center"
-                                                Style="{StaticResource ButtonTransparentStyle}">
-                                            <FontIcon Glyph="&#xE712;" />
-                                            <Button.Flyout>
-                                                <MenuFlyout>
-                                                    <MenuFlyoutItem x:Uid="LaunchPad_MinecraftListRefreshResource" Command="{Binding RefreshMinecraftListCommand}">
-                                                        <MenuFlyoutItem.Icon>
-                                                            <FontIcon Glyph="&#xE72C;" />
-                                                        </MenuFlyoutItem.Icon>
-                                                    </MenuFlyoutItem>
-                                                    <MenuFlyoutItem x:Uid="LaunchPad_MinecraftListsManagerResource">
-                                                        <MenuFlyoutItem.Icon>
-                                                            <FontIcon Glyph="&#xE8B7;" />
-                                                        </MenuFlyoutItem.Icon>
-                                                    </MenuFlyoutItem>
-                                                    <MenuFlyoutItem x:Uid="LaunchPad_ViewLocalMinecraftFolderResource" Command="{Binding ViewLoaclMinecraftFolderCommand}">
-                                                        <MenuFlyoutItem.Icon>
-                                                            <FontIcon Glyph="&#xE838;" />
-                                                        </MenuFlyoutItem.Icon>
-                                                    </MenuFlyoutItem>
-                                                </MenuFlyout>
-                                            </Button.Flyout>
-                                        </Button>
-                                    </Grid>
-                                    <!-- If there is no ontology in the list, a prompt is displayed. -->
-                                    <StackPanel x:Name="MinecraftEmptyTipsStackPanel"
-                                                Grid.Row="1"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Opacity="0"
-                                                Spacing="8">
-                                        <!-- Animation -->
-                                        <StackPanel.OpacityTransition>
-                                            <ScalarTransition />
-                                        </StackPanel.OpacityTransition>
-                                        <Interactivity:Interaction.Behaviors>
-                                            <Interactivity:DataTriggerBehavior Binding="{Binding MinecraftList.Count}"
-                                                                               ComparisonCondition="Equal"
-                                                                               Value="0">
-                                                <Interactivity:ChangePropertyAction PropertyName="Opacity"
-                                                                                    TargetObject="{Binding ElementName=MinecraftEmptyTipsStackPanel}"
-                                                                                    Value="1" />
-                                            </Interactivity:DataTriggerBehavior>
-                                            <Interactivity:DataTriggerBehavior Binding="{Binding MinecraftList.Count}"
-                                                                               ComparisonCondition="NotEqual"
-                                                                               Value="0">
-                                                <Interactivity:ChangePropertyAction PropertyName="Opacity"
-                                                                                    TargetObject="{Binding ElementName=MinecraftEmptyTipsStackPanel}"
-                                                                                    Value="0" />
-                                            </Interactivity:DataTriggerBehavior>
-                                        </Interactivity:Interaction.Behaviors>
-                                        <FontIcon HorizontalAlignment="Center"
-                                                  FontSize="40"
-                                                  Glyph="&#xE8F6;" />
-                                        <TextBlock x:Uid="LaunchPad_MinecraftEmptyListTipsTextResource"
-                                                   HorizontalAlignment="Center"
-                                                   Style="{ThemeResource BodyStrongTextBlockStyle}" />
-                                        <TextBlock x:Uid="LaunchPad_MinecraftEmptyListTipsHyperLinkButtonResource" HorizontalAlignment="Center" />
-                                    </StackPanel>
-                                    <!-- Minecraft List -->
-                                    <ListView x:Name="MinecraftList"
-                                              Grid.Row="1"
-                                              Margin="0,6,0,0"
-                                              ItemTemplate="{StaticResource MinecraftItemsTemplateSecondary}"
-                                              ItemsSource="{Binding MinecraftList}"
-                                              SelectedItem="{Binding MinecraftListSelectedItem, Mode=TwoWay}">
-                                        <Interactivity:Interaction.Behaviors>
-                                            <Interactivity:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=MinecraftList}">
-                                                <Interactivity:InvokeCommandAction Command="{Binding MinecraftListSelectedCommand}" CommandParameter="{Binding ElementName=MinecraftList}" />
-                                            </Interactivity:EventTriggerBehavior>
-                                        </Interactivity:Interaction.Behaviors>
-                                    </ListView>
+                <!-- Select ontology -->
+                <Button Grid.Column="1"
+                        Width="36"
+                        Height="36"
+                        HorizontalAlignment="Center"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="0">
+                    <!-- Animated Icons -->
+                    <AnimatedIcon Width="20"
+                                  Height="20"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}">
+                        <AnimatedIcon.FallbackIconSource>
+                            <FontIconSource Glyph="&#xE70E;" />
+                        </AnimatedIcon.FallbackIconSource>
+                        <AnimatedIcon.Source>
+                            <animatedvisuals:AnimatedChevronUpDownSmallVisualSource />
+                        </AnimatedIcon.Source>
+                    </AnimatedIcon>
+                    <!-- Pop-up list of Minecraft ontologies -->
+                    <Button.Flyout>
+                        <Flyout Placement="TopEdgeAlignedRight">
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style TargetType="FlyoutPresenter">
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="CornerRadius" Value="8" />
+                                    <Setter Property="Margin" Value="0,-24" />
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                            <Grid Width="432" Height="432">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="48" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <!-- Menu -->
+                                <Grid Grid.Row="0"
+                                      Margin="0,4,0,0"
+                                      HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="48" />
+                                    </Grid.ColumnDefinitions>
+                                    <!-- Select the .minecraft folder path -->
+                                    <ComboBox x:Name="MinecraftFolderComboBox"
+                                              x:Uid="LaunchPad_MinecraftFolderComboBox"
+                                              Grid.Column="0"
+                                              Height="36"
+                                              Margin="8,0,8,0"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Center"
+                                              ItemTemplate="{StaticResource MinecraftFolderItemsTemplateSecondary}"
+                                              ItemsSource="{Binding MinecraftFolderEntryList}"
+                                              SelectedItem="{Binding MinecraftFolderEntryListSelectedItem, Mode=TwoWay}" />
+                                    <Button Grid.Column="1"
+                                            Width="36"
+                                            Height="36"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ButtonTransparentStyle}">
+                                        <FontIcon Glyph="&#xE712;" />
+                                        <Button.Flyout>
+                                            <MenuFlyout>
+                                                <MenuFlyoutItem x:Uid="LaunchPad_MinecraftEntryListRefreshMenuFlyoutItem" Command="{Binding RefreshMinecraftEntryListCommand}">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon Glyph="&#xE72C;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                                <MenuFlyoutItem x:Uid="LaunchPad_MinecraftEntryListsManagerMenuFlyoutItem" Command="{Binding OpenMinecraftFoldersManagerCommand}">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon Glyph="&#xE8B7;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                                <MenuFlyoutItem x:Uid="LaunchPad_ViewLocalMinecraftFolderMenuFlyoutItem" Command="{Binding ViewLoaclMinecraftFolderCommand}">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon Glyph="&#xE838;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                            </MenuFlyout>
+                                        </Button.Flyout>
+                                    </Button>
                                 </Grid>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                </Grid>
-            </Button>
+                                <!-- If there is no ontology in the list, a prompt is displayed. -->
+                                <StackPanel x:Name="MinecraftEmptyTipsStackPanel"
+                                            Grid.Row="1"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Opacity="0"
+                                            Spacing="8">
+                                    <!-- Animation -->
+                                    <StackPanel.OpacityTransition>
+                                        <ScalarTransition />
+                                    </StackPanel.OpacityTransition>
+                                    <Interactivity:Interaction.Behaviors>
+                                        <Interactivity:DataTriggerBehavior Binding="{Binding MinecraftEntryList.Count}"
+                                                                           ComparisonCondition="Equal"
+                                                                           Value="0">
+                                            <Interactivity:ChangePropertyAction PropertyName="Opacity"
+                                                                                TargetObject="{Binding ElementName=MinecraftEmptyTipsStackPanel}"
+                                                                                Value="1" />
+                                        </Interactivity:DataTriggerBehavior>
+                                        <Interactivity:DataTriggerBehavior Binding="{Binding MinecraftEntryList.Count}"
+                                                                           ComparisonCondition="NotEqual"
+                                                                           Value="0">
+                                            <Interactivity:ChangePropertyAction PropertyName="Opacity"
+                                                                                TargetObject="{Binding ElementName=MinecraftEmptyTipsStackPanel}"
+                                                                                Value="0" />
+                                        </Interactivity:DataTriggerBehavior>
+                                    </Interactivity:Interaction.Behaviors>
+
+                                    <FontIcon HorizontalAlignment="Center"
+                                              FontSize="40"
+                                              Glyph="&#xE8F6;" />
+                                    <TextBlock x:Uid="LaunchPad_MinecraftEmptyListTipsTextResource"
+                                               HorizontalAlignment="Center"
+                                               Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock x:Uid="LaunchPad_MinecraftEmptyListTipsHyperLinkButtonResource" HorizontalAlignment="Center" />
+                                </StackPanel>
+                                <!-- Minecraft List -->
+                                <ListView x:Name="MinecraftEntryList"
+                                          Grid.Row="1"
+                                          Margin="0,6,0,0"
+                                          ItemTemplate="{StaticResource MinecraftItemsTemplateSecondary}"
+                                          ItemsSource="{Binding MinecraftEntryList}"
+                                          SelectedItem="{Binding MinecraftEntryListSelectedItem, Mode=TwoWay}" />
+                            </Grid>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </Grid>
+
         </Grid>
     </Border>
 </UserControl>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using BadMC_Launcher.Classes;
 using BadMC_Launcher.Classes.ViewClasses;
 using BadMC_Launcher.Classes.ViewClasses.MainSearch;
-using BadMC_Launcher.Enums.MessengerTokenEnum;
+using BadMC_Launcher.Enums;
 using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Interfaces;
 using BadMC_Launcher.Models.Datas.ViewDatas;
@@ -53,26 +53,26 @@ public partial class MainMenuPageViewModel : ObservableObject {
 
     //TODO: 该写Blog了，还能这样的啊？？？Σ(っ °Д °;)っ
     [RelayCommand]
-    private void MainMenuSearchButtonClicked(AutoSuggestBoxQuerySubmittedEventArgs args) {
-        MainMenuSearch(args.QueryText);
+    private void SearchTextChanged_SearchItem(AutoSuggestBoxQuerySubmittedEventArgs e) {
+        MainMenuSearch(e.QueryText);
     }
     
     [RelayCommand]
-    private void SearchTextChanged(AutoSuggestBoxTextChangedEventArgs args) {
-        if (SearchFilterRealTimeToggleIsOn && args.Reason == AutoSuggestionBoxTextChangeReason.UserInput) {
+    private void SearchButtonClicked_SearchItem(AutoSuggestBoxTextChangedEventArgs e) {
+        if (SearchFilterRealTimeToggleIsOn && e.Reason == AutoSuggestionBoxTextChangeReason.UserInput) {
             MainMenuSearch(SearchText);
         }
     }
 
     [RelayCommand]
-    private void MainMenuSearchSuggestionChosen(AutoSuggestBoxSuggestionChosenEventArgs args) {
-        if (args.SelectedItem is MainMenuSearchResultItem selectedItem) {
+    private void SearchItemNavigateToPage(AutoSuggestBoxSuggestionChosenEventArgs e) {
+        if (e.SelectedItem is MainMenuSearchResultItem selectedItem) {
             selectedItem.Navigate.Invoke();
         }
     }
     
     [RelayCommand]
-    private void MainMenuSearchFilterTokenViewSelected(TokenView parameter) {
+    private void AddSearchFilter(TokenView parameter) {
          parameter.SelectedItems.ForEach(item => {
              if (item is IMainMenuSharchFilterItem mainMenuSharchFilterItem) {
                  SearchFilterSelectedItems.Add(mainMenuSharchFilterItem);
@@ -81,7 +81,7 @@ public partial class MainMenuPageViewModel : ObservableObject {
     }
     
     [RelayCommand]
-    private void SettingsButtonClicked() {
+    private void NavigateToSettingsPage() {
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<Type>(typeof(SettingsDashboardPage)), MainPageMessengerTokenEnum.PageNavigateToken.ToString());
     }
 

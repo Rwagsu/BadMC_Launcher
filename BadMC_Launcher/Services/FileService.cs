@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Reflection;
 using System.Security;
 using System.Text.Encodings.Web;
@@ -10,7 +11,8 @@ using BadMC_Launcher.Models.Datas.Mappings;
 using Microsoft.UI.Xaml.Controls;
 using MinecraftLaunch.Extensions;
 
-namespace BadMC_Launcher.Servicess;
+namespace BadMC_Launcher.Services;
+
 public class FileService {
     public bool CheckFolderAndFile(string path, bool isCheckFile) {
         if (isCheckFile ? File.Exists(path) : Path.Exists(path)) {
@@ -57,9 +59,6 @@ public class FileService {
     public bool ReadConfig<T>(string filePath, JsonTypeInfo<T> jsonTypeInfo, out T? returnValue, Dictionary<string, string>? updateMapping = null) {
         if (CheckFolderAndFile(filePath, true)) {
             try {
-                if (updateMapping != null) {
-                    TryReadConfigWithMappings(filePath, jsonTypeInfo, updateMapping);
-                }
                 var fileValue = File.ReadAllText(filePath);
                 if (!string.IsNullOrWhiteSpace(fileValue)) {
                     returnValue = fileValue.Deserialize(jsonTypeInfo);
@@ -81,7 +80,12 @@ public class FileService {
                         //TODO
                         break;
                     case JsonException:
-                        //TODO
+                        if (updateMapping != null && TryReadConfigWithMappings(filePath, jsonTypeInfo, updateMapping)) {
+                            ReadConfig(filePath, jsonTypeInfo, out _, updateMapping);
+                        }
+                        else {
+                            //TODO
+                        }
                         break;
                     default:
                         throw;
@@ -166,28 +170,21 @@ public class FileService {
     public bool TryReadConfigWithMappings<T>(string filePath, JsonTypeInfo<T> jsonTypeInfo, Dictionary<string, string> updateMapping) {
         try {
             if (CheckFolderAndFile(filePath, true)) {
-                var fileValue = File.ReadAllText(filePath);
-                if (!string.IsNullOrWhiteSpace(fileValue)) {
-            
-                    using JsonDocument doc = JsonDocument.Parse(fileValue);
+                var content = File.ReadAllText(filePath);
 
-                    JsonObject? jsonObject = JsonObject.Create(doc.RootElement);
-                    if (jsonObject != null) {
-                        foreach (var item in jsonObject.ToList()) {
-                            var updateKey = updateMapping.FirstOrDefault(mappingItem => mappingItem.Key == item.Key).Value;
-                            if (updateKey != null) {
-                                JsonNode? valueCopy = item.Value?.DeepClone();
+                if (string.IsNullOrWhiteSpace(content)) {
+                    return false;
+                }
 
-                                jsonObject.Add(updateKey, valueCopy);
-                                jsonObject.Remove(item.Key);
+                using JsonDocument doc = JsonDocument.Parse(content);
+                JsonObject? root = JsonObject.Create(doc.RootElement);
+                if (root == null) return false;
 
-                                File.WriteAllText(filePath, jsonObject.ToJsonString(new() { WriteIndented = true }));
-                                return true;
-                            }
-                        }
-                    }
-                    
-                    
+                bool modified = ProcessJsonNode(root, updateMapping);
+
+                if (modified) {
+                    File.WriteAllText(filePath, root.ToJsonString(new() { WriteIndented = true }));
+                    return true;
                 }
             }
         }
@@ -213,5 +210,62 @@ public class FileService {
             }
         }
         return false;
+    }
+
+    public bool TryOpenFolderFromPath(string path) {
+        try {
+            using (Process.Start(new ProcessStartInfo(path) {
+                UseShellExecute = true,
+                Verb = "open"
+            })) {
+                return true;
+            }
+        }
+        catch (Exception ex) {
+            switch (ex) {
+                case Win32Exception:
+                    //TODO: Dialog
+                    break;
+                case FileNotFoundException:
+                    //TODO: Dialog
+                    break;
+                default:
+                    throw;
+            }
+        }
+        return false;
+    }
+
+    //TODO: TEST
+    private bool ProcessJsonNode(JsonNode node, Dictionary<string, string> updateMapping) {
+        bool modified = false;
+
+        switch (node) {
+            case JsonObject obj:
+                // Loop to find nested objects
+                foreach (var prop in obj.ToList()) {
+                    if (prop.Value != null && ProcessJsonNode(prop.Value, updateMapping)) {
+                        modified = true;
+                    }
+
+                    // Modify the key name to correspond to the mapping
+                    if (prop.Value != null && updateMapping.TryGetValue(prop.Key, out var newKey)) {
+                        obj.Add(newKey, prop.Value.DeepClone());
+                        obj.Remove(prop.Key);
+                        modified = true;
+                    }
+                }
+                break;
+            case JsonArray arr:
+                // 处理数组元素
+                for (int i = 0; i < arr.Count; i++) {
+                    if (arr[i] is JsonNode element && ProcessJsonNode(element, updateMapping)) {
+                        arr[i] = element.DeepClone(); // 更新修改后的元素
+                        modified = true;
+                    }
+                }
+                break;
+        }
+        return modified;
     }
 }

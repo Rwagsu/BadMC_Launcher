@@ -11,11 +11,11 @@ using BadMC_Launcher.Classes.Minecraft;
 
 namespace BadMC_Launcher.Models.Datas.SettingsDatas;
 internal static class MinecraftConfig {
-    internal static IEnumerable<Account> minecraftAccounts = new ObservableDataList<Account>();
+    internal static ObservableDataList<Account> minecraftAccounts = new();
 
-    internal static IEnumerable<string> javaPaths = new ObservableDataList<string>();
+    internal static ObservableDataList<string> javaPaths = new();
 
-    internal static IEnumerable<MinecraftFolderEntry> minecraftPaths = new ObservableDataList<MinecraftFolderEntry>();
+    internal static ObservableDataList<MinecraftFolderEntry> minecraftPaths = new();
 
     internal static JavaEntry? activeJavaPath;
 
@@ -35,5 +35,5 @@ internal static class MinecraftConfig {
 
     internal static string? launcherName = App.GetService<ResourceLoader>().GetString("MinecraftConfig_MinecraftTitleNameResource");
 
-    internal static IEnumerable<string>? jvmArguments;
+    internal static ObservableDataList<string> jvmArguments = new();
 }

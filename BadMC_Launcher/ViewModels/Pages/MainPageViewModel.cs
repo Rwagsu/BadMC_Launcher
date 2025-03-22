@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using BadMC_Launcher.Classes;
 using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Models.Datas.ViewDatas;
-using BadMC_Launcher.Servicess.Settings;
+using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Views.Pages;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -11,7 +11,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Media.Animation;
 using Uno.UI.RemoteControl;
 using BadMC_Launcher.Classes.ViewClasses;
-using BadMC_Launcher.Enums.MessengerTokenEnum;
+using BadMC_Launcher.Enums;
 
 namespace BadMC_Launcher.ViewModels.Pages;
 
@@ -54,39 +54,37 @@ public partial class MainPageViewModel : ObservableObject {
     public partial Visibility MainSideBarToolVisibility { get; set; }
 
     [RelayCommand]
-    private void MainSideBarFrameNavigated(object parameter) {
-        if (parameter is Frame frame) {
-            if (frame.Content == null) {
-                MainSideBarToolVisibility = Visibility.Collapsed;
-            }
-            else {
-                MainSideBarToolVisibility = Visibility.Visible;
-            }
+    private void ChangeToolVisibility(Frame parameter) {
+        if (parameter.Content == null) {
+            MainSideBarToolVisibility = Visibility.Collapsed;
         }
-    }
+        else {
+            MainSideBarToolVisibility = Visibility.Visible;
+        }
+    }   
 
     [RelayCommand]
-    private void MainSideBarSelectionChanged(object parameter) {
-        if (parameter is NavigationView mainSideBar && mainSideBar.SelectedItem != null) {
-            SendInvokeFuncMessage(((MainSideBarItem)mainSideBar.SelectedItem).NavigatePage, MainPageMessengerTokenEnum.FlyoutPageNavigateToken);
+    private void ShowFlyoutPage(NavigationView parameter) {
+        if (parameter.SelectedItem != null) {
+            SendInvokeFuncMessage(((MainSideBarItem)parameter.SelectedItem).NavigatePage, MainPageMessengerTokenEnum.FlyoutPageNavigateToken);
         }
     }
 
     [RelayCommand(CanExecute = nameof(MainSideBarFrameCanGoBack))]
-    private void BackButton(Frame parameter) {
+    private void PageGoBack(Frame parameter) {
         if (parameter.CanGoBack) {
             parameter.GoBack();
         }
     }
 
     [RelayCommand]
-    private void CloseButton(Frame parameter) {
+    private void ClosePage(Frame parameter) {
         parameter.Content = null;
         MainSideBarToolVisibility = Visibility.Collapsed;
     }
 
     [RelayCommand]
-    private void MainSideBarFlyoutClosed() {
+    private void DeselectItem() {
         MainSideBarSelectedItem = null;
     }
 

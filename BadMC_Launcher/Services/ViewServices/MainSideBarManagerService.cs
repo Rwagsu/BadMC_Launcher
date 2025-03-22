@@ -13,7 +13,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using Newtonsoft.Json.Linq;
 using BadMC_Launcher.Classes.ViewClasses;
-using BadMC_Launcher.Enums.MessengerTokenEnum;
+using BadMC_Launcher.Enums;
 
 namespace BadMC_Launcher.Services.ViewServices;
 public class MainSideBarManagerService {

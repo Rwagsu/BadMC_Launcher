@@ -124,18 +124,18 @@
     <value>启动 Minecraft!</value>
   </data>
   <data name="LaunchPad_LaunchButtonTagDefaultResource" xml:space="preserve">
-    <value>未选择本体_( ﾟДﾟ)ﾉ</value>
+    <value>未选择本体 _( ﾟДﾟ)ﾉ</value>
   </data>
   <data name="MinecraftConfig_MinecraftTitleNameResource" xml:space="preserve">
     <value>使用 BadMCL（不是 BMCL！！!）启动</value>
   </data>
-  <data name="LaunchPad_MinecraftListRefreshResource.Text" xml:space="preserve">
+  <data name="LaunchPad_MinecraftEntryListRefreshMenuFlyoutItem.Text" xml:space="preserve">
     <value>刷新</value>
   </data>
-  <data name="LaunchPad_MinecraftListsManagerResource.Text" xml:space="preserve">
+  <data name="LaunchPad_MinecraftEntryListsManagerMenuFlyoutItem.Text" xml:space="preserve">
     <value>管理 Minecraft 本体文件夹</value>
   </data>
-  <data name="LaunchPad_ViewLocalMinecraftFolderResource.Text" xml:space="preserve">
+  <data name="LaunchPad_ViewLocalMinecraftFolderMenuFlyoutItem.Text" xml:space="preserve">
     <value>浏览 Minecraft 本体文件夹</value>
   </data>
   <data name="LaunchPad_MinecraftEmptyListTipsTextResource.Text" xml:space="preserve">
@@ -216,5 +216,23 @@
   </data>
   <data name="MinecraftFolderContentDialog_AddItemMenuButton.Text" xml:space="preserve">
     <value>添加新的 Minecraft 本体文件夹</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ItemRenameTextBlock.Text" xml:space="preserve">
+    <value>重命名该项（不更改文件夹名）</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ItemRenameApplyButton.Content" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ItemRenameCancelButton.Content" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ItemRenamePathTextBlock.Text" xml:space="preserve">
+    <value>路径</value>
+  </data>
+  <data name="LaunchPad_MinecraftFolderComboBox.PlaceholderText" xml:space="preserve">
+    <value>未选择 Minecraft 本体文件夹 (´-ω-`)</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_LocalViewMenuFlyoutItem.Text" xml:space="preserve">
+    <value>在文件管理器中显示</value>
   </data>
 </root>

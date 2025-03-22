@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BadMC_Launcher.Classes.Minecraft;
+using BadMC_Launcher.Classes.ViewClasses.Minecraft;
 using BadMC_Launcher.Enums;
 using BadMC_Launcher.Services;
 using CommunityToolkit.WinUI.Controls;
@@ -14,7 +15,7 @@ using MinecraftLaunch.Components.Parser;
 
 namespace BadMC_Launcher.Extensions;
 public static class MinecraftFolderEntryExtension {
-    public static MinecraftItem?  GetMinecraftItem(this MinecraftFolderEntry minecraftPath, string minecraftEntryId) {
+    public static MinecraftEntryItem?  GetMinecraftItem(this MinecraftFolderEntry minecraftPath, string minecraftEntryId) {
         try {
             return minecraftPath.GetMinecraftItem(minecraftPath.GetMinecraftParser().GetMinecraft(minecraftEntryId));
         }
@@ -24,7 +25,7 @@ public static class MinecraftFolderEntryExtension {
         return null;
     }
 
-    public static MinecraftItem? GetMinecraftItem(this MinecraftFolderEntry minecraftPath, MinecraftEntry minecraftEntry) {
+    public static MinecraftEntryItem? GetMinecraftItem(this MinecraftFolderEntry minecraftFolderEntry, MinecraftEntry minecraftEntry) {
         try {
             if (minecraftEntry != null) {
                 var isStarred = false;
@@ -47,16 +48,22 @@ public static class MinecraftFolderEntryExtension {
                     image = new(new Uri($@"ms-appx:///Assets/Icons/MinecraftIcons/{MinecraftEntryImageEnum.Unknown.ToString().ToLower()}.png"));
                 }
 
-                if (minecraftPath.StarredMinecraftIds != null) {
-                    isStarred = minecraftPath.StarredMinecraftIds.IndexOf(minecraftEntry.Id) >= 0;
+                if (minecraftFolderEntry.StarredMinecraftIds != null) {
+                    isStarred = minecraftFolderEntry.StarredMinecraftIds.IndexOf(minecraftEntry.Id) >= 0;
                 }
 
-                return new MinecraftItem() {
+                var entryItem = new MinecraftEntryItem() {
                     MinecraftEntry = minecraftEntry,
                     MinecraftImage = image,
                     MinecraftTags = (HashSet<MetadataItem>)minecraftEntry.GetMinecraftEntryTags(),
                     IsStarred = isStarred
                 };
+                
+                if (minecraftFolderEntry.StarredMinecraftIds != null) {
+                    minecraftFolderEntry.StarredMinecraftIds.CollectionChanged += entryItem.SetIsStarredEvent;
+                }
+               
+                return entryItem;
             }
 
         }
@@ -66,9 +73,9 @@ public static class MinecraftFolderEntryExtension {
         return null;
     }
 
-    public static IEnumerable<MinecraftItem> GetMinecraftItems(this MinecraftFolderEntry minecraftPath) {
+    public static IEnumerable<MinecraftEntryItem> GetMinecraftItems(this MinecraftFolderEntry minecraftPath) {
         var minecraftParser = minecraftPath.GetMinecraftParser();
-        var items = new ObservableCollection<MinecraftItem>();
+        var items = new ObservableCollection<MinecraftEntryItem>();
         foreach (var entry in minecraftParser.GetMinecrafts()) {
             var isStarred = false;
             string path;
@@ -89,7 +96,7 @@ public static class MinecraftFolderEntryExtension {
             if (minecraftPath.StarredMinecraftIds != null) {
                 isStarred = minecraftPath.StarredMinecraftIds.IndexOf(entry.Id) >= 0;
             }
-            items.Add(new MinecraftItem() {
+            items.Add(new MinecraftEntryItem() {
                 MinecraftEntry = entry,
                 MinecraftImage = new BitmapImage() { UriSource = new Uri(path) },
                 MinecraftTags = (HashSet<MetadataItem>)entry.GetMinecraftEntryTags(),

@@ -1,21 +1,30 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using BadMC_Launcher.Classes;
+using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Models.Datas.SettingsDatas;
-using BadMC_Launcher.Interfaces;
 using MinecraftLaunch.Base.Models.Game;
 
-namespace BadMC_Launcher.Servicess.Settings;
-public class SingleMinecraftConfigService : IConfigClass {
+namespace BadMC_Launcher.Services.Settings;
+public class SingleMinecraftConfigService : ConfigClass {
     private SingleMinecraftConfig singleMinecraftConfigInstance = new();
+
+    public SingleMinecraftConfigService() {
+        JvmArguments.CollectionChanged += OnCollectionChanged;
+    }
 
     public string? TargetMinecraftEntryPath {
         get => singleMinecraftConfigInstance.targetMinecraftEntryPath;
         set {
             singleMinecraftConfigInstance.targetMinecraftEntryPath = value;
+
+            // Trigger Event
+            OnPropertyChanged(nameof(TargetMinecraftEntryPath));
 
             //Write to Json or other logic
             SyncSettingSet();
@@ -27,6 +36,9 @@ public class SingleMinecraftConfigService : IConfigClass {
         set {
             singleMinecraftConfigInstance.isFullscreen = value;
 
+            // Trigger Event
+            OnPropertyChanged(nameof(IsFullscreen));
+
             //Write to Json
             SyncSettingSet();
         }
@@ -36,6 +48,9 @@ public class SingleMinecraftConfigService : IConfigClass {
         get => singleMinecraftConfigInstance.isEnableIndependencyCore;
         set {
             singleMinecraftConfigInstance.isEnableIndependencyCore = value;
+
+            // Trigger Event
+            OnPropertyChanged(nameof(IsEnableIndependencyCore));
 
             //Write to Json
             SyncSettingSet();
@@ -47,6 +62,9 @@ public class SingleMinecraftConfigService : IConfigClass {
         set {
             singleMinecraftConfigInstance.isAutoMemorySize = value;
 
+            // Trigger Event
+            OnPropertyChanged(nameof(IsAutoMemorySize));
+
             //Write to Json
             SyncSettingSet();
         }
@@ -56,6 +74,9 @@ public class SingleMinecraftConfigService : IConfigClass {
         get => singleMinecraftConfigInstance.minMemorySize;
         set {
             singleMinecraftConfigInstance.minMemorySize = value;
+
+            // Trigger Event
+            OnPropertyChanged(nameof(MinMemorySize));
 
             //Write to Json
             SyncSettingSet();
@@ -67,6 +88,9 @@ public class SingleMinecraftConfigService : IConfigClass {
         set {
             singleMinecraftConfigInstance.maxMemorySize = value;
 
+            // Trigger Event
+            OnPropertyChanged(nameof(MaxMemorySize));
+
             //Write to Json
             SyncSettingSet();
         }
@@ -76,6 +100,9 @@ public class SingleMinecraftConfigService : IConfigClass {
         get => singleMinecraftConfigInstance.javaPath;
         set {
             singleMinecraftConfigInstance.javaPath = value;
+
+            // Trigger Event
+            OnPropertyChanged(nameof(JavaPath));
 
             //Write to Json 
             SyncSettingSet();
@@ -87,22 +114,35 @@ public class SingleMinecraftConfigService : IConfigClass {
         set {
             singleMinecraftConfigInstance.launcherName = value;
 
+            // Trigger Event
+            OnPropertyChanged(nameof(LauncherName));
+
             //Write to Json
             SyncSettingSet();
         }
     }
 
-    public IEnumerable<string>? JvmArguments {
+    public ObservableDataList<string> JvmArguments {
         get => singleMinecraftConfigInstance.jvmArguments;
         set {
             singleMinecraftConfigInstance.jvmArguments = value;
 
+            // Trigger Event
+            OnPropertyChanged(nameof(JvmArguments));
+
             //Write to Json
             SyncSettingSet();
         }
     }
 
-    public bool SyncSettingGet() {
+    private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) {
+
+        if (!SyncSettingSet()) {
+            //TODO: Dialog
+        }
+    }
+
+    public override bool SyncSettingGet() {
         if (TargetMinecraftEntryPath != null) {
             if (File.Exists(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"))) {
                 if(App.GetService<FileService>().ReadConfig<SingleMinecraftConfigService>(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, out var jsonClass) && jsonClass != null) {
@@ -122,7 +162,7 @@ public class SingleMinecraftConfigService : IConfigClass {
         return false;
     }
 
-    public bool SyncSettingSet() {
+    public override bool SyncSettingSet() {
         if (TargetMinecraftEntryPath != null) {
             return App.GetService<FileService>().WriteConfig<SingleMinecraftConfigService>(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, this);
         }

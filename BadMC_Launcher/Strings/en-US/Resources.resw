@@ -124,19 +124,19 @@
     <value>Launch with BadMCL (NOT BMCL!!!)</value>
   </data>
   <data name="LaunchPad_LaunchButtonTagDefaultResource" xml:space="preserve">
-    <value>No ontology selected_( ﾟДﾟ)ﾉ</value>
+    <value>No ontology selected _( ﾟДﾟ)ﾉ</value>
   </data>
   <data name="LaunchPad_LaunchButtonNameResource.Text" xml:space="preserve">
     <value>Launch Minecraft!</value>
   </data>
-  <data name="LaunchPad_MinecraftListRefreshResource.Text" xml:space="preserve">
+  <data name="LaunchPad_MinecraftEntryListRefreshMenuFlyoutItem.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
-  <data name="LaunchPad_MinecraftListsManagerResource.Text" xml:space="preserve">
+  <data name="LaunchPad_MinecraftEntryListsManagerMenuFlyoutItem.Text" xml:space="preserve">
     <value>Manage Minecraft ontologies folders</value>
   </data>
-  <data name="LaunchPad_ViewLocalMinecraftFolderResource.Text" xml:space="preserve">
-    <value>Browse Minecraft ontologies folders</value>
+  <data name="LaunchPad_ViewLocalMinecraftFolderMenuFlyoutItem.Text" xml:space="preserve">
+    <value>Browse Minecraft ontologies folder</value>
   </data>
   <data name="LaunchPad_MinecraftEmptyListTipsTextResource.Text" xml:space="preserve">
     <value>Can't find any ontologies.</value>
@@ -216,5 +216,23 @@ If something in this setting has been changed in an ontology-specific customizat
   </data>
   <data name="MinecraftFolderContentDialog_AddItemMenuButton.Text" xml:space="preserve">
     <value>Adding a new Minecraft ontologies folder</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ItemRenameTextBlock.Text" xml:space="preserve">
+    <value>Rename the item (without changing the folder name)</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ItemRenameApplyButton.Content" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ItemRenameCancelButton.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ItemRenamePathTextBlock.Text" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="LaunchPad_MinecraftFolderComboBox.PlaceholderText" xml:space="preserve">
+    <value>Minecraft ontology folder not selected (´-ω-`)</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_LocalViewMenuFlyoutItem.Text" xml:space="preserve">
+    <value>View in File Manager</value>
   </data>
 </root>

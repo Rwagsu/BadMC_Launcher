@@ -4,7 +4,6 @@
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="using:BadMC_Launcher.Views.Pages.Settings.LaunchSettingsPage"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d">
     <StackPanel Margin="18,0" Spacing="8">
@@ -17,7 +16,7 @@
         <!-- Minecraft folder Setting -->
         <controls:SettingsCard x:Name="MinecraftFolderSettingsCard"
                                x:Uid="LaunchSettingsPage_MinecraftFolderSettingsCard"
-                               Command="{Binding MinecraftFolderSettingsCardClickedCommand}"
+                               Command="{Binding ShowMinecraftFolderManagerDialogCommand}"
                                IsClickEnabled="True">
             <!-- Icons -->
             <controls:SettingsCard.HeaderIcon>
@@ -27,12 +26,18 @@
                 <FontIcon Glyph="&#xE78B;" />
             </controls:SettingsCard.ActionIcon>
 
-            <StackPanel Orientation="Vertical" Spacing="4">
-                <TextBlock HorizontalAlignment="Right"
-                           Style="{ThemeResource BodyStrongTextBlockStyle}"
-                           Text="{Binding MinecraftFolder.MinecraftId}"
-                           TextTrimming="CharacterEllipsis" />
-                <TextBlock HorizontalAlignment="Right"
+            <StackPanel Margin="8"
+                        Orientation="Horizontal"
+                        Spacing="8">
+
+                <Border Background="{ThemeResource AccentFillColorDefaultBrush}" CornerRadius="4">
+                    <TextBlock Margin="6,4"
+                               Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                               Style="{ThemeResource BodyStrongTextBlockStyle}"
+                               Text="{Binding MinecraftFolder.MinecraftFolderId}"
+                               TextTrimming="CharacterEllipsis" />
+                </Border>
+                <TextBlock VerticalAlignment="Center"
                            Text="{Binding MinecraftFolder.MinecraftFolderPath}"
                            TextTrimming="CharacterEllipsis" />
             </StackPanel>
@@ -41,7 +46,7 @@
         <!-- Java path Setting -->
         <controls:SettingsCard x:Name="JavaPathSettingsCard"
                                x:Uid="LaunchSettingsPage_JavaPathSettingsCard"
-                               Command="{Binding JavaPathSettingsCardClickedCommand}"
+                               Command="{Binding ShowJavaPathManagerDialogCommand}"
                                IsClickEnabled="True">
             <!-- Icons -->
             <controls:SettingsCard.HeaderIcon>
@@ -76,8 +81,8 @@
                     </controls:SettingsCard.HeaderIcon>
 
                     <StackPanel Orientation="Horizontal" Spacing="4">
-                        <NumberBox PlaceholderText="Enter an integer:"
-                                   LargeChange="100"
+                        <NumberBox LargeChange="100"
+                                   PlaceholderText="Enter an integer:"
                                    SmallChange="16"
                                    SpinButtonPlacementMode="Compact"
                                    Value="1" />
@@ -91,7 +96,7 @@
                           IsOn="{Binding IsAutoMemorySize, Mode=Twoway}">
                 <Interactivity:Interaction.Behaviors>
                     <Interactivity:EventTriggerBehavior EventName="Toggled" SourceObject="{Binding ElementName=IsAutoMemorySizeSwitchToggle}">
-                        <Interactivity:InvokeCommandAction Command="{Binding IsAutoMemorySizeSwitchToggledCommand}" />
+                        <Interactivity:InvokeCommandAction Command="{Binding SetIsAutoMemorySizeCommand}" />
                     </Interactivity:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
             </ToggleSwitch>

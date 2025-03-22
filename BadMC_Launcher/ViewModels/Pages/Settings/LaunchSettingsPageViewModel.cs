@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BadMC_Launcher.Classes.Minecraft;
 using BadMC_Launcher.Enums;
-using BadMC_Launcher.Enums.MessengerTokenEnum;
 using BadMC_Launcher.Models.Datas.SettingsDatas;
-using BadMC_Launcher.Servicess.Settings;
+using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages.Settings;
 using CommunityToolkit.Mvvm.Input;
@@ -20,13 +20,15 @@ namespace BadMC_Launcher.ViewModels.Pages.Settings;
 
 public partial class LaunchSettingsPageViewModel : ObservableObject {
     private readonly XamlRoot? mainPageXamlRoot;
-    private MinecraftConfigService service = App.GetService<MinecraftConfigService>();
+    private MinecraftConfigService minecraftService = App.GetService<MinecraftConfigService>();
 
     public LaunchSettingsPageViewModel() {
         mainPageXamlRoot = SendGetValueMessage<XamlRoot?>(MainPageMessengerTokenEnum.XamlRootToken).Response;
-        Java = service.ActiveJavaPath;
-        MinecraftFolder = service.MinecraftFolders.First(item => item.MinecraftFolderPath == service.ActiveMinecraftFolderPath);
-        IsAutoMemorySize = service.IsAutoMemorySize;
+        Java = minecraftService.ActiveJavaPath;
+        MinecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
+        IsAutoMemorySize = minecraftService.IsAutoMemorySize;
+
+        minecraftService.PropertyChanged += MinecraftConfig_PropertyChanged;
     }
 
     [ObservableProperty]
@@ -39,7 +41,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     public partial bool IsAutoMemorySize { get; set; }
 
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]
-    private async Task MinecraftFolderSettingsCardClicked() {
+    private async Task ShowMinecraftFolderManagerDialog() {
         if (mainPageXamlRoot != null) {
             var dialog = App.GetService<MinecraftFolderContentDialog>();
             dialog.XamlRoot = mainPageXamlRoot;
@@ -49,7 +51,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     }
 
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]
-    private async Task JavaPathSettingsCardClicked() {
+    private async Task ShowJavaPathManagerDialog() {
         if (mainPageXamlRoot != null) {
             var dialog = App.GetService<MinecraftFolderContentDialog>();
             dialog.XamlRoot = mainPageXamlRoot;
@@ -59,11 +61,17 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     }
 
     [RelayCommand]
-    private void IsAutoMemorySizeSwitchToggled() {
-        service.IsAutoMemorySize = IsAutoMemorySize;
+    private void SetIsAutoMemorySize() {
+        minecraftService.IsAutoMemorySize = IsAutoMemorySize;
     }
 
     private RequestMessage<T> SendGetValueMessage<T>(Enum tokenEnum) {
         return WeakReferenceMessenger.Default.Send(new RequestMessage<T>(), tokenEnum.ToString());
+    }
+
+    private void MinecraftConfig_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
+        if (e.PropertyName == nameof(minecraftService.ActiveMinecraftFolderPath)) {
+            MinecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
+        }
     }
 }

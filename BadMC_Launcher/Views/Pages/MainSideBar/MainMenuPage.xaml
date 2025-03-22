@@ -66,7 +66,7 @@
                                     <!-- SearchTags Selected Event -->
                                     <Interactivity:Interaction.Behaviors>
                                         <Interactivity:EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding ElementName=MainMenuSearchFilterTokenView}">
-                                            <Interactivity:InvokeCommandAction Command="{Binding MainMenuSearchFilterTokenViewSelectedCommand}" CommandParameter="{Binding ElementName=MainMenuSearchFilterTokenView}" />
+                                            <Interactivity:InvokeCommandAction Command="{Binding AddSearchFilterCommand}" CommandParameter="{Binding ElementName=MainMenuSearchFilterTokenView}" />
                                         </Interactivity:EventTriggerBehavior>
                                     </Interactivity:Interaction.Behaviors>
                                 </labs:TokenView>
@@ -117,17 +117,17 @@
                 <Interactivity:Interaction.Behaviors>
                     <!-- SearchButton Clicked Event -->
                     <Interactivity:EventTriggerBehavior EventName="QuerySubmitted" SourceObject="{Binding ElementName=MainMenuSearchAutoSuggestBox}">
-                        <Interactivity:InvokeCommandAction Command="{Binding MainMenuSearchButtonClickedCommand}" />
+                        <Interactivity:InvokeCommandAction Command="{Binding SearchTextChanged_SearchItemCommand}" />
                     </Interactivity:EventTriggerBehavior>
 
                     <!-- SearchItem Selected Event -->
                     <Interactivity:EventTriggerBehavior EventName="SuggestionChosen" SourceObject="{Binding ElementName=MainMenuSearchAutoSuggestBox}">
-                        <Interactivity:InvokeCommandAction Command="{Binding MainMenuSearchSuggestionChosenCommand}" />
+                        <Interactivity:InvokeCommandAction Command="{Binding SearchItemNavigateToPageCommand}" />
                     </Interactivity:EventTriggerBehavior>
 
                     <!-- Text Changed Event -->
                     <Interactivity:EventTriggerBehavior EventName="TextChanged" SourceObject="{Binding ElementName=MainMenuSearchAutoSuggestBox}">
-                        <Interactivity:InvokeCommandAction Command="{Binding SearchTextChangedCommand}" />
+                        <Interactivity:InvokeCommandAction Command="{Binding SearchButtonClicked_SearchItemCommand}" />
                     </Interactivity:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
             </AutoSuggestBox>
@@ -158,9 +158,9 @@
 
                     <!-- Settings Button -->
                     <Button x:Uid="MainMenuPage_SettingsButton"
-                            Command="{Binding SettingsButtonClickedCommand}"
                             Width="36"
                             Height="36"
+                            Command="{Binding NavigateToSettingsPageCommand}"
                             Style="{StaticResource ButtonTransparentStyle}">
                         <FontIcon Glyph="&#xE713;" />
                     </Button>

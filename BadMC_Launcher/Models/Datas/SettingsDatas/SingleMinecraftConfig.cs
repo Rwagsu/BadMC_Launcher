@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BadMC_Launcher.Extensions;
 using MinecraftLaunch.Base.Models.Game;
 
 namespace BadMC_Launcher.Models.Datas.SettingsDatas;
@@ -23,5 +24,5 @@ internal class SingleMinecraftConfig {
 
     internal string? launcherName;
 
-    internal IEnumerable<string>? jvmArguments;
+    internal ObservableDataList<string> jvmArguments = new();
 }

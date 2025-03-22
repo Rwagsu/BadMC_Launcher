@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BadMC_Launcher.Classes.ViewClasses;
 using BadMC_Launcher.Classes.Minecraft;
+using BadMC_Launcher.Classes.ViewClasses.Minecraft;
 using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Interfaces;
-using BadMC_Launcher.Servicess.Settings;
+using BadMC_Launcher.Services.Settings;
 using MinecraftLaunch.Base.Models.Game;
 using Uno.Extensions.Specialized;
 
@@ -40,7 +40,7 @@ public class MainMenuSearchMinecraftEntryFilter : IMainMenuSharchFilterItem {
         return returnList;
     }
 
-    public Action NavigateTo(MinecraftItem minecraftItem) {
+    public Action NavigateTo(MinecraftEntryItem minecraftItem) {
         return () => {
             Debug.WriteLine($"诶诶还妹写呢Σ(っ °Д °;)っ {minecraftItem.MinecraftId}");
         };

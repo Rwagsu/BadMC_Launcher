@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BadMC_Launcher.Enums;
+using BadMC_Launcher.Models.Enums;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using MinecraftLaunch.Base.Enums;

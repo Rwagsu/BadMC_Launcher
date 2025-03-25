@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
     Microsoft ResX Schema
@@ -218,7 +218,7 @@ If something in this setting has been changed in an ontology-specific customizat
     <value>Adding a new Minecraft ontologies folder</value>
   </data>
   <data name="MinecraftFolderContentDialog_ItemRenameTextBlock.Text" xml:space="preserve">
-    <value>Rename the item (without changing the folder name)</value>
+    <value>Rename item (Does not affect local folder)</value>
   </data>
   <data name="MinecraftFolderContentDialog_ItemRenameApplyButton.Content" xml:space="preserve">
     <value>Apply</value>
@@ -234,5 +234,14 @@ If something in this setting has been changed in an ontology-specific customizat
   </data>
   <data name="MinecraftFolderContentDialog_LocalViewMenuFlyoutItem.Text" xml:space="preserve">
     <value>View in File Manager</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_DeleteItemMenuFlyoutItem.Text" xml:space="preserve">
+    <value>Delete (Does not affect local folder)</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_RenameItemMenuFlyoutItem.Text" xml:space="preserve">
+    <value>Rename (Does not affect local folder)</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ItemRenameErrorTextBlock.Text" xml:space="preserve">
+    <value>The name must not be empty or duplicated.</value>
   </data>
 </root>

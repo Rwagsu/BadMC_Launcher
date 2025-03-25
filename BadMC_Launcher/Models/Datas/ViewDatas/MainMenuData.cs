@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BadMC_Launcher.Classes;
-using BadMC_Launcher.Classes.ViewClasses;
 using BadMC_Launcher.Interfaces;
+using BadMC_Launcher.Controls;
 
 namespace BadMC_Launcher.Models.Datas.ViewDatas;
 
 internal static class MainMenuData {
-    internal static ObservableCollection<IMainMenuSharchFilterItem> MainMenuSharchFilterItems { get; set; } = new();
+    internal static DistinctiveItemBindingList<IMainMenuSharchFilterItem> MainMenuSharchFilterItems { get; set; } = new();
 
-    internal static ObservableCollection<MainMenuItem> MainMenuItems { get; set; } = new();
+    internal static DistinctiveItemBindingList<MainMenuItem> MainMenuItems { get; set; } = new();
 }

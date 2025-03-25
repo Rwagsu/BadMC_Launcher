@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadMC_Launcher.Classes.ViewClasses;
+namespace BadMC_Launcher.Controls;
 public class MainMenuItem {
     public required string ItemName { get; set; }
 
@@ -12,7 +12,7 @@ public class MainMenuItem {
 
     public required FrameworkElement? ItemHeader { get; set; }
 
-    public required Brush ItemBrush { get; set; }
+    public required Brush ItemBackground { get; set; }
 
     public required Brush ItemSize { get; set; }
 

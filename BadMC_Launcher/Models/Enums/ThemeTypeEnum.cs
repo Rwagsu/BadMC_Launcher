@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadMC_Launcher.Enums;
+namespace BadMC_Launcher.Models.Enums;
 public enum ThemeTypeEnum {
     Light,
     Dark

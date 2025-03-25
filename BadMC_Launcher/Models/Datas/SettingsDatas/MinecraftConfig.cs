@@ -7,15 +7,16 @@ using BadMC_Launcher.Extensions;
 using Microsoft.Windows.ApplicationModel.Resources;
 using MinecraftLaunch.Base.Models.Authentication;
 using MinecraftLaunch.Base.Models.Game;
-using BadMC_Launcher.Classes.Minecraft;
+using BadMC_Launcher.Controls.Minecraft;
+using System.ComponentModel;
 
 namespace BadMC_Launcher.Models.Datas.SettingsDatas;
 internal static class MinecraftConfig {
-    internal static ObservableDataList<Account> minecraftAccounts = new();
+    internal static DistinctiveItemBindingList<Account> minecraftAccounts = new();
 
-    internal static ObservableDataList<string> javaPaths = new();
+    internal static DistinctiveItemBindingList<string> javaPaths = new();
 
-    internal static ObservableDataList<MinecraftFolderEntry> minecraftPaths = new();
+    internal static DistinctiveItemBindingList<MinecraftFolderEntry> minecraftFolders = new();
 
     internal static JavaEntry? activeJavaPath;
 
@@ -35,5 +36,5 @@ internal static class MinecraftConfig {
 
     internal static string? launcherName = App.GetService<ResourceLoader>().GetString("MinecraftConfig_MinecraftTitleNameResource");
 
-    internal static ObservableDataList<string> jvmArguments = new();
+    internal static BindingList<string> jvmArguments = new();
 }

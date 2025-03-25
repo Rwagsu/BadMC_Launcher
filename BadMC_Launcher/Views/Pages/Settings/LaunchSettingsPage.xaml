@@ -6,102 +6,99 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d">
-    <StackPanel Margin="18,0" Spacing="8">
-        <!-- Tips -->
-        <InfoBar x:Uid="LaunchSettingsPage_TipsInfoBar"
-                 IsClosable="False"
-                 IsOpen="True"
-                 Severity="Informational" />
+    <ScrollViewer>
+        <StackPanel Margin="18,0" Spacing="8">
+            <!-- Tips -->
+            <InfoBar x:Uid="LaunchSettingsPage_TipsInfoBar"
+                     IsClosable="False"
+                     IsOpen="True"
+                     Severity="Informational" />
 
-        <!-- Minecraft folder Setting -->
-        <controls:SettingsCard x:Name="MinecraftFolderSettingsCard"
-                               x:Uid="LaunchSettingsPage_MinecraftFolderSettingsCard"
-                               Command="{Binding ShowMinecraftFolderManagerDialogCommand}"
-                               IsClickEnabled="True">
-            <!-- Icons -->
-            <controls:SettingsCard.HeaderIcon>
-                <FontIcon Glyph="&#xE8F7;" />
-            </controls:SettingsCard.HeaderIcon>
-            <controls:SettingsCard.ActionIcon>
-                <FontIcon Glyph="&#xE78B;" />
-            </controls:SettingsCard.ActionIcon>
+            <!-- Minecraft folder Setting -->
+            <controls:SettingsCard x:Name="MinecraftFolderSettingsCard" x:Uid="LaunchSettingsPage_MinecraftFolderSettingsCard">
+                <!-- Icons -->
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE8F7;" />
+                </controls:SettingsCard.HeaderIcon>
+                <controls:SettingsCard.ActionIcon>
+                    <FontIcon Glyph="&#xE78B;" />
+                </controls:SettingsCard.ActionIcon>
 
-            <StackPanel Margin="8"
-                        Orientation="Horizontal"
-                        Spacing="8">
-
-                <Border Background="{ThemeResource AccentFillColorDefaultBrush}" CornerRadius="4">
-                    <TextBlock Margin="6,4"
-                               Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                               Style="{ThemeResource BodyStrongTextBlockStyle}"
-                               Text="{Binding MinecraftFolder.MinecraftFolderId}"
-                               TextTrimming="CharacterEllipsis" />
-                </Border>
-                <TextBlock VerticalAlignment="Center"
-                           Text="{Binding MinecraftFolder.MinecraftFolderPath}"
-                           TextTrimming="CharacterEllipsis" />
-            </StackPanel>
-        </controls:SettingsCard>
-
-        <!-- Java path Setting -->
-        <controls:SettingsCard x:Name="JavaPathSettingsCard"
-                               x:Uid="LaunchSettingsPage_JavaPathSettingsCard"
-                               Command="{Binding ShowJavaPathManagerDialogCommand}"
-                               IsClickEnabled="True">
-            <!-- Icons -->
-            <controls:SettingsCard.HeaderIcon>
-                <FontIcon Glyph="&#xF133;" />
-            </controls:SettingsCard.HeaderIcon>
-            <controls:SettingsCard.ActionIcon>
-                <FontIcon Glyph="&#xE78B;" />
-            </controls:SettingsCard.ActionIcon>
-
-            <StackPanel Orientation="Vertical" Spacing="4">
-                <TextBlock HorizontalAlignment="Right"
-                           Style="{ThemeResource BodyStrongTextBlockStyle}"
-                           Text="{Binding Java.MajorVersion}" />
-                <TextBlock HorizontalAlignment="Right" Text="{Binding Java.JavaPath}" />
-            </StackPanel>
-        </controls:SettingsCard>
-
-        <!-- Memory size Setting -->
-        <controls:SettingsExpander x:Uid="LaunchSettingsPage_MemorySizeSettingsCard">
-            <!-- Icons -->
-            <controls:SettingsExpander.HeaderIcon>
-                <FontIcon Glyph="&#xE9D9;" />
-            </controls:SettingsExpander.HeaderIcon>
-
-            <!-- Settings ttems -->
-            <controls:SettingsExpander.Items>
-                <!-- Java path Setting -->
-                <controls:SettingsCard x:Name="MemorySettingCard" x:Uid="LaunchSettingsPage_JavaPathSettingsCard">
-                    <!-- Icons -->
-                    <controls:SettingsCard.HeaderIcon>
-                        <FontIcon Glyph="&#xE67A;" />
-                    </controls:SettingsCard.HeaderIcon>
-
-                    <StackPanel Orientation="Horizontal" Spacing="4">
-                        <NumberBox LargeChange="100"
-                                   PlaceholderText="Enter an integer:"
-                                   SmallChange="16"
-                                   SpinButtonPlacementMode="Compact"
-                                   Value="1" />
+                <Button Command="{Binding ShowMinecraftFolderManagerDialogCommand}"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        ToolTipService.ToolTip="{Binding MinecraftFolder.MinecraftFolderPath}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon VerticalAlignment="Center" Glyph="&#xE8A7;" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                   Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                   Text="{Binding MinecraftFolder.MinecraftFolderId}"
+                                   TextTrimming="CharacterEllipsis" />
                     </StackPanel>
-                </controls:SettingsCard>
-            </controls:SettingsExpander.Items>
+                </Button>
+            </controls:SettingsCard>
 
-            <!-- Content -->
-            <ToggleSwitch x:Name="IsAutoMemorySizeSwitchToggle"
-                          x:Uid="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch"
-                          IsOn="{Binding IsAutoMemorySize, Mode=Twoway}">
-                <Interactivity:Interaction.Behaviors>
-                    <Interactivity:EventTriggerBehavior EventName="Toggled" SourceObject="{Binding ElementName=IsAutoMemorySizeSwitchToggle}">
-                        <Interactivity:InvokeCommandAction Command="{Binding SetIsAutoMemorySizeCommand}" />
-                    </Interactivity:EventTriggerBehavior>
-                </Interactivity:Interaction.Behaviors>
-            </ToggleSwitch>
+            <!-- Java path Setting -->
+            <controls:SettingsCard x:Name="JavaPathSettingsCard"
+                                   x:Uid="LaunchSettingsPage_JavaPathSettingsCard"
+                                   Command="{Binding ShowJavaPathManagerDialogCommand}"
+                                   IsClickEnabled="True">
+                <!-- Icons -->
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xF133;" />
+                </controls:SettingsCard.HeaderIcon>
+                <controls:SettingsCard.ActionIcon>
+                    <FontIcon Glyph="&#xE78B;" />
+                </controls:SettingsCard.ActionIcon>
 
-        </controls:SettingsExpander>
+                <StackPanel Orientation="Vertical" Spacing="4">
+                    <TextBlock HorizontalAlignment="Right"
+                               Style="{ThemeResource BodyStrongTextBlockStyle}"
+                               Text="{Binding Java.MajorVersion}" />
+                    <TextBlock HorizontalAlignment="Right" Text="{Binding Java.JavaPath}" />
+                </StackPanel>
+            </controls:SettingsCard>
 
-    </StackPanel>
+            <!-- Memory size Setting -->
+            <controls:SettingsExpander x:Uid="LaunchSettingsPage_MemorySizeSettingsCard">
+                <!-- Icons -->
+                <controls:SettingsExpander.HeaderIcon>
+                    <FontIcon Glyph="&#xE9D9;" />
+                </controls:SettingsExpander.HeaderIcon>
+
+                <!-- Settings ttems -->
+                <controls:SettingsExpander.Items>
+                    <!-- Java path Setting -->
+                    <controls:SettingsCard x:Name="MemorySettingCard" x:Uid="LaunchSettingsPage_JavaPathSettingsCard">
+                        <!-- Icons -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE67A;" />
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <NumberBox LargeChange="100"
+                                       PlaceholderText="Enter an integer:"
+                                       SmallChange="16"
+                                       SpinButtonPlacementMode="Compact"
+                                       Value="1" />
+                        </StackPanel>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+
+                <!-- Content -->
+                <ToggleSwitch x:Name="IsAutoMemorySizeSwitchToggle"
+                              x:Uid="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch"
+                              IsOn="{Binding IsAutoMemorySize, Mode=Twoway}">
+                    <Interactivity:Interaction.Behaviors>
+                        <Interactivity:EventTriggerBehavior EventName="Toggled" SourceObject="{Binding ElementName=IsAutoMemorySizeSwitchToggle}">
+                            <Interactivity:InvokeCommandAction Command="{Binding SetIsAutoMemorySizeCommand}" />
+                        </Interactivity:EventTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>
+                </ToggleSwitch>
+
+            </controls:SettingsExpander>
+
+        </StackPanel>
+    </ScrollViewer>
+
 </Page>

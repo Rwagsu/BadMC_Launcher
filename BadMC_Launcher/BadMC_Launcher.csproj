@@ -57,6 +57,7 @@
         <DefaultLanguage>en-US</DefaultLanguage>
         <PackageCertificateKeyFile>BadMC_Launcher_TemporaryKey.pfx</PackageCertificateKeyFile>
         <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <ItemGroup>
         <TrimmerRootAssembly Include="BadMC_Launcher" />
@@ -94,11 +95,6 @@
     <ItemGroup>
       <UnoImage Include="Assets\Icons\MinecraftIcons\*" />
     </ItemGroup>
-    <ItemGroup>
-      <Compile Remove="Classes\ViewClasses\Assets\**" />
-      <EmbeddedResource Remove="Classes\ViewClasses\Assets\**" />
-      <None Remove="Classes\ViewClasses\Assets\**" />
-    </ItemGroup>
     
     <ItemGroup>
       <Page Update="Views\Pages\MainSideBarPage.xaml">
@@ -111,6 +107,7 @@
       </Page>
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="Dictionaries\Styles\" />
       <Folder Include="Views\Pages\MainSideBar\" />
     </ItemGroup>
     <ItemGroup>
@@ -163,22 +160,7 @@
       </PRIResource>
     </ItemGroup>
     <ItemGroup>
-      <UpToDateCheckInput Remove="Classes\ViewClasses\Assets\**" />
-    </ItemGroup>
-    <ItemGroup>
-      <Content Remove="Classes\ViewClasses\Assets\**" />
-    </ItemGroup>
-    <ItemGroup>
-      <Page Remove="Classes\ViewClasses\Assets\**" />
-    </ItemGroup>
-    <ItemGroup>
-      <PRIResource Remove="Classes\ViewClasses\Assets\**" />
-    </ItemGroup>
-    <ItemGroup>
       <None Remove="Assets\Icons\appicon_foreground.png" />
-    </ItemGroup>
-    <ItemGroup>
-      <UnoSplashScreen Remove="Classes\ViewClasses\Assets\Splash\splash_screen.svg" />
     </ItemGroup>
     <ItemGroup>
       <UnoImage Include="Assets\Icons\appicon_foreground.png" />

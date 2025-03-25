@@ -3,7 +3,7 @@
                     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
                     xmlns:controls="using:CommunityToolkit.WinUI.Controls">
     <DataTemplate x:Key="MinecraftItemsTemplateSecondary">
-        <Grid>
+        <Grid ToolTipService.ToolTip="{Binding MinecraftId}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />

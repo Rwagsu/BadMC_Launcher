@@ -6,14 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadMC_Launcher.Classes.ViewClasses;
+namespace BadMC_Launcher.Controls;
 
-public class MainSideBarItem {
+public partial class MainSideBarItem : ObservableObject {
     public required string ItemName { get; set; }
 
     public required IconElement ItemIcon { get; set; }
 
     public required Type NavigatePage { get; set; }
 
-    public InfoBadge? ItemInfoBadge { get; set; }
+    [ObservableProperty]
+    public partial InfoBadge? ItemInfoBadge { get; set; }
 }

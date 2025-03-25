@@ -1,4 +1,4 @@
-using BadMC_Launcher.Enums;
+using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.ViewModels.Pages;
 using CommunityToolkit.Mvvm.Messaging;

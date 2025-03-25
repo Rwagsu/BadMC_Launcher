@@ -116,10 +116,18 @@
                 </Interactivity:Interaction.Behaviors>
 
                 <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="336" />
+                    </Grid.ColumnDefinitions>
                     <!-- LaunchPad -->
-                    <userControls:LaunchPad Width="336" HorizontalAlignment="Right" />
+                    <userControls:LaunchPad Grid.Column="1"
+                                            Width="336"
+                                            HorizontalAlignment="Right" />
                     <!-- Page Frame -->
                     <Grid x:Name="MainFrameGrid"
+                          Margin="0,0,16,0"
+                          Grid.Column="0"
                           Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                           CornerRadius="8"
                           Visibility="Collapsed">
@@ -200,8 +208,8 @@
                             <!-- Back to Page -->
                             <HyperlinkButton Width="36"
                                              Height="36"
-                                             Command="{Binding PageGoBackCommand}"
                                              Padding="0"
+                                             Command="{Binding PageGoBackCommand}"
                                              CommandParameter="{Binding ElementName=MainSideBarFrame}">
                                 <AnimatedIcon x:Name="SearchAnimatedIcon"
                                               Width="18"

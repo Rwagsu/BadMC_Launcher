@@ -1,6 +1,4 @@
 using BadMC_Launcher.Classes;
-using BadMC_Launcher.Classes.ViewClasses;
-using BadMC_Launcher.Classes.ViewClasses.MainSearch;
 using BadMC_Launcher.Models.Datas;
 using BadMC_Launcher.Services;
 using BadMC_Launcher.Services.ViewServices;
@@ -16,6 +14,8 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.Windows.ApplicationModel.Resources;
 using Serilog;
 using Uno.Resizetizer;
+using BadMC_Launcher.Controls;
+using BadMC_Launcher.Controls.MainSearch;
 
 namespace BadMC_Launcher;
 public partial class App : Application {

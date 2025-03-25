@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BadMC_Launcher.Classes.Minecraft;
-using BadMC_Launcher.Classes.ViewClasses.Minecraft;
+using BadMC_Launcher.Controls.Minecraft;
 using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Interfaces;
 using BadMC_Launcher.Services.Settings;
 using MinecraftLaunch.Base.Models.Game;
 using Uno.Extensions.Specialized;
 
-namespace BadMC_Launcher.Classes.ViewClasses.MainSearch;
+namespace BadMC_Launcher.Controls.MainSearch;
 public class MainMenuSearchMinecraftEntryFilter : IMainMenuSharchFilterItem {
     public required string ItemName { get; init; }
 

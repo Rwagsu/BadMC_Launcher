@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BadMC_Launcher.Classes.ViewClasses;
 using BadMC_Launcher.Models.Datas.ViewDatas;
+using BadMC_Launcher.Controls;
 
 namespace BadMC_Launcher.Services.ViewServices;
 

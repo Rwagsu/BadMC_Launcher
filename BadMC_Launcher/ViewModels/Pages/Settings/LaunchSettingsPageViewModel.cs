@@ -4,10 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BadMC_Launcher.Classes.Minecraft;
-using BadMC_Launcher.Enums;
 using BadMC_Launcher.Models.Datas.SettingsDatas;
 using BadMC_Launcher.Services.Settings;
+using BadMC_Launcher.Controls.Minecraft;
 using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages.Settings;
 using CommunityToolkit.Mvvm.Input;
@@ -15,6 +14,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using MinecraftLaunch.Base.Models.Game;
 using MinecraftLaunch.Utilities;
+using BadMC_Launcher.Models.Enums;
 
 namespace BadMC_Launcher.ViewModels.Pages.Settings;
 

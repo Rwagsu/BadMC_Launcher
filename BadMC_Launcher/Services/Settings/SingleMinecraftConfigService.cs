@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -15,7 +16,7 @@ public class SingleMinecraftConfigService : ConfigClass {
     private SingleMinecraftConfig singleMinecraftConfigInstance = new();
 
     public SingleMinecraftConfigService() {
-        JvmArguments.CollectionChanged += OnCollectionChanged;
+        JvmArguments.ListChanged += OnListChanged;
     }
 
     public string? TargetMinecraftEntryPath {
@@ -122,20 +123,18 @@ public class SingleMinecraftConfigService : ConfigClass {
         }
     }
 
-    public ObservableDataList<string> JvmArguments {
+    public BindingList<string> JvmArguments {
         get => singleMinecraftConfigInstance.jvmArguments;
         set {
-            singleMinecraftConfigInstance.jvmArguments = value;
+            singleMinecraftConfigInstance.jvmArguments.Clear();
+            singleMinecraftConfigInstance.jvmArguments.AddRange(value);
 
-            // Trigger Event
-            OnPropertyChanged(nameof(JvmArguments));
-
-            //Write to Json
+            // Write to Json
             SyncSettingSet();
         }
     }
 
-    private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) {
+    private void OnListChanged(object? sender, ListChangedEventArgs e) {
 
         if (!SyncSettingSet()) {
             //TODO: Dialog

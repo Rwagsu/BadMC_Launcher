@@ -12,8 +12,8 @@ using BadMC_Launcher.Views.Pages.MainSideBar;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using Newtonsoft.Json.Linq;
-using BadMC_Launcher.Classes.ViewClasses;
-using BadMC_Launcher.Enums;
+using BadMC_Launcher.Controls;
+using BadMC_Launcher.Models.Enums;
 
 namespace BadMC_Launcher.Services.ViewServices;
 public class MainSideBarManagerService {

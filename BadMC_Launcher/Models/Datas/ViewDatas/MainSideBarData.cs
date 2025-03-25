@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BadMC_Launcher.Classes;
-using BadMC_Launcher.Classes.ViewClasses;
+using BadMC_Launcher.Controls;
+using BadMC_Launcher.Extensions;
 
 namespace BadMC_Launcher.Models.Datas.ViewDatas;
 internal static class MainSideBarData {
-    internal static ObservableCollection<MainSideBarItem> MainSideBarItems { get; set; } = new();
+    internal static DistinctiveItemBindingList<MainSideBarItem> MainSideBarItems { get; set; } = new();
 
-    internal static ObservableCollection<MainSideBarItem> MainSideBarFooterItems { get; set; } = new();
+    internal static DistinctiveItemBindingList<MainSideBarItem> MainSideBarFooterItems { get; set; } = new();
 }

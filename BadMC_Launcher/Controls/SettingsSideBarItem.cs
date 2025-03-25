@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadMC_Launcher.Classes.ViewClasses;
+namespace BadMC_Launcher.Controls;
 
 public class SettingsSideBarItem {
     public required string ItemName { get; set; }

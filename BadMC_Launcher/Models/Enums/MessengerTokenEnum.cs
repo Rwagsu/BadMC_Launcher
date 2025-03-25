@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadMC_Launcher.Enums;
+namespace BadMC_Launcher.Models.Enums;
 public enum MainPageMessengerTokenEnum {
     //Func Token
     PageNavigateToken,
@@ -17,11 +17,7 @@ public enum MainPageMessengerTokenEnum {
 }
 
 public enum MinecraftFolderContentDialogMessengerTokenEnum {
-    //GetValue Token
-    RenameFlyoutToken,
-}
-
-
-public enum MinecraftConfigMessengerTokenEnum {
-    ActiveMinecraftFolder
+    //Func Token
+    HideRenameFlyoutToken,
+    ShowRenameFlyoutToken
 }

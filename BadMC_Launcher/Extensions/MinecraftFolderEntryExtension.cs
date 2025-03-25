@@ -4,14 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BadMC_Launcher.Classes.Minecraft;
-using BadMC_Launcher.Classes.ViewClasses.Minecraft;
-using BadMC_Launcher.Enums;
 using BadMC_Launcher.Services;
+using BadMC_Launcher.Controls.Minecraft;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using MinecraftLaunch.Base.Models.Game;
 using MinecraftLaunch.Components.Parser;
+using BadMC_Launcher.Models.Enums;
 
 namespace BadMC_Launcher.Extensions;
 public static class MinecraftFolderEntryExtension {

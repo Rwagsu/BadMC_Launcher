@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using BadMC_Launcher.Enums;
+using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.ViewModels.ContentDialogs.Settings;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -25,6 +25,7 @@ public sealed partial class MinecraftFolderContentDialog : ContentDialog {
         DataContext = new MinecraftFolderContentDialogViewModel();
 
         //Register Messenger
-        WeakReferenceMessenger.Default.Register<RequestMessage<Flyout>, string>(this, MinecraftFolderContentDialogMessengerTokenEnum.RenameFlyoutToken.ToString(), (r, m) => m.Reply(RenameFlyout));
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<string>, string>(this, MinecraftFolderContentDialogMessengerTokenEnum.ShowRenameFlyoutToken.ToString(), (r, m) => FlyoutBase.ShowAttachedFlyout(AddMinecraftFolderButton));
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<string>, string>(this, MinecraftFolderContentDialogMessengerTokenEnum.HideRenameFlyoutToken.ToString(), (r, m) => RenameFlyout.Hide());
     }
 }

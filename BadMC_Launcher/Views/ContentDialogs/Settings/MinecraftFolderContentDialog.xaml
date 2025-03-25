@@ -27,7 +27,11 @@
                 <Flyout x:Name="RenameFlyout" Placement="Bottom">
                     <Interactivity:Interaction.Behaviors>
                         <Interactivity:EventTriggerBehavior EventName="Closed">
-                            <Interactivity:InvokeCommandAction Command="{Binding DeleteRenameFlyoutDataCommand}"/>
+                            <Interactivity:InvokeCommandAction Command="{Binding DeleteRenameFlyoutDataCommand}" />
+                        </Interactivity:EventTriggerBehavior>
+
+                        <Interactivity:EventTriggerBehavior EventName="Opened">
+                            <Interactivity:InvokeCommandAction Command="{Binding SetCanRenameCommand}" />
                         </Interactivity:EventTriggerBehavior>
                     </Interactivity:Interaction.Behaviors>
                     <StackPanel Grid.Row="0"
@@ -37,17 +41,52 @@
                         <!-- Title TextBlock -->
                         <TextBlock x:Uid="MinecraftFolderContentDialog_ItemRenameTextBlock" Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
-                        <!-- Rename TextBox -->
-                        <TextBox x:Name="RenameTextBox"
-                                 PlaceholderText="{Binding OldRenameMinecraftFolderId}"
-                                 Style="{ThemeResource BodyStrongTextBlockStyle}"
-                                 Text="{Binding NewRenameMinecraftFolderId, Mode=TwoWay}">
+                        <StackPanel Spacing="4">
+                            <!-- Rename TextBox -->
+                            <TextBox x:Name="RenameTextBox"
+                                     PlaceholderText="{Binding OldRenameMinecraftFolderId}"
+                                     Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                     Text="{Binding NewRenameMinecraftFolderId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Interactivity:EventTriggerBehavior EventName="TextChanged">
+                                        <Interactivity:InvokeCommandAction Command="{Binding SetCanRenameCommand}" />
+                                    </Interactivity:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </TextBox>
+
+                            <!-- Rename error tip TextBlock -->
+                            <TextBlock x:Name="RenameErrorTextBlock"
+                                       x:Uid="MinecraftFolderContentDialog_ItemRenameErrorTextBlock"
+                                       Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                                       Visibility="Collapsed" />
+
+                            <!-- Set rename error state -->
                             <Interactivity:Interaction.Behaviors>
-                                <Interactivity:EventTriggerBehavior EventName="TextChanged">
-                                    <Interactivity:InvokeCommandAction Command="{Binding SetRenameFlyoutCanApplyCommand}" CommandParameter="{Binding ElementName=RenameTextBox}" />
-                                </Interactivity:EventTriggerBehavior>
+                                <!-- On can rename -->
+                                <Interactivity:DataTriggerBehavior Binding="{Binding CanRename}"
+                                                                   ComparisonCondition="Equal"
+                                                                   Value="True">
+                                    <Interactivity:ChangePropertyAction PropertyName="Visibility"
+                                                                        TargetObject="{Binding ElementName=RenameErrorTextBlock}"
+                                                                        Value="Collapsed" />
+                                    <Interactivity:ChangePropertyAction PropertyName="BorderBrush"
+                                                                        TargetObject="{Binding ElementName=RenameTextBox}"
+                                                                        Value="{ThemeResource TextBoxBorderThemeBrush}" />
+                                </Interactivity:DataTriggerBehavior>
+
+                                <!-- On can't rename -->
+                                <Interactivity:DataTriggerBehavior Binding="{Binding CanRename}"
+                                                                   ComparisonCondition="Equal"
+                                                                   Value="False">
+                                    <Interactivity:ChangePropertyAction PropertyName="Visibility"
+                                                                        TargetObject="{Binding ElementName=RenameErrorTextBlock}"
+                                                                        Value="Visible" />
+                                    <Interactivity:ChangePropertyAction PropertyName="BorderBrush"
+                                                                        TargetObject="{Binding ElementName=RenameTextBox}"
+                                                                        Value="{ThemeResource SystemFillColorCriticalBrush}" />
+                                </Interactivity:DataTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
-                        </TextBox>
+                        </StackPanel>
 
                         <!-- Rename Path TextBlock -->
                         <TextBlock x:Uid="MinecraftFolderContentDialog_ItemRenamePathTextBlock" Style="{ThemeResource BodyStrongTextBlockStyle}" />
@@ -58,12 +97,20 @@
                                     Orientation="Horizontal"
                                     Spacing="8">
                             <!-- Apply Rename -->
-                            <Button x:Uid="MinecraftFolderContentDialog_ItemRenameApplyButton"
+                            <Button x:Name="ApplyRenameButton"
+                                    x:Uid="MinecraftFolderContentDialog_ItemRenameApplyButton"
                                     Command="{Binding ApplyRenameCommand}"
-                                    Style="{StaticResource AccentButtonStyle}" />
+                                    Style="{StaticResource AccentButtonStyle}">
+                            </Button>
 
                             <!-- Cancel Rename -->
-                            <Button x:Uid="MinecraftFolderContentDialog_ItemRenameCancelButton" Command="{Binding HideFlyoutCommand}" />
+                            <Button x:Uid="MinecraftFolderContentDialog_ItemRenameCancelButton" Command="{Binding HideRenameFlyoutCommand}">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Interactivity:EventTriggerBehavior EventName="Click">
+                                        <Interactivity:CallMethodAction MethodName="" />
+                                    </Interactivity:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </Button>
                         </StackPanel>
                     </StackPanel>
                 </Flyout>
@@ -72,7 +119,6 @@
                         Orientation="Horizontal"
                         Spacing="8">
                 <FontIcon Glyph="&#xE8F4;" />
-
                 <TextBlock x:Uid="MinecraftFolderContentDialog_AddItemMenuButton" />
             </StackPanel>
         </Button>
@@ -80,12 +126,12 @@
         <!-- Items -->
         <ListView x:Name="MinecraftFolderEntryListView"
                   Grid.Row="1"
-                  SelectedItem="{Binding MinecraftFoldersListSelectedItem, Mode=TwoWay}"
                   ItemTemplate="{StaticResource MinecraftFolderItemsTemplatePrimary}"
-                  ItemsSource="{Binding MinecraftFoldersList}">
+                  ItemsSource="{Binding MinecraftFoldersList}"
+                  SelectedItem="{Binding MinecraftFoldersListSelectedItem, Mode=TwoWay}">
             <Interactivity:Interaction.Behaviors>
                 <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
-                    <Interactivity:InvokeCommandAction Command="{Binding SetActiveMinecraftFolderCommand}"/>
+                    <Interactivity:InvokeCommandAction Command="{Binding SetActiveMinecraftFolderCommand}" />
                 </Interactivity:EventTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
         </ListView>

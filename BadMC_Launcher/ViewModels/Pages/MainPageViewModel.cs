@@ -10,8 +10,8 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Media.Animation;
 using Uno.UI.RemoteControl;
-using BadMC_Launcher.Classes.ViewClasses;
-using BadMC_Launcher.Enums;
+using BadMC_Launcher.Controls;
+using BadMC_Launcher.Models.Enums;
 
 namespace BadMC_Launcher.ViewModels.Pages;
 
@@ -39,10 +39,10 @@ public partial class MainPageViewModel : ObservableObject {
 
     //MainSideBar Items
     [ObservableProperty]
-    public partial ObservableCollection<MainSideBarItem> MainSideBarItems { get; set; }
+    public partial DistinctiveItemBindingList<MainSideBarItem> MainSideBarItems { get; set; }
 
     [ObservableProperty]
-    public partial ObservableCollection<MainSideBarItem> MainSideBarFooterItems { get; set; }
+    public partial DistinctiveItemBindingList<MainSideBarItem> MainSideBarFooterItems { get; set; }
 
     [ObservableProperty]
     public partial MainSideBarItem? MainSideBarSelectedItem { get; set; }

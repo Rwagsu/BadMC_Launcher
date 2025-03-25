@@ -1,29 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using MinecraftLaunch.Base.Models.Authentication;
-using Newtonsoft.Json.Linq;
 using MinecraftLaunch.Base.Models.Game;
-using Microsoft.Windows.ApplicationModel.Resources;
 using System.Text.Json.Serialization;
-using System.Text.Json.Serialization.Metadata;
-using CommunityToolkit.Mvvm.Messaging.Messages;
-using CommunityToolkit.Mvvm.Messaging;
-using NbtToolkit;
-using System.Xml.Linq;
 using System.ComponentModel;
 using BadMC_Launcher.Models.Datas.SettingsDatas;
-using BadMC_Launcher.Extensions;
-using BadMC_Launcher.Classes.Minecraft;
 using BadMC_Launcher.Models.Datas;
 using BadMC_Launcher.Models.Datas.Mappings;
 using BadMC_Launcher.Classes;
+using BadMC_Launcher.Controls.Minecraft;
 
 namespace BadMC_Launcher.Services.Settings;
 public class MinecraftConfigService : ConfigClass {
@@ -31,45 +14,39 @@ public class MinecraftConfigService : ConfigClass {
 
     public MinecraftConfigService() {
         //Triggers an event when a property is changed
-        if (MinecraftAccounts != null) { MinecraftAccounts.CollectionChanged += OnCollectionChanged; }
-        if (JavaPaths != null) { JavaPaths.CollectionChanged += OnCollectionChanged; }
-        if (MinecraftFolders != null) { MinecraftFolders.CollectionChanged += OnCollectionChanged; }
-        if (JvmArguments != null) { JvmArguments.CollectionChanged += OnCollectionChanged; }
+        MinecraftConfig.minecraftAccounts.ListChanged += OnListChanged;
+        MinecraftConfig.javaPaths.ListChanged += OnListChanged;
+        MinecraftConfig.minecraftFolders.ListChanged += OnListChanged;
+        MinecraftConfig.jvmArguments.ListChanged += OnListChanged;
     }
 
-    public ObservableDataList<Account> MinecraftAccounts {
+    public DistinctiveItemBindingList<Account> MinecraftAccounts {
         get => MinecraftConfig.minecraftAccounts;
         set {
-            MinecraftConfig.minecraftAccounts = value;
-
-            // Trigger Event
-            OnPropertyChanged(nameof(MinecraftAccounts));
+            MinecraftConfig.minecraftAccounts.Clear();
+            MinecraftConfig.minecraftAccounts.AddRange(value);
 
             // Write to Json
             SyncSettingSet();
         }
     }
-    public ObservableDataList<string> JavaPaths {
+    public DistinctiveItemBindingList<string> JavaPaths {
         get => MinecraftConfig.javaPaths;
         set {
-            MinecraftConfig.javaPaths = value;
+            MinecraftConfig.javaPaths.Clear();
+            MinecraftConfig.javaPaths.AddRange(value);
 
-            // Trigger Event
-            OnPropertyChanged(nameof(JavaPaths));
-
-            //Write to Json
+            // Write to Json
             SyncSettingSet();
         }
     }
-    public ObservableDataList<MinecraftFolderEntry> MinecraftFolders {
-        get => MinecraftConfig.minecraftPaths;
+    public DistinctiveItemBindingList<MinecraftFolderEntry> MinecraftFolders {
+        get => MinecraftConfig.minecraftFolders;
         set {
-            MinecraftConfig.minecraftPaths = value;
+            MinecraftConfig.minecraftFolders.Clear();
+            MinecraftConfig.minecraftFolders.AddRange(value);
 
-            // Trigger Event
-            OnPropertyChanged(nameof(MinecraftFolders));
-
-            //Write to Json
+            // Write to Json
             SyncSettingSet();
         }
     }
@@ -191,20 +168,18 @@ public class MinecraftConfigService : ConfigClass {
         }
     }
 
-    public ObservableDataList<string> JvmArguments {
+    public BindingList<string> JvmArguments {
         get => MinecraftConfig.jvmArguments;
         set {
-            MinecraftConfig.jvmArguments = value;
+            MinecraftConfig.jvmArguments.Clear();
+            MinecraftConfig.jvmArguments.AddRange(value);
 
-            // Trigger Event
-            OnPropertyChanged(nameof(JvmArguments));
-
-            //Write to Json
+            // Write to Json
             SyncSettingSet();
         }
     }
 
-    private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) {
+    private void OnListChanged(object? sender, ListChangedEventArgs e) {
         if (!SyncSettingSet()) {
             //TODO: Dialog
         }
@@ -215,7 +190,7 @@ public class MinecraftConfigService : ConfigClass {
             //TODO: 解蜜
             MinecraftConfig.minecraftAccounts = jsonClass.MinecraftAccounts;
             MinecraftConfig.javaPaths = jsonClass.JavaPaths;
-            MinecraftConfig.minecraftPaths = jsonClass.MinecraftFolders;
+            MinecraftConfig.minecraftFolders = jsonClass.MinecraftFolders;
             MinecraftConfig.activeJavaPath = jsonClass.ActiveJavaPath;
             MinecraftConfig.activeMinecraftFolder = jsonClass.ActiveMinecraftFolderPath;
             MinecraftConfig.activeMinecraftAccount = jsonClass.ActiveMinecraftAccount;

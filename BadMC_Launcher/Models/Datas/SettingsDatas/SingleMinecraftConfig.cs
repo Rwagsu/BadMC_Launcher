@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,5 +25,5 @@ internal class SingleMinecraftConfig {
 
     internal string? launcherName;
 
-    internal ObservableDataList<string> jvmArguments = new();
+    internal BindingList<string> jvmArguments = new();
 }

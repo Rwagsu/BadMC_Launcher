@@ -4,5 +4,6 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="4" />
     </Style>
 </ResourceDictionary>

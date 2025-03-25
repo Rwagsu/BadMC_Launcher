@@ -218,7 +218,7 @@
     <value>添加新的 Minecraft 本体文件夹</value>
   </data>
   <data name="MinecraftFolderContentDialog_ItemRenameTextBlock.Text" xml:space="preserve">
-    <value>重命名该项（不更改文件夹名）</value>
+    <value>重命名项 (不影响本地文件夹)</value>
   </data>
   <data name="MinecraftFolderContentDialog_ItemRenameApplyButton.Content" xml:space="preserve">
     <value>应用</value>
@@ -234,5 +234,14 @@
   </data>
   <data name="MinecraftFolderContentDialog_LocalViewMenuFlyoutItem.Text" xml:space="preserve">
     <value>在文件管理器中显示</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_DeleteItemMenuFlyoutItem.Text" xml:space="preserve">
+    <value>删除 (不影响本地文件夹)</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_RenameItemMenuFlyoutItem.Text" xml:space="preserve">
+    <value>重命名 (不影响本地文件夹)</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ItemRenameErrorTextBlock.Text" xml:space="preserve">
+    <value>名称不可为空或与其它项重名.</value>
   </data>
 </root>

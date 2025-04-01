@@ -26,40 +26,56 @@ public partial class LaunchPadViewModel : ObservableObject {
     MinecraftConfigService minecraftService = App.GetService<MinecraftConfigService>();
 
     public LaunchPadViewModel() {
-        MinecraftFolderEntryList = minecraftService.MinecraftFolders;
+        MinecraftFolderEntryList = minecraftService.MinecraftFolders.ToObservableCollection();
         MinecraftEntryList = new();
 
         //Check active Minecraft path
         if (minecraftService.ActiveMinecraftFolderPath != null) {
-            //Get active Minecraft path entry
-            var activeMinecraftPathEntry = MinecraftFolderEntryList.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
+            // Set MinecraftFolderEntryListSelectedIndex
+            MinecraftFolderEntryListSelectedIndex = MinecraftFolderEntryList.GetIndex(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
 
-            if (activeMinecraftPathEntry != null) {
+            // Set Minecraft entries
+            if (MinecraftFolderEntryList.TryElementAt(MinecraftFolderEntryListSelectedIndex, out var selectedItem) && selectedItem != null) {
+                // Get minecraftItems
+                MinecraftEntryList = new(selectedItem.GetMinecraftItems().ToList());
 
-                // Set MinecraftFolderEntryListSelectedItem
-                MinecraftFolderEntryListSelectedItem = activeMinecraftPathEntry;
+                // Set ActiveMinecraftEntry
+                MinecraftEntryListSelectedIndex = MinecraftEntryList.GetIndex(item => item.MinecraftId == selectedItem.ActiveMinecraftEntryId);
             }
         }
+
+        LaunchButtonMinecraftId = MinecraftEntryList.ElementAtOrDefault(MinecraftEntryListSelectedIndex)?.MinecraftId ?? App.GetService<ResourceLoader>().GetString("LaunchPad_LaunchButtonTagDefaultResource");
+        LaunchButtonMinecraftIcon = MinecraftEntryList.ElementAtOrDefault(MinecraftEntryListSelectedIndex)?.MinecraftImage ?? new() { UriSource = new(@"ms-appx:///Assets/Icons/MinecraftIcons/drowned.png") };
+
+        minecraftService.PropertyChanged += MinecraftConfig_PropertyChanged;
+
+        IsMinecraftEntryListEmpty = !MinecraftEntryList.Any();
     }
 
     //LaunchButton Property
     [ObservableProperty]
     public partial string? LaunchButtonMinecraftId { get; set; }
 
+    [ObservableProperty]
+    public partial BitmapImage? LaunchButtonMinecraftIcon { get; set; }
+
     //MinecraftsList
     [ObservableProperty]
-    public partial DistinctiveItemBindingList<MinecraftEntryItem> MinecraftEntryList { get; set; }
+    public partial ObservableCollection<MinecraftEntryItem> MinecraftEntryList { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsMinecraftEntryListEmpty { get; set; }
 
     //MinecraftFolderPathsList
     [ObservableProperty]
-    public partial DistinctiveItemBindingList<MinecraftFolderEntry> MinecraftFolderEntryList { get; set; }
+    public partial ObservableCollection<MinecraftFolderEntry> MinecraftFolderEntryList { get; set; }
 
     [ObservableProperty]
-    public partial MinecraftFolderEntry? MinecraftFolderEntryListSelectedItem { get; set; }
+    public partial int MinecraftFolderEntryListSelectedIndex { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ViewLoaclMinecraftFolderCommand), nameof(LaunchMinecraftJavaCommand))]
-    public partial MinecraftEntryItem? MinecraftEntryListSelectedItem { get; set; }
+    public partial int MinecraftEntryListSelectedIndex { get; set; }
 
     [RelayCommand(CanExecute = nameof(SetIsNotActiveMinecraftEntryEmpty))]
     public void LaunchMinecraftJava() {
@@ -95,70 +111,105 @@ public partial class LaunchPadViewModel : ObservableObject {
 
     [RelayCommand(CanExecute = nameof(SetIsNotActiveMinecraftEntryEmpty))]
     private void ViewLoaclMinecraftFolder() {
-        if (MinecraftFolderEntryListSelectedItem != null) {
-            App.GetService<FileService>().TryOpenFolderFromPath(MinecraftFolderEntryListSelectedItem.MinecraftFolderPath);
+        if (MinecraftFolderEntryList.TryElementAt(MinecraftFolderEntryListSelectedIndex, out var selectedItem) && selectedItem != null) {
+            App.GetService<FileService>().TryOpenFolderFromPath(selectedItem.MinecraftFolderPath);
         }
     }
 
-    partial void OnMinecraftFolderEntryListSelectedItemChanged(MinecraftFolderEntry? value) {
-        if (value != null && MinecraftFolderEntryListSelectedItem != null) {
-            minecraftService.ActiveMinecraftFolderPath = value.MinecraftFolderPath;
-        }
+    [RelayCommand]
+    private void ChangeActiveMinecraftFolder() {
+        if (MinecraftFolderEntryList.TryElementAt(MinecraftFolderEntryListSelectedIndex, out var selectedItem) && selectedItem != null) {
+            minecraftService.ActiveMinecraftFolderPath = selectedItem.MinecraftFolderPath;
 
-        // Get active minecraft path entry
-        if (value != null && minecraftService.ActiveMinecraftFolderPath != null && MinecraftFolderEntryListSelectedItem != null) {
-            // Set MinecraftEntryList
-            MinecraftEntryList = new(value.GetMinecraftItems().ToList());
+            // Get active minecraft path entry
+            if (minecraftService.ActiveMinecraftFolderPath != null) {
+                // Set MinecraftEntryList
+                MinecraftEntryList = new(selectedItem.GetMinecraftItems().ToList());
 
-            // Set ActiveMinecraftEntry
-            MinecraftEntryListSelectedItem = MinecraftEntryList.FirstOrDefault(item => item.MinecraftId == value.ActiveMinecraftEntryId);
-        }
-
-        // Init MinecraftEntryList if null
-        if (MinecraftEntryList == null) {
-            MinecraftEntryList = new();
+                // Set ActiveMinecraftEntry
+                MinecraftEntryListSelectedIndex = MinecraftEntryList.GetIndex(item => item.MinecraftId == selectedItem.ActiveMinecraftEntryId);
+            }
+            else {
+                // Init MinecraftEntryList
+                MinecraftEntryList = new();
+            }
         }
     }
 
-    partial void OnMinecraftEntryListSelectedItemChanged(MinecraftEntryItem? value) {
-        if (value != null && MinecraftFolderEntryListSelectedItem != null) {
-            MinecraftFolderEntryListSelectedItem.ActiveMinecraftEntryId = value.MinecraftId;
-            LaunchButtonMinecraftId = MinecraftEntryListSelectedItem?.MinecraftId ?? App.GetService<ResourceLoader>().GetString("LaunchPad_LaunchButtonTagDefaultResource");
+    partial void OnMinecraftEntryListSelectedIndexChanged(int value) {
+        if (value >= 0) {
+            // Get ActiveMinecraftEntry
+            var minecraftFolderEntry = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
+
+            if (minecraftFolderEntry != null) {
+                minecraftFolderEntry.ActiveMinecraftEntryId = MinecraftEntryList.ElementAtOrDefault(value)?.MinecraftId;
+            }
         }
+        LaunchButtonMinecraftId = MinecraftEntryList.ElementAtOrDefault(MinecraftEntryListSelectedIndex)?.MinecraftId ?? App.GetService<ResourceLoader>().GetString("LaunchPad_LaunchButtonTagDefaultResource");
+        LaunchButtonMinecraftIcon = MinecraftEntryList.ElementAtOrDefault(MinecraftEntryListSelectedIndex)?.MinecraftImage ?? new() { UriSource = new(@"ms-appx:///Assets/Icons/MinecraftIcons/drowned.png")};
     }
 
     private void MinecraftConfig_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
+        var selectedItem = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
+
         // Update Property
         switch (e.PropertyName) {
             case nameof(MinecraftConfigService.ActiveMinecraftFolderPath):
-                if (sender is MinecraftConfigService activeMinecraftFolderPathService) { MinecraftFolderEntryListSelectedItem = MinecraftFolderEntryList.FirstOrDefault(item => item.MinecraftFolderPath == activeMinecraftFolderPathService.ActiveMinecraftFolderPath); }
+                // Set MinecraftFolderEntries SelectedIndex
+                MinecraftFolderEntryListSelectedIndex = MinecraftFolderEntryList.GetIndex(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath); 
+
+                // Update MinecraftEntryList
+                MinecraftEntryList.Clear();
+                MinecraftEntryList.AddRange(selectedItem?.GetMinecraftItems());
+
+                MinecraftEntryListSelectedIndex = MinecraftEntryList.GetIndex(item => item.MinecraftId == selectedItem?.ActiveMinecraftEntryId);
                 break;
             case nameof(MinecraftConfigService.MinecraftFolders):
-                if (sender is MinecraftConfigService minecraftFoldersService) { MinecraftFolderEntryList = minecraftFoldersService.MinecraftFolders; }
+                // Update MinecraftFolderEntryList
+                MinecraftFolderEntryList = minecraftService.MinecraftFolders.ToObservableCollection();
+                
+                // Get ActiveMinecraftEntry
+                MinecraftFolderEntryListSelectedIndex = MinecraftFolderEntryList.GetIndex(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
+
+                // Update MinecraftEntryList
+                MinecraftEntryList.Clear();
+                MinecraftEntryList.AddRange(selectedItem?.GetMinecraftItems());
+
+                MinecraftEntryListSelectedIndex = MinecraftEntryList.GetIndex(item => item.MinecraftId == selectedItem?.ActiveMinecraftEntryId);
                 break;
         }
+
+        // Set whether to display the empty list prompt
+        IsMinecraftEntryListEmpty = !MinecraftEntryList.Any();
     }
 
     //Set CanExecute for ViewLoaclMinecraftFolderCommand
-    private bool SetIsNotActiveMinecraftEntryEmpty() => MinecraftEntryListSelectedItem != null;
+    private bool SetIsNotActiveMinecraftEntryEmpty() => MinecraftEntryListSelectedIndex >= 0;
 
-    // TODO: 拆
     private void RefreshMinecraftEntryList() {
-        //Get Configs From Json File
-        minecraftService.SyncSettingGet();
-        if (MinecraftFolderEntryListSelectedItem != null) {
-            // Init list
-            var minecraftEntries = new ObservableCollection<MinecraftEntryItem>();
-
+        if (MinecraftFolderEntryList.TryElementAt(MinecraftFolderEntryListSelectedIndex, out var selectedItem) && selectedItem != null) {
             // Get minecraftItems
-            MinecraftEntryList = new(MinecraftFolderEntryListSelectedItem.GetMinecraftItems().ToList());
+            MinecraftEntryList = new(selectedItem.GetMinecraftItems().ToList());
 
             // Set ActiveMinecraftEntry
-            MinecraftEntryListSelectedItem = MinecraftEntryList.FirstOrDefault(item => item.MinecraftId == MinecraftFolderEntryListSelectedItem.ActiveMinecraftEntryId);
+            MinecraftEntryListSelectedIndex = MinecraftEntryList.GetIndex(item => item.MinecraftId == selectedItem.ActiveMinecraftEntryId);
+
+            return;
         }
+
+        // Clear MinecraftEntryList
+        MinecraftEntryList.Clear();
+    }
+
+    partial void OnMinecraftEntryListChanged(ObservableCollection<MinecraftEntryItem> value) {
+        IsMinecraftEntryListEmpty = !MinecraftEntryList.Any();
     }
 
     private RequestMessage<T> SendGetValueMessage<T>(Enum tokenEnum) {
         return WeakReferenceMessenger.Default.Send(new RequestMessage<T>(), tokenEnum.ToString());
+    }
+
+    partial void OnIsMinecraftEntryListEmptyChanged(bool value) {
+        
     }
 }

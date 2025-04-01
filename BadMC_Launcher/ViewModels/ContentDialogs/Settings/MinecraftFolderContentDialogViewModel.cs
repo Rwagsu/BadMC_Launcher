@@ -1,35 +1,29 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
-using BadMC_Launcher.Extensions;
-using BadMC_Launcher.Services;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Controls.Minecraft;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
 using BadMC_Launcher.Models.Enums;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace BadMC_Launcher.ViewModels.ContentDialogs.Settings;
 public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
     private MinecraftConfigService minecraftConfigService = App.GetService<MinecraftConfigService>();
 
     public MinecraftFolderContentDialogViewModel() {
-        MinecraftFoldersList = minecraftConfigService.MinecraftFolders;
-        MinecraftFoldersListSelectedItem = MinecraftFoldersList.FirstOrDefault(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
+        MinecraftFoldersList = minecraftConfigService.MinecraftFolders.ToObservableCollection();
+        MinecraftFoldersListSelectedIndex = MinecraftFoldersList.GetIndex(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
 
         OldRenameMinecraftFolderId = string.Empty;
         NewRenameMinecraftFolderId = string.Empty;
         RenameMinecraftFolderPath = string.Empty;
+
+        minecraftConfigService.PropertyChanged += MinecraftConfig_PropertyChanged;
+
+        IsMinecraftFoldersListEmpty = !MinecraftFoldersList.Any();
     }
 
     [ObservableProperty]
@@ -37,10 +31,13 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
     public partial bool CanRename { get; set; }
 
     [ObservableProperty]
-    public partial DistinctiveItemBindingList<MinecraftFolderEntry> MinecraftFoldersList { get; set; }
+    public partial ObservableCollection<MinecraftFolderEntry> MinecraftFoldersList { get; set; }
 
     [ObservableProperty]
-    public partial MinecraftFolderEntry? MinecraftFoldersListSelectedItem { get; set; }
+    public partial bool IsMinecraftFoldersListEmpty { get; set; }
+
+    [ObservableProperty]
+    public partial int MinecraftFoldersListSelectedIndex { get; set; }
 
     [ObservableProperty]
     public partial string OldRenameMinecraftFolderId { get; set; }
@@ -52,7 +49,7 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
     public partial string RenameMinecraftFolderPath { get; set; }
 
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]
-    private async Task AddMinecraftFolder(Button parameter) {
+    private async Task AddMinecraftFolder() {
         // Create bew folder picker
         FolderPicker folderPicker = new FolderPicker();
 
@@ -77,13 +74,10 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
                 MinecraftFolderPath = folder.Path
             });
 
-            // Refresh list
-            MinecraftFoldersList = minecraftConfigService.MinecraftFolders;
-
             // Set new folder name
             OldRenameMinecraftFolderId = folderId;
             RenameMinecraftFolderPath = folder.Path;
-            FlyoutBase.ShowAttachedFlyout(parameter);
+            SendInvokeFuncMessage(string.Empty, MinecraftFolderContentDialogMessengerTokenEnum.ShowRenameFlyoutToken);
         }
     }
 
@@ -101,23 +95,17 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
         var minecraftPathEntry = minecraftConfigService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == RenameMinecraftFolderPath);
         if (minecraftPathEntry != null) {
             // Check if folder with new name already exists
-            if (minecraftConfigService.MinecraftFolders.Any(item => item.MinecraftFolderId == NewRenameMinecraftFolderId)) {
-                //Show tip toast
-                //TODO: Tip Toast
-                return;
-            }
+            if ((string.IsNullOrWhiteSpace(NewRenameMinecraftFolderId) &&
+                NewRenameMinecraftFolderId == OldRenameMinecraftFolderId) ||
+                minecraftConfigService.MinecraftFolders.Any(item => item.MinecraftFolderId == NewRenameMinecraftFolderId)) {
 
-            if (string.IsNullOrWhiteSpace(NewRenameMinecraftFolderId) && NewRenameMinecraftFolderId == OldRenameMinecraftFolderId) {
-                //TODO tip toast
+                //TODO: tip toast
+
                 return;
             }
 
             // Rename folder
             minecraftPathEntry.MinecraftFolderId = NewRenameMinecraftFolderId;
-
-            // Refresh list
-            MinecraftFoldersList = minecraftConfigService.MinecraftFolders;
-            MinecraftFoldersListSelectedItem = MinecraftFoldersList.FirstOrDefault(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
 
             // Hide Flyout
             HideRenameFlyout();
@@ -135,10 +123,15 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
     }
 
     [RelayCommand]
-    private void SetActiveMinecraftFolder() {
-        if (MinecraftFoldersListSelectedItem != null) {
-            minecraftConfigService.ActiveMinecraftFolderPath = MinecraftFoldersListSelectedItem.MinecraftFolderPath;
-            MinecraftFoldersListSelectedItem = MinecraftFoldersList.FirstOrDefault(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
+    private void SetActiveMinecraftFolder(SelectionChangedEventArgs args) {
+        var selectedItem = MinecraftFoldersList.ElementAtOrDefault(MinecraftFoldersListSelectedIndex);
+        if (args.AddedItems.Any(item => { 
+            if (item is MinecraftFolderEntry entry) { 
+                return entry.MinecraftFolderPath != minecraftConfigService.ActiveMinecraftFolderPath;
+            }
+            return false;
+        })) {
+            minecraftConfigService.ActiveMinecraftFolderPath = selectedItem?.MinecraftFolderPath;
         }
     }
 
@@ -154,7 +147,7 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
         var folderEntryPath = MinecraftFoldersList.FirstOrDefault(item => item.MinecraftFolderPath == parameter)?.MinecraftFolderId;
 
         if (folderEntryPath != null) {
-            SendInvokeFuncMessage(parameter, MinecraftFolderContentDialogMessengerTokenEnum.ShowRenameFlyoutToken);
+            SendInvokeFuncMessage(string.Empty, MinecraftFolderContentDialogMessengerTokenEnum.ShowRenameFlyoutToken);
             // Set new folder name
             OldRenameMinecraftFolderId = folderEntryPath;
             RenameMinecraftFolderPath = parameter;
@@ -165,8 +158,6 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
     private void DeleteItem(string parameter) {
         var deleteItem = minecraftConfigService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == parameter);
         if (deleteItem != null && minecraftConfigService.MinecraftFolders.Remove(deleteItem)) {
-            // Refresh list
-            MinecraftFoldersList = minecraftConfigService.MinecraftFolders;
             // TODO: Toast Tip
             return;
         }
@@ -191,5 +182,26 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
 
     private ValueChangedMessage<T> SendInvokeFuncMessage<T>(T value, Enum tokenEnum) {
         return WeakReferenceMessenger.Default.Send(new ValueChangedMessage<T>(value), tokenEnum.ToString());
+    }
+
+
+    private void MinecraftConfig_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
+        // Update Property
+        switch (e.PropertyName) {
+            case nameof(MinecraftConfigService.ActiveMinecraftFolderPath):
+                MinecraftFoldersListSelectedIndex = MinecraftFoldersList.GetIndex(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
+                break;
+            case nameof(MinecraftConfigService.MinecraftFolders):
+                MinecraftFoldersList = minecraftConfigService.MinecraftFolders.ToObservableCollection();
+                MinecraftFoldersListSelectedIndex = MinecraftFoldersList.GetIndex(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
+                break;
+        }
+
+        // Set whether to display the empty list prompt
+        IsMinecraftFoldersListEmpty = !MinecraftFoldersList.Any();
+    }
+
+    partial void OnMinecraftFoldersListChanged(ObservableCollection<MinecraftFolderEntry> value) {
+        IsMinecraftFoldersListEmpty = !MinecraftFoldersList.Any();
     }
 }

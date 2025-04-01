@@ -16,26 +16,44 @@ using MinecraftLaunch.Base.Models.Game;
 using MinecraftLaunch.Utilities;
 using BadMC_Launcher.Models.Enums;
 
+
 namespace BadMC_Launcher.ViewModels.Pages.Settings;
 
 public partial class LaunchSettingsPageViewModel : ObservableObject {
     private readonly XamlRoot? mainPageXamlRoot;
     private MinecraftConfigService minecraftService = App.GetService<MinecraftConfigService>();
+    private ResourceLoader sourceService = App.GetService<ResourceLoader>();
+    private MinecraftFolderEntry? minecraftFolder;
+    private JavaEntry? java;
 
     public LaunchSettingsPageViewModel() {
         mainPageXamlRoot = SendGetValueMessage<XamlRoot?>(MainPageMessengerTokenEnum.XamlRootToken).Response;
-        Java = minecraftService.ActiveJavaPath;
-        MinecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
+        minecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
         IsAutoMemorySize = minecraftService.IsAutoMemorySize;
 
         minecraftService.PropertyChanged += MinecraftConfig_PropertyChanged;
+
+        MinecraftFolderId = minecraftFolder != null ? minecraftFolder.MinecraftFolderId : sourceService.GetString("Global_NullMinecraftFolderId");
+        MinecraftFolderPath = minecraftFolder != null ? minecraftFolder.MinecraftFolderPath : sourceService.GetString("Global_NullMinecraftFolderPath");
+
+        JavaId = sourceService.GetString("Global_NullJavaId");
+        JavaPath = sourceService.GetString("Global_NullJavaPath");
+
+        GetJavaInfo();
     }
 
+    // Minecraft folder settings
     [ObservableProperty]
-    public partial MinecraftFolderEntry? MinecraftFolder { get; set; }
+    public partial string MinecraftFolderId { get; set; }
 
     [ObservableProperty]
-    public partial JavaEntry? Java { get; set; }
+    public partial string MinecraftFolderPath { get; set; }
+
+    [ObservableProperty]
+    public partial string JavaId { get; set; }
+
+    [ObservableProperty]
+    public partial string JavaPath { get; set; }
 
     [ObservableProperty]
     public partial bool IsAutoMemorySize { get; set; }
@@ -65,13 +83,30 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         minecraftService.IsAutoMemorySize = IsAutoMemorySize;
     }
 
+    private async void GetJavaInfo() {
+        java = await JavaUtil.GetJavaInfoAsync(minecraftService.ActiveJavaPath);
+
+        JavaId = java != null ? java.JavaVersion : sourceService.GetString("Global_NullJavaId");
+        JavaPath = java != null ? java.JavaPath : sourceService.GetString("Global_NullJavaPath");
+    }
+
     private RequestMessage<T> SendGetValueMessage<T>(Enum tokenEnum) {
         return WeakReferenceMessenger.Default.Send(new RequestMessage<T>(), tokenEnum.ToString());
     }
 
+
     private void MinecraftConfig_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
-        if (e.PropertyName == nameof(minecraftService.ActiveMinecraftFolderPath)) {
-            MinecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
+        switch (e.PropertyName) {
+            case nameof(minecraftService.ActiveJavaPath):
+                GetJavaInfo();
+                break;
+            case nameof(minecraftService.MinecraftFolders):
+            case nameof(minecraftService.ActiveMinecraftFolderPath):
+                minecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
+
+                MinecraftFolderId = minecraftFolder != null ? minecraftFolder.MinecraftFolderId : sourceService.GetString("Global_NullMinecraftFolderId");
+                MinecraftFolderPath = minecraftFolder != null ? minecraftFolder.MinecraftFolderPath : sourceService.GetString("Global_NullMinecraftFolderPath");
+                break;
         }
     }
 }

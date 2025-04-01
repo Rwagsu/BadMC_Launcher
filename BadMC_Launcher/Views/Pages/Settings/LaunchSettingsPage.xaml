@@ -5,6 +5,7 @@
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:triggers="using:CommunityToolkit.WinUI"
       mc:Ignorable="d">
     <ScrollViewer>
         <StackPanel Margin="18,0" Spacing="8">
@@ -24,15 +25,17 @@
                     <FontIcon Glyph="&#xE78B;" />
                 </controls:SettingsCard.ActionIcon>
 
-                <Button Command="{Binding ShowMinecraftFolderManagerDialogCommand}"
+                <Button x:Name="OpenMinecraftFolderManagerButton"
+                        Command="{Binding ShowMinecraftFolderManagerDialogCommand}"
                         Style="{ThemeResource AccentButtonStyle}"
-                        ToolTipService.ToolTip="{Binding MinecraftFolder.MinecraftFolderPath}">
+                        ToolTipService.ToolTip="{Binding MinecraftFolderPath}">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <FontIcon VerticalAlignment="Center" Glyph="&#xE8A7;" />
-                        <TextBlock VerticalAlignment="Center"
+                        <TextBlock x:Name="MinecraftFolderIdTextBlock"
+                                   VerticalAlignment="Center"
                                    Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
                                    Style="{ThemeResource BodyStrongTextBlockStyle}"
-                                   Text="{Binding MinecraftFolder.MinecraftFolderId}"
+                                   Text="{Binding MinecraftFolderId}"
                                    TextTrimming="CharacterEllipsis" />
                     </StackPanel>
                 </Button>
@@ -41,8 +44,7 @@
             <!-- Java path Setting -->
             <controls:SettingsCard x:Name="JavaPathSettingsCard"
                                    x:Uid="LaunchSettingsPage_JavaPathSettingsCard"
-                                   Command="{Binding ShowJavaPathManagerDialogCommand}"
-                                   IsClickEnabled="True">
+                                   Command="{Binding ShowJavaPathManagerDialogCommand}">
                 <!-- Icons -->
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xF133;" />
@@ -51,12 +53,18 @@
                     <FontIcon Glyph="&#xE78B;" />
                 </controls:SettingsCard.ActionIcon>
 
-                <StackPanel Orientation="Vertical" Spacing="4">
-                    <TextBlock HorizontalAlignment="Right"
-                               Style="{ThemeResource BodyStrongTextBlockStyle}"
-                               Text="{Binding Java.MajorVersion}" />
-                    <TextBlock HorizontalAlignment="Right" Text="{Binding Java.JavaPath}" />
-                </StackPanel>
+                <Button Command="{Binding ShowMinecraftFolderManagerDialogCommand}"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        ToolTipService.ToolTip="{Binding JavaPath}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon VerticalAlignment="Center" Glyph="&#xE8A7;" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                   Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                   Text="{Binding JavaId}"
+                                   TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </Button>
             </controls:SettingsCard>
 
             <!-- Memory size Setting -->
@@ -97,7 +105,6 @@
                 </ToggleSwitch>
 
             </controls:SettingsExpander>
-
         </StackPanel>
     </ScrollViewer>
 

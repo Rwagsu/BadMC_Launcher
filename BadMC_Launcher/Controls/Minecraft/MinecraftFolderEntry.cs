@@ -15,48 +15,58 @@ using Uno.Extensions.Specialized;
 namespace BadMC_Launcher.Controls.Minecraft;
 
 public partial class MinecraftFolderEntry : ObservableObject {
-    private MinecraftParser? minecraftParser;
-    private IEnumerable<MinecraftEntry> minecraftList = new List<MinecraftEntry>();
 
     public MinecraftFolderEntry() {
         MinecraftFolderId = "NewFolder";
         StarredMinecraftIds = new();
     }
 
+    public event PropertyChangedEventHandler? ActiveMinecraftEntryIdChanged;
+
     [ObservableProperty]
     public partial string MinecraftFolderId { get; set; }
 
     public required string MinecraftFolderPath { get; init; }
 
+    [IgnoreListChanged]
     [ObservableProperty]
     public partial string? ActiveMinecraftEntryId { get; set; }
 
     [ObservableProperty]
     public partial ObservableDataList<string> StarredMinecraftIds { get; set; }
 
-    public void StarMinecraftEntry() {
+    public MinecraftParser GetMinecraftParser() => new MinecraftParser(MinecraftFolderPath);
 
+    public IEnumerable<MinecraftEntry> GetMinecrafts() => GetMinecraftParser().GetMinecrafts();
+
+    public static bool operator ==(MinecraftFolderEntry? left, MinecraftFolderEntry? right) {
+        return left is not null && right is not null ? 
+            left.MinecraftFolderPath == right.MinecraftFolderPath : 
+            ReferenceEquals(left, right);
     }
 
-    public IEnumerable<MinecraftEntry> GetMinecrafts() {
-        // If MinecraftEntryList is empty, get MinecraftEntries
-        if (!minecraftList.Any()) {
-            // Get MinecraftParser
-            minecraftParser = GetMinecraftParser();
-
-            // Init MinecraftEntryList
-            minecraftList = new List<MinecraftEntry>();
-
-            // Get MinecraftEntries
-            minecraftParser.GetMinecrafts().ForEach(item => ( (List<MinecraftEntry>)minecraftList ).Add(item));
-        }
-        return minecraftList;
+    public static bool operator !=(MinecraftFolderEntry? left, MinecraftFolderEntry? right) {
+        return left is not null && right is not null ? 
+            left.MinecraftFolderPath != right.MinecraftFolderPath : 
+            !ReferenceEquals(left, right);
     }
 
-    public MinecraftParser GetMinecraftParser() {
-        if (minecraftParser == null) {
-            minecraftParser = new MinecraftParser(MinecraftFolderPath);
+    public override bool Equals(object? obj) {
+
+        if (obj is MinecraftFolderEntry folderEntry) {
+            return this.MinecraftFolderPath == folderEntry.MinecraftFolderPath;
         }
-        return minecraftParser;
+        return false;
+    }
+
+    partial void OnActiveMinecraftEntryIdChanged(string? value) {
+        ActiveMinecraftEntryIdChanged?.Invoke(this.ActiveMinecraftEntryId, new PropertyChangedEventArgs(nameof(ActiveMinecraftEntryId)));
+        App.GetService<MinecraftConfigService>().SyncSettingSet();
+    }
+
+    public override int GetHashCode() {
+        // HashCode.Combine generates a hash code by combining the hash codes of the provided fields.
+        // This ensures that the hash code is unique based on the values of these fields.
+        return HashCode.Combine(MinecraftFolderPath);
     }
 }

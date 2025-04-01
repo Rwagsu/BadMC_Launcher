@@ -9,16 +9,17 @@ using MinecraftLaunch.Base.Models.Authentication;
 using MinecraftLaunch.Base.Models.Game;
 using BadMC_Launcher.Controls.Minecraft;
 using System.ComponentModel;
+using BadMC_Launcher.Services.Settings;
 
 namespace BadMC_Launcher.Models.Datas.SettingsDatas;
 internal static class MinecraftConfig {
-    internal static DistinctiveItemBindingList<Account> minecraftAccounts = new();
+    internal static DistinctiveItemBindingList<Account> minecraftAccounts = new() { PropertyName = nameof(MinecraftConfigService.MinecraftAccounts) };
 
-    internal static DistinctiveItemBindingList<string> javaPaths = new();
+    internal static DistinctiveItemBindingList<string> javaPaths = new() { PropertyName = nameof(MinecraftConfigService.JavaPaths) };
 
-    internal static DistinctiveItemBindingList<MinecraftFolderEntry> minecraftFolders = new();
+    internal static DistinctiveItemBindingList<MinecraftFolderEntry> minecraftFolders = new() { PropertyName = nameof(MinecraftConfigService.MinecraftFolders) };
 
-    internal static JavaEntry? activeJavaPath;
+    internal static string? activeJavaPath;
 
     internal static string? activeMinecraftFolder;
 

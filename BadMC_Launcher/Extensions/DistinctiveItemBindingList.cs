@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace BadMC_Launcher.Extensions;
+
 
 public class DistinctiveItemBindingList<T> : BindingList<T> {
     public DistinctiveItemBindingList(IList<T> initialData) : base(initialData) {
@@ -14,6 +18,9 @@ public class DistinctiveItemBindingList<T> : BindingList<T> {
     public DistinctiveItemBindingList() {
 
     }
+
+    public string? PropertyName { get; set; }
+
     protected override void InsertItem(int index, T item) {
         if (!Contains(item)) {
             base.InsertItem(index, item);
@@ -24,4 +31,16 @@ public class DistinctiveItemBindingList<T> : BindingList<T> {
             base.SetItem(index, item);
         }
     }
+
+    protected override void OnListChanged(ListChangedEventArgs e) {
+        // Check if the property has the IgnoreListChangedAttribute
+        if (e.PropertyDescriptor?.Attributes[typeof(IgnoreListChangedAttribute)] != null) { return; }
+
+        base.OnListChanged(e);
+    }
+}
+
+[AttributeUsage(AttributeTargets.Property)]
+public class IgnoreListChangedAttribute : Attribute {
+
 }

@@ -15,7 +15,7 @@ namespace BadMC_Launcher.Models.Datas;
 
 public static class AppParameters {
     public readonly static SizeInt32 windowSize = new() {
-        Width = 1000,
+        Width = 1024,
         Height = 624
     };
 }

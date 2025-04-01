@@ -2,11 +2,18 @@
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+               xmlns:converters="using:CommunityToolkit.WinUI.Converters"
                xmlns:local="using:BadMC_Launcher.Views.ContentDialogs.Settings"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                x:Uid="MinecraftFolderContentDialog_ViewContentDialog"
                PrimaryButtonStyle="{StaticResource AccentButtonStyle}"
                Style="{ThemeResource DefaultContentDialogStyle}">
+    <ContentDialog.Resources>
+        <converters:BoolToObjectConverter x:Key="BoolToIntIsMinecraftFolderListEmptyonverter"
+                                          FalseValue="0"
+                                          TrueValue="1" />
+    </ContentDialog.Resources>
+
     <Grid MinWidth="400" MinHeight="350">
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
@@ -19,8 +26,7 @@
                 Height="36"
                 Padding="0"
                 HorizontalAlignment="Center"
-                Command="{Binding AddMinecraftFolderCommand}"
-                CommandParameter="{Binding ElementName=AddMinecraftFolderButton}">
+                Command="{Binding AddMinecraftFolderCommand}">
 
             <!-- Rename Flyout -->
             <FlyoutBase.AttachedFlyout>
@@ -91,7 +97,9 @@
                         <!-- Rename Path TextBlock -->
                         <TextBlock x:Uid="MinecraftFolderContentDialog_ItemRenamePathTextBlock" Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
-                        <HyperlinkButton Command="{Binding OpenMinecraftFolderCommand}" Content="{Binding RenameMinecraftFolderPath}" />
+                        <HyperlinkButton x:Uid="MinecraftFolderContentDialog_ItemRenamePathHyperLinkButton"
+                                         Command="{Binding OpenMinecraftFolderCommand}"
+                                         Content="{Binding RenameMinecraftFolderPath}" />
 
                         <StackPanel Grid.Row="1"
                                     Orientation="Horizontal"
@@ -100,8 +108,7 @@
                             <Button x:Name="ApplyRenameButton"
                                     x:Uid="MinecraftFolderContentDialog_ItemRenameApplyButton"
                                     Command="{Binding ApplyRenameCommand}"
-                                    Style="{StaticResource AccentButtonStyle}">
-                            </Button>
+                                    Style="{StaticResource AccentButtonStyle}" />
 
                             <!-- Cancel Rename -->
                             <Button x:Uid="MinecraftFolderContentDialog_ItemRenameCancelButton" Command="{Binding HideRenameFlyoutCommand}">
@@ -128,12 +135,35 @@
                   Grid.Row="1"
                   ItemTemplate="{StaticResource MinecraftFolderItemsTemplatePrimary}"
                   ItemsSource="{Binding MinecraftFoldersList}"
-                  SelectedItem="{Binding MinecraftFoldersListSelectedItem, Mode=TwoWay}">
+                  SelectedIndex="{Binding MinecraftFoldersListSelectedIndex, Mode=TwoWay}">
             <Interactivity:Interaction.Behaviors>
                 <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
                     <Interactivity:InvokeCommandAction Command="{Binding SetActiveMinecraftFolderCommand}" />
                 </Interactivity:EventTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
         </ListView>
+
+        <!-- If there is no ontology in the list, a prompt is displayed. -->
+        <StackPanel x:Name="MinecraftFolderEmptyTipsStackPanel"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    IsHitTestVisible="{Binding IsMinecraftFoldersListEmpty}"
+                    Opacity="{Binding IsMinecraftFoldersListEmpty, Converter={StaticResource BoolToIntIsMinecraftFolderListEmptyonverter}}"
+                    Spacing="8">
+            <!-- Animation -->
+            <StackPanel.OpacityTransition>
+                <ScalarTransition />
+            </StackPanel.OpacityTransition>
+            <FontIcon HorizontalAlignment="Center"
+                      FontSize="40"
+                      Glyph="&#xE8F6;" />
+            <TextBlock x:Uid="MinecraftFolderContentDialog_MinecraftFolderEmptyListTipsTextBlock"
+                       HorizontalAlignment="Center"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+            <HyperlinkButton x:Uid="MinecraftFolderContentDialog_MinecraftFolderEmptyListTipsHyperLinkButton"
+                             HorizontalAlignment="Center"
+                             Command="{Binding AddMinecraftFolderCommand}" />
+        </StackPanel>
     </Grid>
 </ContentDialog>

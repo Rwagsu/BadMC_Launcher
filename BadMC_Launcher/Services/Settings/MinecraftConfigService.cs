@@ -14,10 +14,10 @@ public class MinecraftConfigService : ConfigClass {
 
     public MinecraftConfigService() {
         //Triggers an event when a property is changed
-        MinecraftConfig.minecraftAccounts.ListChanged += OnListChanged;
-        MinecraftConfig.javaPaths.ListChanged += OnListChanged;
-        MinecraftConfig.minecraftFolders.ListChanged += OnListChanged;
-        MinecraftConfig.jvmArguments.ListChanged += OnListChanged;
+        MinecraftConfig.minecraftAccounts.ListChanged += OnListChanged<Account>;
+        MinecraftConfig.javaPaths.ListChanged += OnListChanged<string>;
+        MinecraftConfig.minecraftFolders.ListChanged += OnListChanged<MinecraftFolderEntry>;
+        MinecraftConfig.jvmArguments.ListChanged += OnListChanged<string>;
     }
 
     public DistinctiveItemBindingList<Account> MinecraftAccounts {
@@ -51,7 +51,7 @@ public class MinecraftConfigService : ConfigClass {
         }
     }
 
-    public JavaEntry? ActiveJavaPath {
+    public string? ActiveJavaPath {
         get => MinecraftConfig.activeJavaPath;
         set {
             MinecraftConfig.activeJavaPath = value;
@@ -179,7 +179,30 @@ public class MinecraftConfigService : ConfigClass {
         }
     }
 
-    private void OnListChanged(object? sender, ListChangedEventArgs e) {
+    private void OnListChanged<T>(object? sender, ListChangedEventArgs e) {
+        if (sender is DistinctiveItemBindingList<T> senderList && !string.IsNullOrWhiteSpace(senderList.PropertyName)) {
+            switch (senderList.PropertyName) {
+                case nameof(MinecraftFolders):
+                    if (!MinecraftFolders.Any(item => item.MinecraftFolderPath == ActiveMinecraftFolderPath) && !string.IsNullOrWhiteSpace(ActiveMinecraftFolderPath)) {
+                        ActiveMinecraftFolderPath = string.Empty;
+                    }
+                    break;
+                case nameof(JavaPaths):
+                    if (!JavaPaths.Any(item => item == ActiveJavaPath) && !string.IsNullOrWhiteSpace(ActiveJavaPath)) {
+                        ActiveJavaPath = string.Empty;
+                    }
+                    break;
+                case nameof(MinecraftAccounts):
+                    if (!MinecraftAccounts.Any(item => item.Uuid == ActiveMinecraftAccount?.Uuid) && ActiveMinecraftAccount != null) {
+                        ActiveMinecraftAccount = null;
+                    }
+                    break;
+            }
+
+            // Notify list changed
+            OnPropertyChanged(senderList.PropertyName);
+        }
+
         if (!SyncSettingSet()) {
             //TODO: Dialog
         }

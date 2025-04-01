@@ -88,7 +88,7 @@ public static class MinecraftFolderEntryExtension {
                 }
             }
             else {
-                path = @$"ms-appx:///Assets/Icons/MinecraftIcons/{minecraftEntryImageEnum.ToString()}.png";
+                path = @$"ms-appx:///Assets/Icons/MinecraftIcons/{minecraftEntryImageEnum.ToString().ToLower()}.png";
             }
 
             //IsStarred

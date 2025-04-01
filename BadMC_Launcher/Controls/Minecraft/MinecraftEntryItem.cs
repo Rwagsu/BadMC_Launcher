@@ -32,4 +32,38 @@ public class MinecraftEntryItem {
             IsStarred = folderEntry.IndexOf(MinecraftId) >= 0;
         }
     }
+
+    public static bool operator ==(MinecraftEntryItem? left, MinecraftEntryItem? right) {
+        return left is not null && right is not null ? 
+            left.MinecraftId == right.MinecraftId &&
+            left.MinecraftTags == right.MinecraftTags :
+            ReferenceEquals(left, right);
+    }
+
+    public static bool operator !=(MinecraftEntryItem? left, MinecraftEntryItem? right) {
+        return left is not null && right is not null 
+            ? 
+            left.MinecraftId != right.MinecraftId &&
+            left.MinecraftTags != right.MinecraftTags : 
+            !ReferenceEquals(left, right);
+    }
+
+    public override bool Equals(object? obj) {
+        if (obj is MinecraftEntryItem entryItem) {
+            if (ReferenceEquals(this.MinecraftId, entryItem.MinecraftId)) {
+                return true;
+            }
+
+            if (!ReferenceEquals(this.MinecraftId, entryItem.MinecraftId)) {
+                return false;
+            }
+        }
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode() {
+        // HashCode.Combine generates a hash code by combining the hash codes of the provided fields.
+        // This ensures that the hash code is unique based on the values of these fields.
+        return HashCode.Combine(MinecraftId, MinecraftImage, MinecraftTags);
+    }
 }

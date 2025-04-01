@@ -138,10 +138,10 @@
   <data name="LaunchPad_ViewLocalMinecraftFolderMenuFlyoutItem.Text" xml:space="preserve">
     <value>Browse Minecraft ontologies folder</value>
   </data>
-  <data name="LaunchPad_MinecraftEmptyListTipsTextResource.Text" xml:space="preserve">
-    <value>Can't find any ontologies.</value>
+  <data name="LaunchPad_MinecraftEmptyListTipsTextBlock.Text" xml:space="preserve">
+    <value>Can't find any Minecraft ontologies :(</value>
   </data>
-  <data name="LaunchPad_MinecraftEmptyListTipsHyperLinkButtonResource.Text" xml:space="preserve">
+  <data name="LaunchPad_MinecraftEmptyListTipsHyperLinkButton.Content" xml:space="preserve">
     <value>Go to the Ontology page to manage Minecraft ontologies.</value>
   </data>
   <data name="MainMenuPage_SearchResource.PlaceholderText" xml:space="preserve">
@@ -243,5 +243,26 @@ If something in this setting has been changed in an ontology-specific customizat
   </data>
   <data name="MinecraftFolderContentDialog_ItemRenameErrorTextBlock.Text" xml:space="preserve">
     <value>The name must not be empty or duplicated.</value>
+  </data>
+  <data name="Global_NullMinecraftFolderId" xml:space="preserve">
+    <value>Can't find the active Minecraft ontologies folder Σ(°ロ°)</value>
+  </data>
+  <data name="Global_NullMinecraftFolderPath" xml:space="preserve">
+    <value>Here you can display the active MInecraft body folder path, but only if you have an active Minecraft body folder path set 😏</value>
+  </data>
+  <data name="Global_NullJavaId" xml:space="preserve">
+    <value>Unable to find an active Java Runtime ( `ε´ )</value>
+  </data>
+  <data name="Global_NullJavaPath" xml:space="preserve">
+    <value>Set an active Java runtime first to display available Java runtimes 😰</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_MinecraftFolderEmptyListTipsTextBlock.Text" xml:space="preserve">
+    <value>Can't find any Minecraft ontologies folder :(</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_MinecraftFolderEmptyListTipsHyperLinkButton.Content" xml:space="preserve">
+    <value>Add a new Minecraft ontologies folder</value>
+  </data>
+  <data name="MinecraftFolderContentDialog_ItemRenamePathHyperLinkButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>etc! Renaming will be turned off when clicked! (Flyout is too hard so I can't fix it QAQ)</value>
   </data>
 </root>

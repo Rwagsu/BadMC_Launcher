@@ -1,21 +1,23 @@
 using BadMC_Launcher.Classes;
+using BadMC_Launcher.Controls;
+using BadMC_Launcher.Controls.MainSearch;
 using BadMC_Launcher.Models.Datas;
 using BadMC_Launcher.Services;
-using BadMC_Launcher.Services.ViewServices;
 using BadMC_Launcher.Services.Settings;
+using BadMC_Launcher.Services.ViewServices;
+using BadMC_Launcher.ViewModels.ContentDialogs.Settings;
 using BadMC_Launcher.ViewModels.Pages;
 using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages;
-using BadMC_Launcher.Views.Pages.MainSideBar;
 using BadMC_Launcher.Views.Pages.Settings;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.UI;
+using Microsoft.UI.Xaml.Controls.AnimatedVisuals;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.Windows.ApplicationModel.Resources;
 using Serilog;
 using Uno.Resizetizer;
-using BadMC_Launcher.Controls;
-using BadMC_Launcher.Controls.MainSearch;
+using Windows.Globalization;
 
 namespace BadMC_Launcher;
 public partial class App : Application {
@@ -25,6 +27,8 @@ public partial class App : Application {
     /// </summary>
     public App() {
         InitializeComponent();
+
+        ApplicationLanguages.PrimaryLanguageOverride = "zh-Hans";
     }
 
     public static new App Current => (App)Application.Current;
@@ -85,19 +89,23 @@ public partial class App : Application {
                     services.AddSingleton<HttpClient>();
                     services.AddSingleton<ResourceLoader>();
 
+                    services.AddTransient<Random>();
+
                     //Regist class
                     services.AddSingleton<ExceptionHandlingService>();
                     services.AddSingleton<FileService>();
                     services.AddSingleton<MinecraftConfigService>();
                     services.AddSingleton<ThemeSettingService>();
-                    services.AddSingleton<MainSideBarManagerService>();
-                    services.AddSingleton<MainMenuService>();
+                    services.AddSingleton<MainSideBarService>();
                     services.AddSingleton<SettingsService>();
                     services.AddSingleton<AppAssetsService>();
+
                     services.AddTransient<SingleMinecraftConfigService>();
 
                     //Register ContentDialogs
                     services.AddTransient<MinecraftFolderContentDialog>();
+                    services.AddTransient<JavaContentDialog>();
+
                 })
             );
         MainWindow = builder.Window;
@@ -166,21 +174,18 @@ public partial class App : Application {
 
     private void GlobalRegister() {
         //Register MainSideBarItems
-        GetService<MainSideBarManagerService>().Register(new MainSideBarItem() {
-            ItemName = GetService<ResourceLoader>().GetString("MainPage_MainMenuNameResource"),
-            ItemIcon = new FontIcon() { Glyph = "\uE74C" },
-            NavigatePage = typeof(MainMenuPage)
-        });
-
-        GetService<MainSideBarManagerService>().Register(new MainSideBarItem() {
-            ItemName = GetService<ResourceLoader>().GetString("MainPage_MainMenuNameResource"),
-            ItemIcon = new FontIcon() { Glyph = "\uE74C" },
-            NavigatePage = typeof(MainMenuPage)
-        });
+        GetService<MainSideBarService>().Register(new MainSideBarItem() {
+            ItemName = GetService<ResourceLoader>().GetString("MainPage_SettingsNameResource"),
+            ItemIcon = new AnimatedIcon() {
+                Source = new AnimatedSettingsVisualSource(),
+                FallbackIconSource = new FontIconSource() { Glyph = "\uE713" },
+            },
+            NavigatePage = typeof(SettingsDashboardPage)
+        }, true);
 
         //Register MainMenuSearchFilterItems
-        GetService<MainMenuService>().SearchFilterRegister(new MainMenuSearchMinecraftEntryFilter() {
-            ItemName = GetService<ResourceLoader>().GetString("MainMenuPage_SearchFilterMinecraftEntryNameResource"),
+        GetService<MainSideBarService>().SearchFilterRegister(new MainMenuSearchMinecraftEntryFilter() {
+            ItemName = GetService<ResourceLoader>().GetString("MainPage_SearchFilterMinecraftEntryNameResource"),
             IconGlyph = "\uE7FC"
         });
 

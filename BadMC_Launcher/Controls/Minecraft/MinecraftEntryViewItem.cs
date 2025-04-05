@@ -8,17 +8,18 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Services.Settings;
+using GEmojiSharp;
 using MinecraftLaunch.Base.Models.Game;
 using MinecraftLaunch.Components.Parser;
 using Uno.Extensions.Specialized;
 
 namespace BadMC_Launcher.Controls.Minecraft;
 
-public partial class MinecraftFolderEntry : ObservableObject {
+public partial class MinecraftFolderViewItem : ObservableObject {
 
-    public MinecraftFolderEntry() {
-        MinecraftFolderId = "NewFolder";
-        StarredMinecraftIds = new();
+    public MinecraftFolderViewItem(string minecraftFolderPath, string? minecraftFolderId = null) {
+        MinecraftFolderId = !string.IsNullOrWhiteSpace(minecraftFolderId) ? minecraftFolderId : "NewFolder" + Emoji.All.ElementAtOrDefault(App.GetService<Random>().Next(Emoji.All.Count()))?.Raw;
+        MinecraftFolderPath = minecraftFolderPath;
     }
 
     public event PropertyChangedEventHandler? ActiveMinecraftEntryIdChanged;
@@ -26,26 +27,26 @@ public partial class MinecraftFolderEntry : ObservableObject {
     [ObservableProperty]
     public partial string MinecraftFolderId { get; set; }
 
-    public required string MinecraftFolderPath { get; init; }
+    public string MinecraftFolderPath { get; init; }
 
     [IgnoreListChanged]
     [ObservableProperty]
     public partial string? ActiveMinecraftEntryId { get; set; }
 
     [ObservableProperty]
-    public partial ObservableDataList<string> StarredMinecraftIds { get; set; }
+    public partial ObservableDataList<string> StarredMinecraftIds { get; set; } = new();
 
     public MinecraftParser GetMinecraftParser() => new MinecraftParser(MinecraftFolderPath);
 
     public IEnumerable<MinecraftEntry> GetMinecrafts() => GetMinecraftParser().GetMinecrafts();
 
-    public static bool operator ==(MinecraftFolderEntry? left, MinecraftFolderEntry? right) {
+    public static bool operator ==(MinecraftFolderViewItem? left, MinecraftFolderViewItem? right) {
         return left is not null && right is not null ? 
             left.MinecraftFolderPath == right.MinecraftFolderPath : 
             ReferenceEquals(left, right);
     }
 
-    public static bool operator !=(MinecraftFolderEntry? left, MinecraftFolderEntry? right) {
+    public static bool operator !=(MinecraftFolderViewItem? left, MinecraftFolderViewItem? right) {
         return left is not null && right is not null ? 
             left.MinecraftFolderPath != right.MinecraftFolderPath : 
             !ReferenceEquals(left, right);
@@ -53,7 +54,7 @@ public partial class MinecraftFolderEntry : ObservableObject {
 
     public override bool Equals(object? obj) {
 
-        if (obj is MinecraftFolderEntry folderEntry) {
+        if (obj is MinecraftFolderViewItem folderEntry) {
             return this.MinecraftFolderPath == folderEntry.MinecraftFolderPath;
         }
         return false;

@@ -13,7 +13,7 @@
             <InfoBar x:Uid="LaunchSettingsPage_TipsInfoBar"
                      IsClosable="False"
                      IsOpen="True"
-                     Severity="Informational" />
+                     Severity="Informational"/>
 
             <!-- Minecraft folder Setting -->
             <controls:SettingsCard x:Name="MinecraftFolderSettingsCard" x:Uid="LaunchSettingsPage_MinecraftFolderSettingsCard">
@@ -32,19 +32,20 @@
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <FontIcon VerticalAlignment="Center" Glyph="&#xE8A7;" />
                         <TextBlock x:Name="MinecraftFolderIdTextBlock"
+                                   MaxWidth="300"
                                    VerticalAlignment="Center"
                                    Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                   HorizontalTextAlignment="Center"
                                    Style="{ThemeResource BodyStrongTextBlockStyle}"
                                    Text="{Binding MinecraftFolderId}"
-                                   TextTrimming="CharacterEllipsis" />
+                                   TextWrapping="Wrap" />
                     </StackPanel>
                 </Button>
             </controls:SettingsCard>
 
             <!-- Java path Setting -->
-            <controls:SettingsCard x:Name="JavaPathSettingsCard"
-                                   x:Uid="LaunchSettingsPage_JavaPathSettingsCard"
-                                   Command="{Binding ShowJavaPathManagerDialogCommand}">
+            <controls:SettingsCard x:Name="JavaSettingsCard"
+                                   x:Uid="LaunchSettingsPage_JavaPathSettingsCard">
                 <!-- Icons -->
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xF133;" />
@@ -53,16 +54,18 @@
                     <FontIcon Glyph="&#xE78B;" />
                 </controls:SettingsCard.ActionIcon>
 
-                <Button Command="{Binding ShowMinecraftFolderManagerDialogCommand}"
+                <Button Command="{Binding ShowJavaManagerDialogCommand}"
                         Style="{ThemeResource AccentButtonStyle}"
                         ToolTipService.ToolTip="{Binding JavaPath}">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <FontIcon VerticalAlignment="Center" Glyph="&#xE8A7;" />
-                        <TextBlock VerticalAlignment="Center"
+                        <TextBlock MaxWidth="300"
+                                   VerticalAlignment="Center"
                                    Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                   HorizontalTextAlignment="Center"
                                    Style="{ThemeResource BodyStrongTextBlockStyle}"
                                    Text="{Binding JavaId}"
-                                   TextTrimming="CharacterEllipsis" />
+                                   TextWrapping="Wrap" />
                     </StackPanel>
                 </Button>
             </controls:SettingsCard>

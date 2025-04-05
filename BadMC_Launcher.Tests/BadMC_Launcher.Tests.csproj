@@ -15,6 +15,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.MetadataControl" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" />
     <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="GEmojiSharp" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="MinecraftLaunch" />

@@ -21,7 +21,7 @@ namespace BadMC_Launcher.Views.ContentDialogs.Settings;
 
 public sealed partial class MinecraftFolderContentDialog : ContentDialog {
 	public MinecraftFolderContentDialog() {
-		this.InitializeComponent();
+        this.InitializeComponent();
         DataContext = new MinecraftFolderContentDialogViewModel();
 
         //Register Messenger

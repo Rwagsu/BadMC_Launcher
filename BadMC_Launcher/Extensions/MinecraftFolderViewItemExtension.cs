@@ -13,8 +13,8 @@ using MinecraftLaunch.Components.Parser;
 using BadMC_Launcher.Models.Enums;
 
 namespace BadMC_Launcher.Extensions;
-public static class MinecraftFolderEntryExtension {
-    public static MinecraftEntryItem?  GetMinecraftItem(this MinecraftFolderEntry minecraftPath, string minecraftEntryId) {
+public static class MinecraftFolderViewItemExtension {
+    public static MinecraftViewItem?  GetMinecraftItem(this MinecraftFolderViewItem minecraftPath, string minecraftEntryId) {
         try {
             return minecraftPath.GetMinecraftItem(minecraftPath.GetMinecraftParser().GetMinecraft(minecraftEntryId));
         }
@@ -24,7 +24,7 @@ public static class MinecraftFolderEntryExtension {
         return null;
     }
 
-    public static MinecraftEntryItem? GetMinecraftItem(this MinecraftFolderEntry minecraftFolderEntry, MinecraftEntry minecraftEntry) {
+    public static MinecraftViewItem? GetMinecraftItem(this MinecraftFolderViewItem minecraftFolderEntry, MinecraftEntry minecraftEntry) {
         try {
             if (minecraftEntry != null) {
                 var isStarred = false;
@@ -51,10 +51,10 @@ public static class MinecraftFolderEntryExtension {
                     isStarred = minecraftFolderEntry.StarredMinecraftIds.IndexOf(minecraftEntry.Id) >= 0;
                 }
 
-                var entryItem = new MinecraftEntryItem() {
+                var entryItem = new MinecraftViewItem() {
                     MinecraftEntry = minecraftEntry,
                     MinecraftImage = image,
-                    MinecraftTags = (HashSet<MetadataItem>)minecraftEntry.GetMinecraftEntryTags(),
+                    MinecraftTags = minecraftEntry.GetMinecraftEntryTags(),
                     IsStarred = isStarred
                 };
                 
@@ -72,9 +72,9 @@ public static class MinecraftFolderEntryExtension {
         return null;
     }
 
-    public static IEnumerable<MinecraftEntryItem> GetMinecraftItems(this MinecraftFolderEntry minecraftPath) {
+    public static IEnumerable<MinecraftViewItem> GetMinecraftItems(this MinecraftFolderViewItem minecraftPath) {
         var minecraftParser = minecraftPath.GetMinecraftParser();
-        var items = new ObservableCollection<MinecraftEntryItem>();
+        var items = new ObservableCollection<MinecraftViewItem>();
         foreach (var entry in minecraftParser.GetMinecrafts()) {
             var isStarred = false;
             string path;
@@ -95,10 +95,10 @@ public static class MinecraftFolderEntryExtension {
             if (minecraftPath.StarredMinecraftIds != null) {
                 isStarred = minecraftPath.StarredMinecraftIds.IndexOf(entry.Id) >= 0;
             }
-            items.Add(new MinecraftEntryItem() {
+            items.Add(new MinecraftViewItem() {
                 MinecraftEntry = entry,
                 MinecraftImage = new BitmapImage() { UriSource = new Uri(path) },
-                MinecraftTags = (HashSet<MetadataItem>)entry.GetMinecraftEntryTags(),
+                MinecraftTags = entry.GetMinecraftEntryTags(),
                 IsStarred = isStarred,
             });
         }

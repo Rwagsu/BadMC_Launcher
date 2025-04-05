@@ -32,6 +32,16 @@ public class DistinctiveItemBindingList<T> : BindingList<T> {
         }
     }
 
+    public void MargeItems(IEnumerable<T> addList) {
+        this.RaiseListChangedEvents = false;
+
+        this.AddRange(addList);
+
+        this.RaiseListChangedEvents = true;
+
+        OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
+    }
+
     protected override void OnListChanged(ListChangedEventArgs e) {
         // Check if the property has the IgnoreListChangedAttribute
         if (e.PropertyDescriptor?.Attributes[typeof(IgnoreListChangedAttribute)] != null) { return; }

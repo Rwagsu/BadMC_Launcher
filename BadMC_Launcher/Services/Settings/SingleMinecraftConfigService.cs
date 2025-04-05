@@ -126,8 +126,12 @@ public class SingleMinecraftConfigService : ConfigClass {
     public BindingList<string> JvmArguments {
         get => singleMinecraftConfigInstance.jvmArguments;
         set {
+            singleMinecraftConfigInstance.jvmArguments.RaiseListChangedEvents = false;
+
             singleMinecraftConfigInstance.jvmArguments.Clear();
             singleMinecraftConfigInstance.jvmArguments.AddRange(value);
+
+            singleMinecraftConfigInstance.jvmArguments.RaiseListChangedEvents = true;
 
             // Write to Json
             SyncSettingSet();

@@ -99,5 +99,6 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		RESX_ExcelExportMode = MultipleSheets
 		SolutionGuid = {9BB97DAE-986F-449E-8D4B-1E61C2D6974E}
+		RESX_NeutralResourcesLanguage = zh-Hans
 	EndGlobalSection
 EndGlobal

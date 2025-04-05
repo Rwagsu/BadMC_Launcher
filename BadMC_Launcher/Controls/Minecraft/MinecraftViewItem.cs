@@ -16,16 +16,18 @@ using MinecraftLaunch.Components.Parser;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BadMC_Launcher.Controls.Minecraft;
-public class MinecraftEntryItem {
+public partial class MinecraftViewItem : ObservableObject {
     public string MinecraftId => MinecraftEntry.Id;
 
     public required MinecraftEntry MinecraftEntry { get; init; }
 
     public required BitmapImage MinecraftImage { get; init; }
 
-    public required HashSet<MetadataItem> MinecraftTags { get; init; }
+    
+    public required ObservableDataList<MetadataItem> MinecraftTags { get; init; }
 
-    public bool IsStarred { get; set; }
+    [ObservableProperty]
+    public partial bool IsStarred { get; set; }
 
     public void SetIsStarredEvent(object? sender, NotifyCollectionChangedEventArgs e) {
         if (sender is ObservableDataList<string> folderEntry) {
@@ -33,23 +35,21 @@ public class MinecraftEntryItem {
         }
     }
 
-    public static bool operator ==(MinecraftEntryItem? left, MinecraftEntryItem? right) {
+    public static bool operator ==(MinecraftViewItem? left, MinecraftViewItem? right) {
         return left is not null && right is not null ? 
-            left.MinecraftId == right.MinecraftId &&
-            left.MinecraftTags == right.MinecraftTags :
+            left.MinecraftId == right.MinecraftId :
             ReferenceEquals(left, right);
     }
 
-    public static bool operator !=(MinecraftEntryItem? left, MinecraftEntryItem? right) {
+    public static bool operator !=(MinecraftViewItem? left, MinecraftViewItem? right) {
         return left is not null && right is not null 
             ? 
-            left.MinecraftId != right.MinecraftId &&
-            left.MinecraftTags != right.MinecraftTags : 
+            left.MinecraftId != right.MinecraftId : 
             !ReferenceEquals(left, right);
     }
 
     public override bool Equals(object? obj) {
-        if (obj is MinecraftEntryItem entryItem) {
+        if (obj is MinecraftViewItem entryItem) {
             if (ReferenceEquals(this.MinecraftId, entryItem.MinecraftId)) {
                 return true;
             }

@@ -64,8 +64,8 @@ public static class MinecraftEntryExtension {
         throw new NotImplementedException("欸等一下Σ(っ °Д °;)っ我们还没支持这个类型呢你怎么就给（*#……*！&@%！*……@");
     }
 
-    public static IEnumerable<MetadataItem> GetMinecraftEntryTags(this MinecraftEntry minecraftEntry) {
-        var tags = new HashSet<MetadataItem>() { new MetadataItem() { Label = $"{minecraftEntry.Version.Type} {minecraftEntry.Version.VersionId}" } };
+    public static ObservableDataList<MetadataItem> GetMinecraftEntryTags(this MinecraftEntry minecraftEntry) {
+        var tags = new ObservableDataList<MetadataItem>() { new MetadataItem() { Label = $"{minecraftEntry.Version.Type} {minecraftEntry.Version.VersionId}" } };
         if (minecraftEntry is ModifiedMinecraftEntry modifiedEntry) {
             modifiedEntry.ModLoaders.ForEach(item => tags.Add(new MetadataItem() { Label = $"{item.Type} {item.Version}" }));
         }

@@ -16,7 +16,7 @@ public class MinecraftConfigService : ConfigClass {
         //Triggers an event when a property is changed
         MinecraftConfig.minecraftAccounts.ListChanged += OnListChanged<Account>;
         MinecraftConfig.javaPaths.ListChanged += OnListChanged<string>;
-        MinecraftConfig.minecraftFolders.ListChanged += OnListChanged<MinecraftFolderEntry>;
+        MinecraftConfig.minecraftFolders.ListChanged += OnListChanged<MinecraftFolderViewItem>;
         MinecraftConfig.jvmArguments.ListChanged += OnListChanged<string>;
     }
 
@@ -24,7 +24,7 @@ public class MinecraftConfigService : ConfigClass {
         get => MinecraftConfig.minecraftAccounts;
         set {
             MinecraftConfig.minecraftAccounts.Clear();
-            MinecraftConfig.minecraftAccounts.AddRange(value);
+            MinecraftConfig.minecraftAccounts.MargeItems(value);
 
             // Write to Json
             SyncSettingSet();
@@ -34,17 +34,17 @@ public class MinecraftConfigService : ConfigClass {
         get => MinecraftConfig.javaPaths;
         set {
             MinecraftConfig.javaPaths.Clear();
-            MinecraftConfig.javaPaths.AddRange(value);
+            MinecraftConfig.javaPaths.MargeItems(value);
 
             // Write to Json
             SyncSettingSet();
         }
     }
-    public DistinctiveItemBindingList<MinecraftFolderEntry> MinecraftFolders {
+    public DistinctiveItemBindingList<MinecraftFolderViewItem> MinecraftFolders {
         get => MinecraftConfig.minecraftFolders;
         set {
             MinecraftConfig.minecraftFolders.Clear();
-            MinecraftConfig.minecraftFolders.AddRange(value);
+            MinecraftConfig.minecraftFolders.MargeItems(value);
 
             // Write to Json
             SyncSettingSet();
@@ -171,8 +171,12 @@ public class MinecraftConfigService : ConfigClass {
     public BindingList<string> JvmArguments {
         get => MinecraftConfig.jvmArguments;
         set {
+            MinecraftConfig.jvmArguments.RaiseListChangedEvents = false;
+
             MinecraftConfig.jvmArguments.Clear();
             MinecraftConfig.jvmArguments.AddRange(value);
+
+            MinecraftConfig.jvmArguments.RaiseListChangedEvents = true;
 
             // Write to Json
             SyncSettingSet();

@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="/Dictionaries/Styles/ButtonStyle.xaml" />
                 <ResourceDictionary Source="/Dictionaries/Templates/ItemTemplate/MinecraftFolderItemsTemplate.xaml" />
                 <ResourceDictionary Source="/Dictionaries/Templates/ItemTemplate/MinecraftItemsTemplate.xaml" />
+                <ResourceDictionary Source="/Dictionaries/Templates/ItemTemplate/JavaItemsTemplate.xaml" />
                 <ResourceDictionary Source="/Dictionaries/Templates/MainMenuSearchTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!-- Add resources here -->

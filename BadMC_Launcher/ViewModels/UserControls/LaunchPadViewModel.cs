@@ -61,14 +61,14 @@ public partial class LaunchPadViewModel : ObservableObject {
 
     //MinecraftsList
     [ObservableProperty]
-    public partial ObservableCollection<MinecraftEntryItem> MinecraftEntryList { get; set; }
+    public partial ObservableCollection<MinecraftViewItem> MinecraftEntryList { get; set; }
 
     [ObservableProperty]
     public partial bool IsMinecraftEntryListEmpty { get; set; }
 
     //MinecraftFolderPathsList
     [ObservableProperty]
-    public partial ObservableCollection<MinecraftFolderEntry> MinecraftFolderEntryList { get; set; }
+    public partial ObservableCollection<MinecraftFolderViewItem> MinecraftFolderEntryList { get; set; }
 
     [ObservableProperty]
     public partial int MinecraftFolderEntryListSelectedIndex { get; set; }
@@ -149,11 +149,11 @@ public partial class LaunchPadViewModel : ObservableObject {
         LaunchButtonMinecraftIcon = MinecraftEntryList.ElementAtOrDefault(MinecraftEntryListSelectedIndex)?.MinecraftImage ?? new() { UriSource = new(@"ms-appx:///Assets/Icons/MinecraftIcons/drowned.png")};
     }
 
-    private void MinecraftConfig_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
+    private void MinecraftConfig_PropertyChanged(object? sender, PropertyChangedEventArgs args) {
         var selectedItem = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
 
         // Update Property
-        switch (e.PropertyName) {
+        switch (args.PropertyName) {
             case nameof(MinecraftConfigService.ActiveMinecraftFolderPath):
                 // Set MinecraftFolderEntries SelectedIndex
                 MinecraftFolderEntryListSelectedIndex = MinecraftFolderEntryList.GetIndex(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath); 
@@ -184,7 +184,12 @@ public partial class LaunchPadViewModel : ObservableObject {
     }
 
     //Set CanExecute for ViewLoaclMinecraftFolderCommand
-    private bool SetIsNotActiveMinecraftEntryEmpty() => MinecraftEntryListSelectedIndex >= 0;
+    private bool SetIsNotActiveMinecraftEntryEmpty() {
+        if (MinecraftEntryList.Any()) {
+            return MinecraftEntryListSelectedIndex >= 0;
+        }
+        return false;
+    }
 
     private void RefreshMinecraftEntryList() {
         if (MinecraftFolderEntryList.TryElementAt(MinecraftFolderEntryListSelectedIndex, out var selectedItem) && selectedItem != null) {
@@ -201,7 +206,7 @@ public partial class LaunchPadViewModel : ObservableObject {
         MinecraftEntryList.Clear();
     }
 
-    partial void OnMinecraftEntryListChanged(ObservableCollection<MinecraftEntryItem> value) {
+    partial void OnMinecraftEntryListChanged(ObservableCollection<MinecraftViewItem> value) {
         IsMinecraftEntryListEmpty = !MinecraftEntryList.Any();
     }
 

@@ -12,9 +12,10 @@
              d:DesignWidth="400"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <converters:BoolToObjectConverter x:Key="BoolToIntIsMinecraftListEmptyonverter"
+        <converters:BoolToObjectConverter x:Key="BoolToOpacityConverter"
                                           FalseValue="0"
                                           TrueValue="1" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
 
 
@@ -64,12 +65,13 @@
                         </Border>
                         <!-- Ontology name -->
                         <StackPanel Grid.Column="1"
-                                    Margin="8,0,60,0"
+                                    Margin="8,0,30,0"
                                     Spacing="2">
                             <TextBlock x:Uid="LaunchPad_LaunchButtonNameResource"
                                        FontSize="22"
                                        FontWeight="Bold" />
                             <TextBlock x:Name="GameOntologyIdTextBlock"
+                                       HorizontalAlignment="Left"
                                        FontSize="16"
                                        FontWeight="Bold"
                                        Text="{Binding LaunchButtonMinecraftId}"
@@ -195,8 +197,9 @@
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
                                             IsHitTestVisible="{Binding IsMinecraftEntryListEmpty}"
-                                            Opacity="{Binding IsMinecraftEntryListEmpty, Converter={StaticResource BoolToIntIsMinecraftListEmptyonverter}}"
-                                            Spacing="8">
+                                            Opacity="{Binding IsMinecraftEntryListEmpty, Converter={StaticResource BoolToOpacityConverter}}"
+                                            Spacing="8"
+                                            Visibility="{Binding IsMinecraftEntryListEmpty, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <!-- Animation -->
                                     <StackPanel.OpacityTransition>
                                         <ScalarTransition />
@@ -205,11 +208,17 @@
                                               FontSize="40"
                                               Glyph="&#xE8F6;" />
                                     <TextBlock x:Uid="LaunchPad_MinecraftEmptyListTipsTextBlock"
+                                               MaxWidth="350"
                                                HorizontalAlignment="Center"
-                                               Style="{ThemeResource BodyStrongTextBlockStyle}" />
-                                    <HyperlinkButton x:Uid="LaunchPad_MinecraftEmptyListTipsHyperLinkButton"
-                                                     HorizontalAlignment="Center"
-                                                     Command="{Binding OpenMinecraftFoldersManagerCommand}" />
+                                               HorizontalTextAlignment="Center"
+                                               Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                               TextWrapping="Wrap" />
+                                    <HyperlinkButton HorizontalAlignment="Center" Command="{Binding OpenMinecraftFoldersManagerCommand}">
+                                        <TextBlock x:Uid="LaunchPad_MinecraftEmptyListTipsHyperLinkButton"
+                                                   MaxWidth="350"
+                                                   HorizontalTextAlignment="Center"
+                                                   TextWrapping="Wrap" />
+                                    </HyperlinkButton>
                                 </StackPanel>
                             </Grid>
                         </Flyout>

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -9,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace BadMC_Launcher.Extensions;
 public class ObservableDataList<T> : ObservableCollection<T> {
-
     public ObservableDataList(IEnumerable<T> initialData) : base(initialData) {
 
     }
@@ -25,5 +25,13 @@ public class ObservableDataList<T> : ObservableCollection<T> {
         if (!Contains(item)) {
             base.SetItem(index, item);
         }
+    }
+
+    public void MargeItems(IEnumerable<T> addList) {
+        CheckReentrancy();
+
+        Items.AddRange(addList);
+
+        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
     }
 }

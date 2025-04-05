@@ -17,7 +17,7 @@ internal static class MinecraftConfig {
 
     internal static DistinctiveItemBindingList<string> javaPaths = new() { PropertyName = nameof(MinecraftConfigService.JavaPaths) };
 
-    internal static DistinctiveItemBindingList<MinecraftFolderEntry> minecraftFolders = new() { PropertyName = nameof(MinecraftConfigService.MinecraftFolders) };
+    internal static DistinctiveItemBindingList<MinecraftFolderViewItem> minecraftFolders = new() { PropertyName = nameof(MinecraftConfigService.MinecraftFolders) };
 
     internal static string? activeJavaPath;
 

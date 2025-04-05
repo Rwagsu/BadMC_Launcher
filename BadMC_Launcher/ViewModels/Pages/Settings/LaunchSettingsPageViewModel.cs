@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BadMC_Launcher.Models.Datas.SettingsDatas;
-using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Controls.Minecraft;
+using BadMC_Launcher.Models.Datas.SettingsDatas;
+using BadMC_Launcher.Models.Enums;
+using BadMC_Launcher.Services.Settings;
+using BadMC_Launcher.ViewModels.ContentDialogs.Settings;
 using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages.Settings;
 using CommunityToolkit.Mvvm.Input;
@@ -14,7 +16,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using MinecraftLaunch.Base.Models.Game;
 using MinecraftLaunch.Utilities;
-using BadMC_Launcher.Models.Enums;
 
 
 namespace BadMC_Launcher.ViewModels.Pages.Settings;
@@ -23,7 +24,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     private readonly XamlRoot? mainPageXamlRoot;
     private MinecraftConfigService minecraftService = App.GetService<MinecraftConfigService>();
     private ResourceLoader sourceService = App.GetService<ResourceLoader>();
-    private MinecraftFolderEntry? minecraftFolder;
+    private MinecraftFolderViewItem? minecraftFolder;
     private JavaEntry? java;
 
     public LaunchSettingsPageViewModel() {
@@ -69,9 +70,9 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     }
 
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]
-    private async Task ShowJavaPathManagerDialog() {
+    private async Task ShowJavaManagerDialog() {
         if (mainPageXamlRoot != null) {
-            var dialog = App.GetService<MinecraftFolderContentDialog>();
+            var dialog = App.GetService<JavaContentDialog>();
             dialog.XamlRoot = mainPageXamlRoot;
 
             await dialog.ShowAsync();
@@ -86,7 +87,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     private async void GetJavaInfo() {
         java = await JavaUtil.GetJavaInfoAsync(minecraftService.ActiveJavaPath);
 
-        JavaId = java != null ? java.JavaVersion : sourceService.GetString("Global_NullJavaId");
+        JavaId = java != null ? $"{java.JavaType} {java.JavaVersion}" : sourceService.GetString("Global_NullJavaId");
         JavaPath = java != null ? java.JavaPath : sourceService.GetString("Global_NullJavaPath");
     }
 

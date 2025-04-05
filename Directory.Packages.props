@@ -21,6 +21,7 @@
     <PackageVersion Include="CommunityToolkit.WinUI.Triggers" Version="8.2.250129-preview2" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="FluentAssertions" Version="8.2.0" />
+    <PackageVersion Include="GEmojiSharp" Version="4.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.13.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.0-preview-25107-01" />
     <PackageVersion Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />

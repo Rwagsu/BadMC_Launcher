@@ -20,7 +20,7 @@ public class MainMenuSearchMinecraftEntryFilter : IMainMenuSharchFilterItem {
         var returnList = new List<MainMenuSearchResultItem>();
         //Get MinecraftFolders
         App.GetService<MinecraftConfigService>().MinecraftFolders.ForEach(minecraftPath => {
-            MinecraftFolderEntry pathEntry = minecraftPath;
+            MinecraftFolderViewItem pathEntry = minecraftPath;
             foreach (var minecraftEntry in pathEntry.GetMinecrafts().Where(item => item.Id.Contains(searchText))) {
                 var viewItem = pathEntry.GetMinecraftItem(minecraftEntry);
                 if (viewItem != null) {
@@ -39,7 +39,7 @@ public class MainMenuSearchMinecraftEntryFilter : IMainMenuSharchFilterItem {
         return returnList;
     }
 
-    public Action NavigateTo(MinecraftEntryItem minecraftItem) {
+    public Action NavigateTo(MinecraftViewItem minecraftItem) {
         return () => {
             Debug.WriteLine($"诶诶还妹写呢Σ(っ °Д °;)っ {minecraftItem.MinecraftId}");
         };

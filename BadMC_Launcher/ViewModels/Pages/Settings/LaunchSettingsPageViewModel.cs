@@ -11,6 +11,7 @@ using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.ViewModels.ContentDialogs.Settings;
 using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages.Settings;
+using BadMC_Launcher.Views.UserControls;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;

@@ -5,8 +5,8 @@
       xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
       xmlns:animations="using:CommunityToolkit.WinUI.Animations"
       xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
+      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:converters="using:CommunityToolkit.WinUI.Converters"
-      xmlns:labs="using:CommunityToolkit.Labs.WinUI"
       xmlns:local="using:BadMC_Launcher"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:skia="http://uno.ui/skia"
@@ -103,8 +103,8 @@
 
                 <NavigationView.AutoSuggestBox>
                     <!-- Search Box -->
-                    <AutoSuggestBox x:Uid="MainPage_SearchResource"
-                                    x:Name="SearchAutoSuggestBox"
+                    <AutoSuggestBox x:Name="SearchAutoSuggestBox"
+                                    x:Uid="MainPage_SearchResource"
                                     ItemTemplate="{StaticResource MainMenuSearchItemTemplate}"
                                     ItemsSource="{Binding SearchItems, Mode=TwoWay}"
                                     Text="{Binding SearchText, Mode=TwoWay}">
@@ -115,7 +115,7 @@
                         <Interactivity:Interaction.Behaviors>
                             <!-- SearchButton Clicked Event -->
                             <Interactivity:EventTriggerBehavior EventName="QuerySubmitted">
-                                <Interactivity:InvokeCommandAction Command="{Binding OpenSearchFilterCommand}" CommandParameter="{Binding ElementName=SearchAutoSuggestBox}"/>
+                                <Interactivity:InvokeCommandAction Command="{Binding OpenSearchFilterCommand}" CommandParameter="{Binding ElementName=SearchAutoSuggestBox}" />
                             </Interactivity:EventTriggerBehavior>
 
                             <!-- SearchItem Selected Event -->
@@ -145,11 +145,11 @@
                                         </Border>
                                     </StackPanel>
                                     <!-- Select Tags -->
-                                    <labs:TokenView x:Name="SearchFilterTokenView"
-                                                    IsWrapped="True"
-                                                    ItemsSource="{Binding SearchFilterItems, Mode=TwoWay}"
-                                                    SelectionMode="Multiple">
-                                        <labs:TokenView.ItemTemplate>
+                                    <controls:Segmented x:Name="SearchFilterTokenView"
+                                                        ItemsSource="{Binding SearchFilterItems, Mode=TwoWay}"
+                                                        SelectionMode="Multiple"
+                                                        Style="{StaticResource ButtonSegmentedStyle}">
+                                        <controls:Segmented.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Margin="8,0"
                                                             Orientation="Horizontal"
@@ -160,7 +160,7 @@
                                                                Text="{Binding ItemName}" />
                                                 </StackPanel>
                                             </DataTemplate>
-                                        </labs:TokenView.ItemTemplate>
+                                        </controls:Segmented.ItemTemplate>
 
                                         <!-- SearchTags Selected Event -->
                                         <Interactivity:Interaction.Behaviors>
@@ -168,7 +168,7 @@
                                                 <Interactivity:InvokeCommandAction Command="{Binding ChangeSearchFilterCommand}" CommandParameter="{Binding SelectedItems, ElementName=SearchFilterTokenView}" />
                                             </Interactivity:EventTriggerBehavior>
                                         </Interactivity:Interaction.Behaviors>
-                                    </labs:TokenView>
+                                    </controls:Segmented>
                                 </StackPanel>
                             </Flyout>
                         </FlyoutBase.AttachedFlyout>

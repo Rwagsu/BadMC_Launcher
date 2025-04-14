@@ -31,8 +31,6 @@ public partial class App : Application {
         ApplicationLanguages.PrimaryLanguageOverride = "zh-Hans";
     }
 
-    public static new App Current => (App)Application.Current;
-
     public Window? MainWindow { get; private set; }
 
     public IHost? Host { get; private set; }

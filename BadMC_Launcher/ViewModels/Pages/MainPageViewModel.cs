@@ -8,8 +8,6 @@ using BadMC_Launcher.Interfaces;
 using BadMC_Launcher.Models.Datas.ViewDatas;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Settings;
-using BadMC_Launcher.Views.Pages;
-using CommunityToolkit.Labs.WinUI;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;

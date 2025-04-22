@@ -19,7 +19,7 @@ public partial class JavaViewItem {
 
         JavaPath = Entry.JavaPath;
 
-        JavaIconPath = Entry.GetJavaIconPath();
+        SetIconPath();
     }
 
     public JavaEntry Entry { get; init; }
@@ -30,7 +30,11 @@ public partial class JavaViewItem {
 
     public string JavaPath { get; init; }
 
-    public string JavaIconPath { get; init; }
+    public string? JavaIconPath { get; private set; }
+
+    private async void SetIconPath() {
+        JavaIconPath = await Entry.GetJavaIconPathAsync();
+    }
 
     public static bool operator ==(JavaViewItem? left, JavaViewItem? right) {
         return left is not null && right is not null ?

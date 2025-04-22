@@ -44,7 +44,7 @@
                     BorderThickness="4"
                     CornerRadius="8">
                 <Border.Background>
-                    <ImageBrush ImageSource="{Binding JavaIcon}" Stretch="UniformToFill" />
+                    <ImageBrush ImageSource="{Binding JavaIconPath}" Stretch="UniformToFill" />
                 </Border.Background>
             </Border>
             <StackPanel Grid.Row="0"

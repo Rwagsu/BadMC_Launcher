@@ -19,4 +19,8 @@ public static class IEnumerableExtension {
         returnItem = default;
         return false;
     }
+
+    public static bool HasIndex<T>(this IEnumerable<T> list, int index) {
+        return index >= 0 && index < list.Count();
+    }
 }

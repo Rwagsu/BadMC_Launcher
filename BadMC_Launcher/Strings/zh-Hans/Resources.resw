@@ -286,4 +286,7 @@
   <data name="JavaContentDialog_JavaListLoadingTipsLoadingAnimation.LoadDescription" xml:space="preserve">
     <value>正在获取 Java 运行时......</value>
   </data>
+  <data name="JavaContentDialog_AutoJavaButton.Text" xml:space="preserve">
+    <value>自动设置 Java</value>
+  </data>
 </root>

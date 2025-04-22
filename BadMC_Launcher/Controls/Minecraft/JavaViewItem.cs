@@ -19,7 +19,7 @@ public partial class JavaViewItem {
 
         JavaPath = Entry.JavaPath;
 
-        JavaIcon = Entry.GetJavaIcon();
+        JavaIconPath = Entry.GetJavaIconPath();
     }
 
     public JavaEntry Entry { get; init; }
@@ -30,7 +30,7 @@ public partial class JavaViewItem {
 
     public string JavaPath { get; init; }
 
-    public BitmapImage JavaIcon { get; init; }
+    public string JavaIconPath { get; init; }
 
     public static bool operator ==(JavaViewItem? left, JavaViewItem? right) {
         return left is not null && right is not null ?

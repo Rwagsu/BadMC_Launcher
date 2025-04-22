@@ -8,7 +8,7 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:userControls="using:BadMC_Launcher.Views.UserControls"
                x:Uid="JavaContentDialog_ViewContentDialog"
-               PrimaryButtonStyle="{StaticResource AccentButtonStyle}"
+               CloseButtonStyle="{StaticResource AccentButtonStyle}"
                Style="{ThemeResource DefaultContentDialogStyle}">
     <ContentDialog.Resources>
         <converters:BoolToObjectConverter x:Key="BoolToOpacityConverter"
@@ -83,6 +83,19 @@
                     IsEnabled="False">
                 <FontIcon Glyph="&#xEBD3;" />
             </Button>
+
+            <!-- Enable AutoJava -->
+            <ToggleButton Height="36"
+                          Padding="0"
+                          Command="{Binding ChangeIsAutoJavaEnabledCommand}"
+                          IsChecked="{Binding IsAutoJavaEnabled, Mode=TwoWay}">
+                <StackPanel Margin="8,0"
+                            Orientation="Horizontal"
+                            Spacing="8">
+                    <FontIcon Glyph="&#xE945;" />
+                    <TextBlock x:Uid="JavaContentDialog_AutoJavaButton" />
+                </StackPanel>
+            </ToggleButton>
         </StackPanel>
 
         <!-- Java list -->

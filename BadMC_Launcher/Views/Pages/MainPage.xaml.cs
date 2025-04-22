@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.ViewModels.Pages;
@@ -15,19 +16,33 @@ public sealed partial class MainPage : Page {
 
         //Register NavigationToPage Messengers
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<Type>, string>(this, MainPageMessengerTokenEnum.PageNavigateToken.ToString(), MainFrameNavigate);
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<object?>, string>(this, MainPageMessengerTokenEnum.PageCloseToken.ToString(), MainFrameClose);
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<object?>, string>(this, MainPageMessengerTokenEnum.PageGoBackToken.ToString(), MainFrameGoBack);
 
         //Register GetXamlRoot Messengers
         WeakReferenceMessenger.Default.Register<RequestMessage<XamlRoot?>, string>(this, MainPageMessengerTokenEnum.XamlRootToken.ToString(), (r, m) => m.Reply(this.XamlRoot));
     }
 
-    public void MainFrameNavigate(object recipient, ValueChangedMessage<Type> message) {
+    private void MainFrameNavigate(object recipient, ValueChangedMessage<Type> message) {
         //MainSideBarFlyout.Hide();
-        if (MainSideBarFrame.Content != null && MainSideBarFrame.Content.GetType() == message.Value) {
+        if (MainFrame.Content != null && MainFrame.Content.GetType() == message.Value) {
             return;
         }
 
         if (typeof(Page).IsAssignableFrom(message.Value)) {
-            MainSideBarFrame.Navigate(message.Value, null, new EntranceNavigationTransitionInfo());
+            MainFrame.Navigate(message.Value, null, new EntranceNavigationTransitionInfo());
+        }
+    }
+
+    private void MainFrameClose(object recipient, ValueChangedMessage<object?> _) {
+        MainFrame.Content = null;
+        MainFrame.BackStack.Clear();
+        ClosePageButton.Visibility = Visibility.Collapsed;
+    }
+
+    private void MainFrameGoBack(object recipient, ValueChangedMessage<object?> _) {
+        if (MainFrame.CanGoBack) {
+            MainFrame.GoBack();
         }
     }
 }

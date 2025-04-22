@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Reflection.Metadata;
 using BadMC_Launcher.Classes;
 using BadMC_Launcher.Controls;
 using BadMC_Launcher.Controls.MainSearch;
@@ -11,6 +12,8 @@ using BadMC_Launcher.Services.Settings;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using CommunityToolkit.WinUI.Controls;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Media.Animation;
 using Uno.UI.RemoteControl;
@@ -23,7 +26,7 @@ public partial class MainPageViewModel : ObservableObject {
         //Init Property
         WindowName = App.GetService<ThemeSettingService>().WindowName;
 
-        MainSideBarToolVisibility = Visibility.Collapsed;
+        IsMainSideBarToolShow = false;
         MainSideBarItems = MainSideBarData.MainSideBarItems;
         MainSideBarFooterItems = MainSideBarData.MainSideBarFooterItems;
 
@@ -36,10 +39,6 @@ public partial class MainPageViewModel : ObservableObject {
             AppBackground = brush;
         });
     }
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(PageGoBackCommand))]
-    public partial bool MainSideBarFrameCanGoBack { get; set; }
 
     [ObservableProperty]
     public partial string WindowName { get; set; }
@@ -58,7 +57,7 @@ public partial class MainPageViewModel : ObservableObject {
     public partial MainSideBarItem? MainSideBarSelectedItem { get; set; }
 
     [ObservableProperty]
-    public partial Visibility MainSideBarToolVisibility { get; set; }
+    public partial bool IsMainSideBarToolShow { get; set; }
 
     [ObservableProperty]
     public partial DistinctiveItemBindingList<IMainMenuSharchFilterItem> SearchFilterItems { get; set; }
@@ -73,43 +72,48 @@ public partial class MainPageViewModel : ObservableObject {
     public partial string SearchText { get; set; }
 
     [RelayCommand]
-    private void ChangeToolVisibilityAndSelectedItem(Frame parameter) {
-        if (parameter.Content == null) {
-            MainSideBarToolVisibility = Visibility.Collapsed;
+    private void ChangeToolVisibilityAndSelectedItem(object? parameter) {
+        if (parameter == null) {
+            IsMainSideBarToolShow = false;
         }
         else {
-            MainSideBarToolVisibility = Visibility.Visible;
+            IsMainSideBarToolShow = true;
         }
-
-        // Set CanGoBack
-        MainSideBarFrameCanGoBack = parameter.CanGoBack;
 
         var list = new List<MainSideBarItem>();
         list.AddRange(MainSideBarItems);
         list.AddRange(MainSideBarFooterItems);
 
         // Set SelectedItem
-        MainSideBarSelectedItem = list.FirstOrDefault(item => item.NavigatePage == parameter.Content?.GetType());
+        MainSideBarSelectedItem = list.FirstOrDefault(item => item.NavigatePage == parameter?.GetType());
     }   
 
     [RelayCommand]
-    private void NavigateToPage(NavigationViewSelectionChangedEventArgs args) {
-        if (args.SelectedItem != null && args.SelectedItem != MainSideBarSelectedItem) {
-            SendInvokeFuncMessage(((MainSideBarItem)args.SelectedItem).NavigatePage, MainPageMessengerTokenEnum.PageNavigateToken);
-        }
-    }
+    private void NavigateToPage(NavigationViewItemInvokedEventArgs args) {
+        if (args.InvokedItem != null) {
+            var list = new List<MainSideBarItem>();
+            list.AddRange(MainSideBarItems);
+            list.AddRange(MainSideBarFooterItems);
 
-    [RelayCommand(CanExecute = nameof(MainSideBarFrameCanGoBack))]
-    private void PageGoBack(Frame parameter) {
-        if (parameter.CanGoBack) {
-            parameter.GoBack();
+            // Set SelectedItem
+            var navigateItem = list.FirstOrDefault(item => item.ItemName == args.InvokedItem.ToString());
+
+            if (navigateItem != null && navigateItem != MainSideBarSelectedItem) {
+                SendInvokeFuncMessage(navigateItem.NavigatePage, MainPageMessengerTokenEnum.PageNavigateToken);
+                return;
+            }
         }
+        SendInvokeFuncMessage<object?>(null, MainPageMessengerTokenEnum.PageCloseToken);
     }
 
     [RelayCommand]
-    private void ClosePage(Frame parameter) {
-        parameter.Content = null;
-        MainSideBarToolVisibility = Visibility.Collapsed;
+    private void PageGoBack() {
+        SendInvokeFuncMessage<object?>(null, MainPageMessengerTokenEnum.PageGoBackToken);
+    }
+
+    [RelayCommand]
+    private void ClosePage() {
+        SendInvokeFuncMessage<object?>(null, MainPageMessengerTokenEnum.PageCloseToken);
     }
 
     [RelayCommand]
@@ -143,13 +147,23 @@ public partial class MainPageViewModel : ObservableObject {
     }
 
     [RelayCommand]
-    private void ChangeSearchFilter(IMainMenuSharchFilterItem[] parameter) {
+    private void ChangeSearchFilter(Segmented parameter) {
+        var items = new List<IMainMenuSharchFilterItem>();
+        foreach (var selectedItem in parameter.SelectedItems) {
+            if (selectedItem is IMainMenuSharchFilterItem item) {
+                items.Add(item);
+            }
+        }
         SearchFilterSelectedItems.Clear();
-        SearchFilterSelectedItems.AddRange(parameter.ToObservableCollection());
+        SearchFilterSelectedItems.AddRange(items.ToObservableCollection());
     }
 
     private void SendInvokeFuncMessage<T>(T value, Enum tokenEnum) {
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<T>(value), tokenEnum.ToString());
+    }
+
+    partial void OnIsMainSideBarToolShowChanged(bool value) {
+        
     }
 }
  

@@ -1,12 +1,15 @@
-using MinecraftLaunch.Base.Models.Authentication;
-using MinecraftLaunch.Base.Models.Game;
-using System.Text.Json.Serialization;
 using System.ComponentModel;
-using BadMC_Launcher.Models.Datas.SettingsDatas;
-using BadMC_Launcher.Models.Datas;
-using BadMC_Launcher.Models.Datas.Mappings;
+using System.Linq;
+using System.Text.Json.Serialization;
 using BadMC_Launcher.Classes;
 using BadMC_Launcher.Controls.Minecraft;
+using BadMC_Launcher.Models.Datas;
+using BadMC_Launcher.Models.Datas.Mappings;
+using BadMC_Launcher.Models.Datas.SettingsDatas;
+using MinecraftLaunch.Base.Models.Authentication;
+using MinecraftLaunch.Base.Models.Game;
+using Uno.Extensions;
+using Uno.Extensions.Specialized;
 
 namespace BadMC_Launcher.Services.Settings;
 public class MinecraftConfigService : ConfigClass {
@@ -31,7 +34,17 @@ public class MinecraftConfigService : ConfigClass {
         }
     }
     public DistinctiveItemBindingList<string> JavaPaths {
-        get => MinecraftConfig.javaPaths;
+        get {
+            // Check if the Java folder exists
+            foreach (var item in MinecraftConfig.javaPaths.ToList()) {
+                if (!Path.Exists(item)) {
+                    MinecraftConfig.javaPaths.Remove(item);
+                    // TODO: Tip Toast
+                }
+            }
+            
+            return MinecraftConfig.javaPaths;
+        }
         set {
             MinecraftConfig.javaPaths.Clear();
             MinecraftConfig.javaPaths.MargeItems(value);
@@ -41,7 +54,17 @@ public class MinecraftConfigService : ConfigClass {
         }
     }
     public DistinctiveItemBindingList<MinecraftFolderViewItem> MinecraftFolders {
-        get => MinecraftConfig.minecraftFolders;
+        get {
+            // Check if the Minecraft folder exists
+            foreach (var item in MinecraftConfig.minecraftFolders.ToList()) {
+                if (!Path.Exists(item.MinecraftFolderPath)) {
+                    MinecraftConfig.minecraftFolders.Remove(item);
+                    // TODO: Tip Toast
+                }
+            }
+
+            return MinecraftConfig.minecraftFolders;
+        }
         set {
             MinecraftConfig.minecraftFolders.Clear();
             MinecraftConfig.minecraftFolders.MargeItems(value);
@@ -54,7 +77,14 @@ public class MinecraftConfigService : ConfigClass {
     public string? ActiveJavaPath {
         get => MinecraftConfig.activeJavaPath;
         set {
-            MinecraftConfig.activeJavaPath = value;
+            // CHeck folder is exists
+            if (!Path.Exists(value)) {
+                MinecraftConfig.activeJavaPath = string.Empty;
+                // TODO: Tip Toast
+            }
+            else {
+                MinecraftConfig.activeJavaPath = value;
+            }
 
             // Trigger Event
             OnPropertyChanged(nameof(ActiveJavaPath));
@@ -67,7 +97,14 @@ public class MinecraftConfigService : ConfigClass {
     public string? ActiveMinecraftFolderPath {
         get => MinecraftConfig.activeMinecraftFolder;
         set {
-            MinecraftConfig.activeMinecraftFolder = value;
+            // CHeck folder is exists
+            if (!Path.Exists(value)) {
+                MinecraftConfig.activeMinecraftFolder = string.Empty;
+                // TODO: Tip Toast
+            }
+            else {
+                MinecraftConfig.activeMinecraftFolder = value;
+            }
 
             // Trigger Event
             OnPropertyChanged(nameof(ActiveMinecraftFolderPath));
@@ -84,6 +121,19 @@ public class MinecraftConfigService : ConfigClass {
 
             // Trigger Event
             OnPropertyChanged(nameof(ActiveMinecraftAccount));
+
+            //Write to Json
+            SyncSettingSet();
+        }
+    }
+
+    public bool IsAutoJavaEnabled {
+        get => MinecraftConfig.isAutoJavaEnabled;
+        set {
+            MinecraftConfig.isAutoJavaEnabled = value;
+
+            // Trigger Event
+            OnPropertyChanged(nameof(IsAutoJavaEnabled));
 
             //Write to Json
             SyncSettingSet();
@@ -221,6 +271,7 @@ public class MinecraftConfigService : ConfigClass {
             MinecraftConfig.activeJavaPath = jsonClass.ActiveJavaPath;
             MinecraftConfig.activeMinecraftFolder = jsonClass.ActiveMinecraftFolderPath;
             MinecraftConfig.activeMinecraftAccount = jsonClass.ActiveMinecraftAccount;
+            MinecraftConfig.isAutoJavaEnabled = jsonClass.IsAutoJavaEnabled;
             MinecraftConfig.isFullscreen = jsonClass.IsFullscreen;
             MinecraftConfig.isEnableIndependencyCore = jsonClass.IsEnableIndependencyCore;
             MinecraftConfig.isAutoMemorySize = jsonClass.IsAutoMemorySize;
@@ -228,6 +279,7 @@ public class MinecraftConfigService : ConfigClass {
             MinecraftConfig.maxMemorySize = jsonClass.MaxMemorySize;
             MinecraftConfig.launcherName = jsonClass.LauncherName;
             MinecraftConfig.jvmArguments = jsonClass.JvmArguments;
+
             return true;
         }
         return false;

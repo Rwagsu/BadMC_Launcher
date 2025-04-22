@@ -35,21 +35,8 @@ public class FileService {
                 }
             }
             catch (Exception ex) {
-                switch (ex) {
-                    case SecurityException:
-                        //TODO
-                        break;
-                    case UnauthorizedAccessException:
-                        //TODO
-                        break;
-                    case PathTooLongException:
-                        //TODO
-                        break;
-                    case IOException:
-                        //TODO
-                        break;
-                    default:
-                        throw;
+                if (!ShowErrorToast(ex)) {
+                    throw;
                 }
             }
         }
@@ -67,28 +54,19 @@ public class FileService {
             }
             catch (Exception ex) {
                 switch (ex) {
-                    case SecurityException:
-                        //TODO
-                        break;
-                    case UnauthorizedAccessException:
-                        //TODO
-                        break;
-                    case PathTooLongException:
-                        //TODO
-                        break;
-                    case IOException:
-                        //TODO
-                        break;
                     case JsonException:
                         if (updateMapping != null && TryReadConfigWithMappings(filePath, jsonTypeInfo, updateMapping)) {
                             ReadConfig(filePath, jsonTypeInfo, out _, updateMapping);
                         }
                         else {
-                            //TODO
+                            //TODO: Dialog
                         }
                         break;
                     default:
-                        throw;
+                        if (!ShowErrorToast(ex)) {
+                            throw;
+                        }
+                        break;
                 }
             }
         }
@@ -110,24 +88,8 @@ public class FileService {
 
             }
             catch (Exception ex) {
-                switch (ex) {
-                    case SecurityException:
-                        //TODO
-                        break;
-                    case UnauthorizedAccessException:
-                        //TODO
-                        break;
-                    case PathTooLongException:
-                        //TODO
-                        break;
-                    case IOException:
-                        //TODO
-                        break;
-                    case JsonException:
-                        //TODO
-                        break;
-                    default:
-                        throw;
+                if(!ShowErrorToast(ex)) {
+                    throw;
                 }
             }
         }
@@ -143,24 +105,8 @@ public class FileService {
                 return true;
             }
             catch (Exception ex) {
-                switch (ex) {
-                    case SecurityException:
-                        //TODO
-                        break;
-                    case UnauthorizedAccessException:
-                        //TODO
-                        break;
-                    case PathTooLongException:
-                        //TODO
-                        break;
-                    case IOException:
-                        //TODO
-                        break;
-                    case JsonException:
-                        //TODO
-                        break;
-                    default:
-                        throw;
+                if (!ShowErrorToast(ex)) {
+                    throw;
                 }
             }
         }
@@ -189,24 +135,8 @@ public class FileService {
             }
         }
         catch(Exception ex) {
-            switch (ex) {
-                case SecurityException:
-                    //TODO
-                    break;
-                case UnauthorizedAccessException:
-                    //TODO
-                    break;
-                case PathTooLongException:
-                    //TODO
-                    break;
-                case IOException:
-                    //TODO
-                    break;
-                case JsonException:
-                    //TODO
-                    break;
-                default:
-                    throw;
+            if (!ShowErrorToast(ex)) {
+                throw;
             }
         }
         return false;
@@ -236,23 +166,31 @@ public class FileService {
         return false;
     }
 
-    //TODO: TEST
     private bool ProcessJsonNode(JsonNode node, Dictionary<string, string> updateMapping) {
-        bool modified = false;
+        var DeleteItems = new Dictionary<string, string>();
+        bool isModified = false;
 
         switch (node) {
             case JsonObject obj:
                 // Loop to find nested objects
                 foreach (var prop in obj.ToList()) {
                     if (prop.Value != null && ProcessJsonNode(prop.Value, updateMapping)) {
-                        modified = true;
+                        isModified = true;
                     }
 
                     // Modify the key name to correspond to the mapping
                     if (prop.Value != null && updateMapping.TryGetValue(prop.Key, out var newKey)) {
-                        obj.Add(newKey, prop.Value.DeepClone());
-                        obj.Remove(prop.Key);
-                        modified = true;
+                        if (newKey == "_Delete") {
+                            DeleteItems.Add(prop.Key, prop.Value.ToJsonString(new() {
+                                WriteIndented = true,
+                                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                            }));
+                        }
+                        else {
+                            obj.Add(newKey, prop.Value.DeepClone());
+                            obj.Remove(prop.Key);
+                            isModified = true;
+                        }
                     }
                 }
                 break;
@@ -260,12 +198,37 @@ public class FileService {
                 // 处理数组元素
                 for (int i = 0; i < arr.Count; i++) {
                     if (arr[i] is JsonNode element && ProcessJsonNode(element, updateMapping)) {
-                        arr[i] = element.DeepClone(); // 更新修改后的元素
-                        modified = true;
+                        // Update Modified
+                        arr[i] = element.DeepClone();
+                        isModified = true;
                     }
                 }
                 break;
         }
-        return modified;
+
+        // Toast Tip
+        if (DeleteItems.Any()) {
+            // TODO: Toast
+        }
+        return isModified;
+    }
+    private bool ShowErrorToast(Exception ex) {
+        switch (ex) {
+            case SecurityException:
+                //TODO
+                break;
+            case UnauthorizedAccessException:
+                //TODO
+                break;
+            case PathTooLongException:
+                //TODO
+                break;
+            case IOException:
+                //TODO
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 }

@@ -8,11 +8,10 @@ namespace BadMC_Launcher.Models.Enums;
 public enum MainPageMessengerTokenEnum {
     //Func Token
     PageNavigateToken,
-    FlyoutPageNavigateToken,
+    PageCloseToken,
+    PageGoBackToken,
 
     //GetValue Token
-    MainSideBarFlyoutFrameToken,
-    MainSideBarFrameToken,
     XamlRootToken
 }
 

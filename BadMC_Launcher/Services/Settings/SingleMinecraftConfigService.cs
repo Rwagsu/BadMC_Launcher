@@ -32,6 +32,19 @@ public class SingleMinecraftConfigService : ConfigClass {
         }
     }
 
+    public bool IsAutoJavaEnabled {
+        get => singleMinecraftConfigInstance.isAutoJavaEnabled;
+        set {
+            singleMinecraftConfigInstance.isAutoJavaEnabled = value;
+
+            // Trigger Event
+            OnPropertyChanged(nameof(IsAutoJavaEnabled));
+
+            //Write to Json
+            SyncSettingSet();
+        }
+    }
+
     public bool? IsFullscreen {
         get => singleMinecraftConfigInstance.isFullscreen;
         set {
@@ -148,7 +161,7 @@ public class SingleMinecraftConfigService : ConfigClass {
     public override bool SyncSettingGet() {
         if (TargetMinecraftEntryPath != null) {
             if (File.Exists(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"))) {
-                if(App.GetService<FileService>().ReadConfig<SingleMinecraftConfigService>(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, out var jsonClass) && jsonClass != null) {
+                if(App.GetService<FileService>().ReadConfig(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, out var jsonClass) && jsonClass != null) {
                     singleMinecraftConfigInstance.isFullscreen = jsonClass.IsFullscreen;
                     singleMinecraftConfigInstance.isEnableIndependencyCore = jsonClass.IsEnableIndependencyCore;
                     singleMinecraftConfigInstance.isAutoMemorySize = jsonClass.IsAutoMemorySize;
@@ -167,7 +180,7 @@ public class SingleMinecraftConfigService : ConfigClass {
 
     public override bool SyncSettingSet() {
         if (TargetMinecraftEntryPath != null) {
-            return App.GetService<FileService>().WriteConfig<SingleMinecraftConfigService>(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, this);
+            return App.GetService<FileService>().WriteConfig(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, this);
         }
         //TODO: Toast
         return false;

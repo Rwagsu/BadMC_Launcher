@@ -11,6 +11,8 @@ namespace BadMC_Launcher.Models.Datas.SettingsDatas;
 internal class SingleMinecraftConfig {
     internal string? targetMinecraftEntryPath;
 
+    internal bool isAutoJavaEnabled = false;
+
     internal bool? isFullscreen;
 
     internal bool? isEnableIndependencyCore;

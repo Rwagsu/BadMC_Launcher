@@ -19,6 +19,7 @@
         <converters:EmptyStringToObjectConverter x:Key="EmptyStringToBoolConverter"
                                                  EmptyValue="False"
                                                  NotEmptyValue="True" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Page.Resources>
 
     <Grid utu:SafeArea.Insets="VisibleBounds" Background="{Binding AppBackground}">
@@ -89,7 +90,7 @@
                             x:Uid="MainPage_MainSideBarNavigationView"
                             Margin="-1"
                             FooterMenuItemsSource="{Binding MainSideBarFooterItems}"
-                            IsBackButtonVisible="Collapsed"
+                            IsBackEnabled="{x:Bind MainFrame.CanGoBack}"
                             IsSettingsVisible="False"
                             MenuItemsSource="{Binding MainSideBarItems}"
                             PaneDisplayMode="LeftCompact"
@@ -145,10 +146,10 @@
                                         </Border>
                                     </StackPanel>
                                     <!-- Select Tags -->
-                                    <controls:Segmented x:Name="SearchFilterTokenView"
+                                    <controls:Segmented x:Name="SearchFilterSegmented"
                                                         ItemsSource="{Binding SearchFilterItems, Mode=TwoWay}"
                                                         SelectionMode="Multiple"
-                                                        Style="{StaticResource ButtonSegmentedStyle}">
+                                                        Style="{ThemeResource ButtonSegmentedStyle}">
                                         <controls:Segmented.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Margin="8,0"
@@ -165,7 +166,7 @@
                                         <!-- SearchTags Selected Event -->
                                         <Interactivity:Interaction.Behaviors>
                                             <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
-                                                <Interactivity:InvokeCommandAction Command="{Binding ChangeSearchFilterCommand}" CommandParameter="{Binding SelectedItems, ElementName=SearchFilterTokenView}" />
+                                                <Interactivity:InvokeCommandAction Command="{Binding ChangeSearchFilterCommand}" CommandParameter="{Binding ElementName=SearchFilterSegmented}" />
                                             </Interactivity:EventTriggerBehavior>
                                         </Interactivity:Interaction.Behaviors>
                                     </controls:Segmented>
@@ -185,9 +186,16 @@
                     </DataTemplate>
                 </NavigationView.MenuItemTemplate>
 
+                <!-- NavigationView Behaviors -->
                 <Interactivity:Interaction.Behaviors>
-                    <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
+                    <!-- MenuItem Clicked Event -->
+                    <Interactivity:EventTriggerBehavior EventName="ItemInvoked">
                         <Interactivity:InvokeCommandAction Command="{Binding NavigateToPageCommand}" />
+                    </Interactivity:EventTriggerBehavior>
+
+                    <!-- Back Button Clicked Event -->
+                    <Interactivity:EventTriggerBehavior EventName="BackRequested">
+                        <Interactivity:InvokeCommandAction Command="{Binding PageGoBackCommand}" />
                     </Interactivity:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
 
@@ -243,10 +251,10 @@
                             </animations:AnimationSet>
                         </animations:Explicit.Animations>
 
-                        <Frame x:Name="MainSideBarFrame">
+                        <Frame x:Name="MainFrame">
                             <Interactivity:Interaction.Behaviors>
                                 <!-- Frame Navigated -->
-                                <Interactivity:DataTriggerBehavior Binding="{Binding Content, ElementName=MainSideBarFrame, Converter={StaticResource EmptyStringToBoolConverter}}"
+                                <Interactivity:DataTriggerBehavior Binding="{Binding Content, ElementName=MainFrame, Converter={StaticResource EmptyStringToBoolConverter}}"
                                                                    ComparisonCondition="Equal"
                                                                    Value="True">
                                     <Interactivity:ChangePropertyAction PropertyName="Visibility"
@@ -256,58 +264,36 @@
                                 </Interactivity:DataTriggerBehavior>
 
                                 <!-- Frame Closed -->
-                                <Interactivity:DataTriggerBehavior Binding="{Binding Content, ElementName=MainSideBarFrame, Converter={StaticResource EmptyStringToBoolConverter}}"
+                                <Interactivity:DataTriggerBehavior Binding="{Binding Content, ElementName=MainFrame, Converter={StaticResource EmptyStringToBoolConverter}}"
                                                                    ComparisonCondition="Equal"
                                                                    Value="False">
-                                    <Interactivity:InvokeCommandAction Command="{Binding ChangeToolVisibilityAndSelectedItemCommand}" CommandParameter="{Binding ElementName=MainSideBarFrame}" />
+                                    <Interactivity:InvokeCommandAction Command="{Binding ChangeToolVisibilityAndSelectedItemCommand}" CommandParameter="{Binding Content, ElementName=MainFrame}" />
                                     <behaviors:StartAnimationAction Animation="{Binding ElementName=FrameOutAnimation}" />
                                 </Interactivity:DataTriggerBehavior>
 
                                 <!-- Frame Navigated Event -->
                                 <Interactivity:EventTriggerBehavior EventName="Navigated">
-                                    <Interactivity:InvokeCommandAction Command="{Binding ChangeToolVisibilityAndSelectedItemCommand}" CommandParameter="{Binding ElementName=MainSideBarFrame}" />
+                                    <Interactivity:InvokeCommandAction Command="{Binding ChangeToolVisibilityAndSelectedItemCommand}" CommandParameter="{Binding Content, ElementName=MainFrame}" />
                                 </Interactivity:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                         </Frame>
 
-                        <!-- PageFrame Button -->
-                        <StackPanel x:Name="MainSideBarPageMenu"
-                                    Margin="4"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    Orientation="Horizontal"
-                                    Spacing="6"
-                                    Visibility="{Binding MainSideBarToolVisibility}">
-                            <!-- Back to Page -->
-                            <HyperlinkButton Width="36"
-                                             Height="36"
-                                             Padding="0"
-                                             Command="{Binding PageGoBackCommand}"
-                                             CommandParameter="{Binding ElementName=MainSideBarFrame}">
-                                <AnimatedIcon x:Name="SearchAnimatedIcon"
-                                              Width="18"
-                                              Height="18">
-                                    <AnimatedIcon.FallbackIconSource>
-                                        <FontIconSource FontSize="16" Glyph="&#xE72B;" />
-                                    </AnimatedIcon.FallbackIconSource>
-                                    <AnimatedIcon.Source>
-                                        <animatedvisuals:AnimatedBackVisualSource />
-                                    </AnimatedIcon.Source>
-                                </AnimatedIcon>
-                            </HyperlinkButton>
-
-                            <!-- Close Page -->
-                            <Button Width="36"
-                                    Height="36"
-                                    Command="{Binding ClosePageCommand}"
-                                    CommandParameter="{Binding ElementName=MainSideBarFrame}"
-                                    Style="{StaticResource ButtonTransparentStyle}">
-                                <FontIcon Width="16"
-                                          Height="16"
-                                          FontSize="14"
-                                          Glyph="&#xE711;" />
-                            </Button>
-                        </StackPanel>
+                        <!-- Close page Button -->
+                        <Button Width="36"
+                                Height="36"
+                                Margin="4"
+                                x:Name="ClosePageButton"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Command="{Binding ClosePageCommand}"
+                                CommandParameter="{Binding ElementName=MainFrame}"
+                                Style="{StaticResource ButtonTransparentStyle}"
+                                Visibility="{Binding IsMainSideBarToolShow, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}">
+                            <FontIcon Width="16"
+                                      Height="16"
+                                      FontSize="14"
+                                      Glyph="&#xE711;" />
+                        </Button>
                     </Grid>
 
                     <!-- LaunchPad -->

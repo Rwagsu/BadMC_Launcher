@@ -9,6 +9,11 @@
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!-- Load Uno.UI.Toolkit resources -->
                 <ToolkitResources xmlns="using:Uno.Toolkit.UI" />
+
+                <!-- Load CommunityToolkit.WinUI resources -->
+                <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.Controls.Segmented/Segmented/Segmented.xaml" />
+
+                <!-- Load local resources -->
                 <ResourceDictionary Source="/Dictionaries/Styles/ButtonStyle.xaml" />
                 <ResourceDictionary Source="/Dictionaries/Templates/ItemTemplate/MinecraftFolderItemsTemplate.xaml" />
                 <ResourceDictionary Source="/Dictionaries/Templates/ItemTemplate/MinecraftItemsTemplate.xaml" />

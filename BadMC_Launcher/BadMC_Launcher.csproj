@@ -79,6 +79,7 @@
 
           <UnoImage Include="Assets\Icons\MinecraftIcons\*" />
           <UnoImage Include="Assets\Icons\JavaIcons\*" />
+          <Content Remove="Assets\Icons\JavaIcons\java.png" />
           <None Remove="Views\UserControls\LoadingAnimation.xaml" />
           <UnoImage Include="Assets\Icons\appicon_foreground.png" />
     </ItemGroup>

@@ -29,6 +29,8 @@ public partial class JavaContentDialogViewModel : ObservableObject {
 
         minecraftConfigService.PropertyChanged += JavaList_PropertyChanged;
 
+        IsAutoJavaEnabled = minecraftConfigService.IsAutoJavaEnabled;
+
         // Initialize List
         JavasList = new();
         SetJavaList();
@@ -39,6 +41,9 @@ public partial class JavaContentDialogViewModel : ObservableObject {
 
     [ObservableProperty]
     public partial bool IsJavasListLoading { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsAutoJavaEnabled { get; set; }
 
     [ObservableProperty]
     public partial ObservableDataList<JavaViewItem> JavasList { get; set; }
@@ -108,12 +113,17 @@ public partial class JavaContentDialogViewModel : ObservableObject {
         var selectedItem = JavasList.ElementAtOrDefault(JavasListSelectedIndex);
 
         // Set active Java path
-        minecraftConfigService.ActiveJavaPath = minecraftConfigService.JavaPaths.FirstOrDefault(selectedItem?.JavaPath);
+        minecraftConfigService.ActiveJavaPath = minecraftConfigService.JavaPaths.FirstOrDefault(item => item == selectedItem?.JavaPath);
+    }
+
+    [RelayCommand]
+    private void ChangeIsAutoJavaEnabled() {
+        minecraftConfigService.IsAutoJavaEnabled = IsAutoJavaEnabled;
     }
 
     [RelayCommand]
     private void DeleteJava(string parameter) {
-        // TODO: Search Java
+        // TODO: Delete Java
     }
 
     [RelayCommand]
@@ -128,7 +138,7 @@ public partial class JavaContentDialogViewModel : ObservableObject {
     private async void SetJavaList() {
         IsJavasListLoading = true;
 
-        var javaList = await Task.Run(async () => {
+        var javaEntries = await Task.Run(async () => {
             // Get Java paths
             var tasks = minecraftConfigService.JavaPaths
                 .Select(async item => await JavaUtil.GetJavaInfoAsync(item)).ToList();
@@ -137,8 +147,10 @@ public partial class JavaContentDialogViewModel : ObservableObject {
             return await Task.WhenAll(tasks);
         });
 
-        // Add to list
-        JavasList.AddRange(javaList.Select(info => new JavaViewItem(info)).ToList());
+        foreach (var item in javaEntries) {
+            JavasList.Add(new JavaViewItem(item));
+        }
+
         IsJavasListEmpty = !JavasList.Any();
 
         // Find selected Java
@@ -155,6 +167,7 @@ public partial class JavaContentDialogViewModel : ObservableObject {
                 break;
             case nameof(MinecraftConfigService.ActiveJavaPath):
                 // Update selected index
+                // TODO: Debug
                 JavasListSelectedIndex = JavasList.GetIndex(item => item.JavaPath == minecraftConfigService.ActiveJavaPath);
                 break;
         }

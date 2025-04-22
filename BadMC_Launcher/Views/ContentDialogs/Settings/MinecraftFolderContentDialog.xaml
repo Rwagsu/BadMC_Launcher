@@ -6,9 +6,7 @@
                xmlns:local="using:BadMC_Launcher.Views.ContentDialogs.Settings"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                x:Uid="MinecraftFolderContentDialog_ViewContentDialog"
-               MaxWidth="900"
-               MaxHeight="550"
-               PrimaryButtonStyle="{StaticResource AccentButtonStyle}"
+               CloseButtonStyle="{StaticResource AccentButtonStyle}"
                Style="{ThemeResource DefaultContentDialogStyle}">
     <ContentDialog.Resources>
         <converters:BoolToObjectConverter x:Key="BoolToOpacityConverter"
@@ -17,7 +15,10 @@
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </ContentDialog.Resources>
 
-    <Grid MinWidth="400" MinHeight="350">
+    <Grid MinWidth="400"
+          MinHeight="350"
+          MaxWidth="900"
+          MaxHeight="550">
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
             <RowDefinition Height="*" />

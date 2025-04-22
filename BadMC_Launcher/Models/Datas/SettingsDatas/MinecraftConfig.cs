@@ -25,6 +25,8 @@ internal static class MinecraftConfig {
 
     internal static Account? activeMinecraftAccount;
 
+    internal static bool isAutoJavaEnabled = false;
+
     internal static bool isFullscreen = false;
 
     internal static bool isEnableIndependencyCore = false;

@@ -88,7 +88,10 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     private async void GetJavaInfo() {
         java = await JavaUtil.GetJavaInfoAsync(minecraftService.ActiveJavaPath);
 
-        JavaId = java != null ? $"{java.JavaType} {java.JavaVersion}" : sourceService.GetString("Global_NullJavaId");
+        // Set Java information
+        JavaId = minecraftService.IsAutoJavaEnabled ?
+             $"{sourceService.GetString("Global_AutoJavaPath")}" :
+             ( java != null ? $"{java.JavaType} {java.JavaVersion}" : sourceService.GetString("Global_NullJavaId") );
         JavaPath = java != null ? java.JavaPath : sourceService.GetString("Global_NullJavaPath");
     }
 
@@ -100,6 +103,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     private void MinecraftConfig_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
         switch (e.PropertyName) {
             case nameof(minecraftService.ActiveJavaPath):
+            case nameof(minecraftService.IsAutoJavaEnabled):
                 GetJavaInfo();
                 break;
             case nameof(minecraftService.MinecraftFolders):

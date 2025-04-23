@@ -123,7 +123,13 @@ public partial class JavaContentDialogViewModel : ObservableObject {
 
     [RelayCommand]
     private void DeleteJava(string parameter) {
-        // TODO: Delete Java
+        // Check if parameter is null or empty
+        if (minecraftConfigService.JavaPaths.Contains(parameter)) {
+            // Remove Java path
+            minecraftConfigService.JavaPaths.Remove(parameter);
+            return;
+        }
+        // TODO: Toast Tips
     }
 
     [RelayCommand]
@@ -147,6 +153,10 @@ public partial class JavaContentDialogViewModel : ObservableObject {
             return await Task.WhenAll(tasks);
         });
 
+        // Clear list
+        JavasList.Clear();
+
+        // Add items
         foreach (var item in javaEntries) {
             JavasList.Add(new JavaViewItem(item));
         }

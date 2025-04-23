@@ -108,10 +108,6 @@ public class ThemeSettingService : ConfigClass {
         }
     }
 
-    public ThemeSettingService() {
-        
-    }
-
     public async void SetBackground(Action<Brush>? backgroundChanged = null) {
         if (backgroundChanged == null) {
             //TODO: 这应该得从代码介入了，应该得Dialog(

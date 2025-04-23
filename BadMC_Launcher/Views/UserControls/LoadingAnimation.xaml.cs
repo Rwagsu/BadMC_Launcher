@@ -52,6 +52,7 @@ public sealed partial class LoadingAnimation : UserControl {
 
         if ((bool)e.NewValue) {
             control.IsHitTestVisible = true;
+            //TODO: 懂的都懂(
 
 #if HAS_UNO_WINUI
             control.LoadBeginAnimation.Start();

@@ -8,6 +8,7 @@ using BadMC_Launcher.Models.Datas.Mappings;
 using BadMC_Launcher.Models.Datas.SettingsDatas;
 using MinecraftLaunch.Base.Models.Authentication;
 using MinecraftLaunch.Base.Models.Game;
+using Newtonsoft.Json.Linq;
 using Uno.Extensions;
 using Uno.Extensions.Specialized;
 
@@ -265,12 +266,9 @@ public class MinecraftConfigService : ConfigClass {
     public override bool SyncSettingGet() {
         if (App.GetService<FileService>().ReadConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigServiceContext.Default.MinecraftConfigService, out var jsonClass, UpdateMapping.MinecraftConfig) && jsonClass != null) {
             //TODO: 解蜜
-            MinecraftConfig.minecraftAccounts = jsonClass.MinecraftAccounts;
-            MinecraftConfig.javaPaths = jsonClass.JavaPaths;
-            MinecraftConfig.minecraftFolders = jsonClass.MinecraftFolders;
             MinecraftConfig.activeJavaPath = jsonClass.ActiveJavaPath;
             MinecraftConfig.activeMinecraftFolder = jsonClass.ActiveMinecraftFolderPath;
-            MinecraftConfig.activeMinecraftAccount = jsonClass.ActiveMinecraftAccount;
+            //MinecraftConfig.activeMinecraftAccount = jsonClass.ActiveMinecraftAccount;
             MinecraftConfig.isAutoJavaEnabled = jsonClass.IsAutoJavaEnabled;
             MinecraftConfig.isFullscreen = jsonClass.IsFullscreen;
             MinecraftConfig.isEnableIndependencyCore = jsonClass.IsEnableIndependencyCore;
@@ -278,7 +276,6 @@ public class MinecraftConfigService : ConfigClass {
             MinecraftConfig.minMemorySize = jsonClass.MinMemorySize;
             MinecraftConfig.maxMemorySize = jsonClass.MaxMemorySize;
             MinecraftConfig.launcherName = jsonClass.LauncherName;
-            MinecraftConfig.jvmArguments = jsonClass.JvmArguments;
 
             return true;
         }

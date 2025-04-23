@@ -286,4 +286,10 @@ If something in this setting has been changed in an ontology-specific customizat
   <data name="JavaContentDialog_JavaListLoadingTipsLoadingAnimation.LoadDescription" xml:space="preserve">
     <value>Getting Java Runtime......</value>
   </data>
+  <data name="JavaContentDialog_AutoJavaButton.Text" xml:space="preserve">
+    <value>Automatically Setting Java</value>
+  </data>
+  <data name="Global_AutoJavaPath" xml:space="preserve">
+    <value>Automatic settings</value>
+  </data>
 </root>

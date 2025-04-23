@@ -289,4 +289,7 @@
   <data name="JavaContentDialog_AutoJavaButton.Text" xml:space="preserve">
     <value>自动设置 Java</value>
   </data>
+  <data name="Global_AutoJavaPath" xml:space="preserve">
+    <value>自动设置</value>
+  </data>
 </root>

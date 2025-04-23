@@ -12,10 +12,22 @@ namespace BadMC_Launcher.Extensions;
 
 
 public class DistinctiveItemBindingList<T> : BindingList<T> {
-    public DistinctiveItemBindingList(IList<T> initialData) : base(initialData) {
+    private readonly IEqualityComparer<T> _comparer;
 
+    public DistinctiveItemBindingList(IList<T> initialData, IEqualityComparer<T>? comparer = null) : base(initialData) {
+        if (comparer == null) {
+            _comparer = EqualityComparer<T>.Default;
+        }
+        else {
+            _comparer = comparer;
+        }
     }
-    public DistinctiveItemBindingList() {
+
+    public DistinctiveItemBindingList(IEqualityComparer<T> comparer) {
+        _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+    }
+
+    public DistinctiveItemBindingList() : this(EqualityComparer<T>.Default) {
 
     }
 
@@ -47,6 +59,10 @@ public class DistinctiveItemBindingList<T> : BindingList<T> {
         if (e.PropertyDescriptor?.Attributes[typeof(IgnoreListChangedAttribute)] != null) { return; }
 
         base.OnListChanged(e);
+    }
+
+    public new bool Contains(T item) {
+        return this.Any(existingItem => _comparer.Equals(existingItem, item));
     }
 }
 

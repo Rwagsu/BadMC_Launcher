@@ -10,12 +10,13 @@ using MinecraftLaunch.Base.Models.Game;
 using BadMC_Launcher.Controls.Minecraft;
 using System.ComponentModel;
 using BadMC_Launcher.Services.Settings;
+using BadMC_Launcher.Classes.Comparers;
 
 namespace BadMC_Launcher.Models.Datas.SettingsDatas;
 internal static class MinecraftConfig {
     internal static DistinctiveItemBindingList<Account> minecraftAccounts = new() { PropertyName = nameof(MinecraftConfigService.MinecraftAccounts) };
 
-    internal static DistinctiveItemBindingList<string> javaPaths = new() { PropertyName = nameof(MinecraftConfigService.JavaPaths) };
+    internal static DistinctiveItemBindingList<string> javaPaths = new(new JavaPathListComparer()) { PropertyName = nameof(MinecraftConfigService.JavaPaths) };
 
     internal static DistinctiveItemBindingList<MinecraftFolderViewItem> minecraftFolders = new() { PropertyName = nameof(MinecraftConfigService.MinecraftFolders) };
 

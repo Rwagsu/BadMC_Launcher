@@ -159,20 +159,18 @@ public class SingleMinecraftConfigService : ConfigClass {
     }
 
     public override bool SyncSettingGet() {
-        if (TargetMinecraftEntryPath != null) {
-            if (File.Exists(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"))) {
-                if(App.GetService<FileService>().ReadConfig(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, out var jsonClass) && jsonClass != null) {
-                    singleMinecraftConfigInstance.isFullscreen = jsonClass.IsFullscreen;
-                    singleMinecraftConfigInstance.isEnableIndependencyCore = jsonClass.IsEnableIndependencyCore;
-                    singleMinecraftConfigInstance.isAutoMemorySize = jsonClass.IsAutoMemorySize;
-                    singleMinecraftConfigInstance.minMemorySize = jsonClass.MinMemorySize;
-                    singleMinecraftConfigInstance.maxMemorySize = jsonClass.MaxMemorySize;
-                    singleMinecraftConfigInstance.javaPath = jsonClass.JavaPath;
-                    singleMinecraftConfigInstance.launcherName = jsonClass.LauncherName;
-                    singleMinecraftConfigInstance.jvmArguments = jsonClass.JvmArguments;
-                    return true;
-                }
-            }
+        if(TargetMinecraftEntryPath != null
+            && File.Exists(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"))
+            && App.GetService<FileService>().ReadConfig(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, out var jsonClass) && jsonClass != null) {
+            singleMinecraftConfigInstance.isFullscreen = jsonClass.IsFullscreen;
+            singleMinecraftConfigInstance.isEnableIndependencyCore = jsonClass.IsEnableIndependencyCore;
+            singleMinecraftConfigInstance.isAutoMemorySize = jsonClass.IsAutoMemorySize;
+            singleMinecraftConfigInstance.minMemorySize = jsonClass.MinMemorySize;
+            singleMinecraftConfigInstance.maxMemorySize = jsonClass.MaxMemorySize;
+            singleMinecraftConfigInstance.javaPath = jsonClass.JavaPath;
+            singleMinecraftConfigInstance.launcherName = jsonClass.LauncherName;
+            singleMinecraftConfigInstance.jvmArguments = jsonClass.JvmArguments;
+            return true;
         }
         //TODO: Toast
         return false;

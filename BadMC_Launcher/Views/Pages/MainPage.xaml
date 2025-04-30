@@ -22,11 +22,19 @@
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Page.Resources>
 
-    <Grid utu:SafeArea.Insets="VisibleBounds" Background="{Binding AppBackground}">
+    <Interactivity:Interaction.Behaviors>
+        <!-- Page Clicked Event -->
+        <Interactivity:EventTriggerBehavior EventName="PointerPressed">
+            <Interactivity:InvokeCommandAction Command="{Binding CloseLaunchPadCommand}" />
+        </Interactivity:EventTriggerBehavior>
+    </Interactivity:Interaction.Behaviors>
+
+    <Grid utu:SafeArea.Insets="VisibleBounds" KeyDown="OnLaunchPadKeyDownEsc" Background="{Binding AppBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
         <!-- TitleBar -->
         <Border x:Name="AppTitleBar"
                 Grid.Row="0"
@@ -56,29 +64,6 @@
                            FontWeight="Bold"
                            Text="{Binding WindowName}" />
             </StackPanel>
-
-            <!-- MenuFlyout -->
-            <!--<FlyoutBase.AttachedFlyout>
-                <Flyout x:Name="MainSideBarFlyout" Placement="TopEdgeAlignedLeft">
-                    <Flyout.FlyoutPresenterStyle>
-                        <Style TargetType="FlyoutPresenter">
-                            <Setter Property="MaxWidth" Value="800" />
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="CornerRadius" Value="8" />
-                            <Setter Property="VerticalAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="52,8,0,0" />
-                        </Style>
-                    </Flyout.FlyoutPresenterStyle>
-                    <Interactivity:Interaction.Behaviors>
-                        <Interactivity:EventTriggerBehavior EventName="Closed">
-                            <Interactivity:InvokeCommandAction Command="{Binding DeselectItemCommand}" />
-                        </Interactivity:EventTriggerBehavior>
-                    </Interactivity:Interaction.Behaviors>
-                    <Frame x:Name="MainSideBarFlyoutFrame"
-                           Width="700"
-                           Height="544" />
-                </Flyout>
-            </FlyoutBase.AttachedFlyout>-->
         </Border>
 
         <!-- DashBoard -->
@@ -251,6 +236,8 @@
                             </animations:AnimationSet>
                         </animations:Explicit.Animations>
 
+
+
                         <Frame x:Name="MainFrame">
                             <Interactivity:Interaction.Behaviors>
                                 <!-- Frame Navigated -->
@@ -279,10 +266,10 @@
                         </Frame>
 
                         <!-- Close page Button -->
-                        <Button Width="36"
+                        <Button x:Name="ClosePageButton"
+                                Width="36"
                                 Height="36"
                                 Margin="4"
-                                x:Name="ClosePageButton"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding ClosePageCommand}"
@@ -297,11 +284,17 @@
                     </Grid>
 
                     <!-- LaunchPad -->
-                    <userControls:LaunchPad Grid.Column="1"
+                    <userControls:LaunchPad x:Name="LaunchPadControl"
+                                            Grid.Column="1"
                                             Width="336"
-                                            HorizontalAlignment="Right" />
+                                            HorizontalAlignment="Right"
+                                            IsOpen="True" />
                 </Grid>
             </NavigationView>
         </Grid>
+
+        <Button Grid.Row="1"
+                Click="Button_Click"
+                Content="WAHDYWU" />
     </Grid>
 </Page>

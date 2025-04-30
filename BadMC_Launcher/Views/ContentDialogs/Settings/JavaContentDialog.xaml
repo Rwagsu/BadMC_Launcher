@@ -80,7 +80,8 @@
                     Width="36"
                     Height="36"
                     Padding="0"
-                    IsEnabled="False">
+                    IsEnabled="True"
+                    Command="{Binding DownloadJavaCommand}">
                 <FontIcon Glyph="&#xEBD3;" />
             </Button>
 

@@ -3,17 +3,26 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+      xmlns:converter="using:BadMC_Launcher.Controls.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:triggers="using:CommunityToolkit.WinUI"
       mc:Ignorable="d">
+    <Page.Resources />
+
+    <Interactivity:Interaction.Behaviors>
+        <Interactivity:EventTriggerBehavior EventName="Unloaded">
+            <Interactivity:InvokeCommandAction Command="{Binding CancelLoopCommand}" />
+        </Interactivity:EventTriggerBehavior>
+    </Interactivity:Interaction.Behaviors>
+
     <ScrollViewer>
         <StackPanel Margin="18,0" Spacing="8">
             <!-- Tips -->
             <InfoBar x:Uid="LaunchSettingsPage_TipsInfoBar"
                      IsClosable="False"
                      IsOpen="True"
-                     Severity="Informational"/>
+                     Severity="Informational" />
 
             <!-- Minecraft folder Setting -->
             <controls:SettingsCard x:Name="MinecraftFolderSettingsCard" x:Uid="LaunchSettingsPage_MinecraftFolderSettingsCard">
@@ -44,8 +53,7 @@
             </controls:SettingsCard>
 
             <!-- Java path Setting -->
-            <controls:SettingsCard x:Name="JavaSettingsCard"
-                                   x:Uid="LaunchSettingsPage_JavaPathSettingsCard">
+            <controls:SettingsCard x:Name="JavaSettingsCard" x:Uid="LaunchSettingsPage_JavaPathSettingsCard">
                 <!-- Icons -->
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xF133;" />
@@ -71,15 +79,118 @@
             </controls:SettingsCard>
 
             <!-- Memory size Setting -->
-            <controls:SettingsExpander x:Uid="LaunchSettingsPage_MemorySizeSettingsCard">
+            <controls:SettingsExpander x:Uid="LaunchSettingsPage_MemorySizeSettingsExpander">
                 <!-- Icons -->
                 <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xE9D9;" />
                 </controls:SettingsExpander.HeaderIcon>
 
-                <!-- Settings ttems -->
+                <!-- Memory settings -->
                 <controls:SettingsExpander.Items>
-                    <!-- Java path Setting -->
+                    <!-- Memory View -->
+                    <controls:SettingsCard Description="{x:Bind GetGameMemoryScore(viewModel.GameMemoryView, viewModel.UsedMemoryView), Mode=OneWay}">
+                        <!-- Icons -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE95E;" />
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <!-- Header -->
+                        <controls:SettingsCard.Header>
+                            <VariableSizedWrapGrid HorizontalAlignment="Stretch"
+                                                   Background="Aqua"
+                                                   Orientation="Horizontal">
+                                <!-- Max memory view -->
+                                <TextBlock x:Uid="LaunchSettingsPage_MemoryViewSettingsCard"
+                                           VerticalAlignment="Center"
+                                           Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                <Border VerticalAlignment="Center"
+                                        Background="{ThemeResource ControlFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        CornerRadius="4">
+                                    <TextBlock Margin="6,2"
+                                               VerticalAlignment="Center"
+                                               Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                               Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                               TextTrimming="Clip">
+                                        <Run Text="{Binding MaxMemoryView}" />
+                                        <Run Text="GB" />
+                                    </TextBlock>
+                                </Border>
+                            </VariableSizedWrapGrid>
+                        </controls:SettingsCard.Header>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="60" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Memory text -->
+                            <StackPanel Grid.Column="0" Spacing="8">
+                                <StackPanel HorizontalAlignment="Right"
+                                            Orientation="Horizontal"
+                                            Spacing="6">
+                                    <!-- Used memory view -->
+                                    <TextBlock x:Uid="LaunchSettingsPage_UsedMemoryViewTextBlock"
+                                               VerticalAlignment="Center"
+                                               Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    <Border VerticalAlignment="Center"
+                                            Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                            CornerRadius="4">
+                                        <TextBlock Margin="6,2"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                                   Style="{ThemeResource BodyStrongTextBlockStyle}">
+                                            <Run Text="{Binding UsedMemoryView}" />
+                                            <Run Text="GB" />
+                                        </TextBlock>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- Game memory view -->
+                                <StackPanel HorizontalAlignment="Right"
+                                            Orientation="Horizontal"
+                                            Spacing="8">
+                                    <TextBlock x:Uid="LaunchSettingsPage_GameMemoryViewTextBlock"
+                                               VerticalAlignment="Center"
+                                               Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    <Border VerticalAlignment="Center"
+                                            Background="{ThemeResource SystemFillColorSuccessBrush}"
+                                            CornerRadius="4">
+                                        <TextBlock Margin="6,2"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                                   Style="{ThemeResource BodyStrongTextBlockStyle}">
+                                            <Run Text="{x:Bind GetStringGameMemory(viewModel.GameMemoryView, viewModel.UsedMemoryView), Mode=OneWay}" />
+                                            <Run Text="GB" />
+                                        </TextBlock>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                            <!-- Memory view -->
+                            <!-- Used memory -->
+                            <ProgressRing Grid.Column="1"
+                                          Width="50"
+                                          Height="50"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center"
+                                          Foreground="{ThemeResource SystemFillColorSuccessBrush}"
+                                          IsIndeterminate="False"
+                                          Value="{x:Bind GetProgressRingMemoryView(viewModel.GameMemoryView, viewModel.MaxMemoryView), Mode=OneWay}" />
+
+                            <!-- Seted memory -->
+                            <ProgressRing Grid.Column="1"
+                                          Width="50"
+                                          Height="50"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center"
+                                          IsIndeterminate="False"
+                                          Value="{x:Bind GetProgressRingMemoryView(viewModel.UsedMemoryView, viewModel.MaxMemoryView), Mode=OneWay}" />
+
+                        </Grid>
+                    </controls:SettingsCard>
+
+                    <!-- Memory Setting -->
                     <controls:SettingsCard x:Name="MemorySettingCard" x:Uid="LaunchSettingsPage_JavaPathSettingsCard">
                         <!-- Icons -->
                         <controls:SettingsCard.HeaderIcon>

@@ -22,27 +22,27 @@ public sealed partial class LoadingAnimation : UserControl {
     }
 
     // Register property
-    public static readonly DependencyProperty IsLoadingProperty =
-            DependencyProperty.Register(
-                nameof(IsLoading),
-                typeof(bool),
-                typeof(LoadingAnimation),
-                new PropertyMetadata(false, OnIsLoadingChanged));
+    public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register(
+         nameof(IsLoading),
+         typeof(bool),
+         typeof(LoadingAnimation),
+         new PropertyMetadata(false, OnIsLoadingChanged)
+    );
 
-    public static readonly DependencyProperty LoadDescriptionProperty =
-            DependencyProperty.Register(
-                nameof(LoadDescription),
-                typeof(string),
-                typeof(LoadingAnimation),
-                new PropertyMetadata(false, OnLoadDescriptionChanged));
+    public static readonly DependencyProperty LoadDescriptionProperty = DependencyProperty.Register(
+        nameof(LoadDescription),
+        typeof(string),
+        typeof(LoadingAnimation),
+        new PropertyMetadata(string.Empty, OnLoadDescriptionChanged)
+    );
 
     public bool IsLoading {
         get => (bool)GetValue(IsLoadingProperty);
         set => SetValue(IsLoadingProperty, value);
     }
-    
+
     public string LoadDescription {
-        get => (string)GetValue(IsLoadingProperty);
+        get => (string)GetValue(LoadDescriptionProperty);
         set => SetValue(LoadDescriptionProperty, value);
     }
 
@@ -50,11 +50,13 @@ public sealed partial class LoadingAnimation : UserControl {
     private static void OnIsLoadingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         var control = (LoadingAnimation)d;
 
-        if ((bool)e.NewValue) {
+        if ((bool)e.NewValue == (bool)e.OldValue) {
+            return;
+        }
+        else if ((bool)e.NewValue) {
             control.IsHitTestVisible = true;
-            //TODO: 懂的都懂(
 
-#if HAS_UNO_WINUI
+#if WINAPPSDK_PACKAGED
             control.LoadBeginAnimation.Start();
 #else
             control.Opacity = 1;
@@ -62,13 +64,14 @@ public sealed partial class LoadingAnimation : UserControl {
 
             return;
         }
-        control.IsHitTestVisible = false;
 
-#if HAS_UNO_WINUI
-        control.LoadEndAnimation.Start();
+#if WINAPPSDK_PACKAGED
+            control.LoadEndAnimation.Start();
 #else
             control.Opacity = 0;
 #endif
+
+        control.IsHitTestVisible = false;
     }
 
     private static void OnLoadDescriptionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

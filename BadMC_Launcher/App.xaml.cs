@@ -27,8 +27,7 @@ public partial class App : Application {
     /// </summary>
     public App() {
         InitializeComponent();
-
-        ApplicationLanguages.PrimaryLanguageOverride = "zh-Hans";
+        //ApplicationLanguages.PrimaryLanguageOverride = "zh-Hans";
     }
 
     public static new App Current => (App)Application.Current;
@@ -119,7 +118,7 @@ public partial class App : Application {
 
         //Set MainWindow Configs
         MainWindow.AppWindow.Title = GetService<ThemeSettingService>().WindowName;
-        MainWindow.AppWindow.Resize(AppParameters.windowSize);
+        MainWindow.AppWindow.Resize(AppParameters.WindowSize);
         MainWindow.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         //TODO: 要是Uno Platform 3月还没回信，那自定义拖拽区域估计只能自己写啦（悲）不过Desktop的三大金刚键肯定得自己写啦（大悲）
 #if WINDOWS

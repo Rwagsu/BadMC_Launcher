@@ -30,6 +30,7 @@ public partial class JavaContentDialogViewModel : ObservableObject {
         minecraftConfigService.PropertyChanged += JavaList_PropertyChanged;
 
         IsAutoJavaEnabled = minecraftConfigService.IsAutoJavaEnabled;
+        IsJavasListLoading = false;
 
         // Initialize List
         JavasList = new();
@@ -89,6 +90,11 @@ public partial class JavaContentDialogViewModel : ObservableObject {
     }
 
     [RelayCommand]
+    private void DownloadJava(string parameter) {
+        
+    }
+
+    [RelayCommand]
     private async Task SearchJavas() {
         IAsyncEnumerable<JavaEntry>? javas = JavaUtil.EnumerableJavaAsync();
         if (javas != null) {
@@ -142,8 +148,13 @@ public partial class JavaContentDialogViewModel : ObservableObject {
     }
 
     private async void SetJavaList() {
+        if (!minecraftConfigService.JavaPaths.Any()) {
+            return;
+        }
+
         IsJavasListLoading = true;
 
+        
         var javaEntries = await Task.Run(async () => {
             // Get Java paths
             var tasks = minecraftConfigService.JavaPaths
@@ -172,6 +183,7 @@ public partial class JavaContentDialogViewModel : ObservableObject {
     private void JavaList_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
         switch(e.PropertyName) {
             case nameof(MinecraftConfigService.JavaPaths):
+
                 // Update Java list
                 SetJavaList();
                 break;
@@ -182,5 +194,9 @@ public partial class JavaContentDialogViewModel : ObservableObject {
                 break;
         }
         IsJavasListEmpty = !JavasList.Any();
+    }
+
+    partial void OnIsJavasListLoadingChanged(bool oldValue, bool newValue) {
+        OnPropertyChanged(nameof(IsJavasListLoading));
     }
 }

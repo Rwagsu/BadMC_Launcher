@@ -187,10 +187,10 @@ If something in this setting has been changed in an ontology-specific customizat
   <data name="LaunchSettingsPage_JavaPathSettingsCard.Description" xml:space="preserve">
     <value>Setting the Java Runtime for Minecraft Java.</value>
   </data>
-  <data name="LaunchSettingsPage_MemorySizeSettingsCard.Header" xml:space="preserve">
+  <data name="LaunchSettingsPage_MemorySizeSettingsExpander.Header" xml:space="preserve">
     <value>Java Runtime Memory</value>
   </data>
-  <data name="LaunchSettingsPage_MemorySizeSettingsCard.Description" xml:space="preserve">
+  <data name="LaunchSettingsPage_MemorySizeSettingsExpander.Description" xml:space="preserve">
     <value>Set the memory used when running Minecraft Java.</value>
   </data>
   <data name="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch.OnContent" xml:space="preserve">
@@ -291,5 +291,32 @@ If something in this setting has been changed in an ontology-specific customizat
   </data>
   <data name="Global_AutoJavaPath" xml:space="preserve">
     <value>Automatic settings</value>
+  </data>
+  <data name="LaunchSettingsPage_MemoryScore0" xml:space="preserve">
+    <value>It seems something went wrong! (This can't be happening! 😨)</value>
+  </data>
+  <data name="LaunchSettingsPage_MemoryScore1" xml:space="preserve">
+    <value>Minecraft might struggle a lot with this...... 😟</value>
+  </data>
+  <data name="LaunchSettingsPage_MemoryScore2" xml:space="preserve">
+    <value>This memory size is decent for Minecraft 🙂</value>
+  </data>
+  <data name="LaunchSettingsPage_MemoryScore3" xml:space="preserve">
+    <value>This memory size is awesome! 😋</value>
+  </data>
+  <data name="LaunchSettingsPage_MemoryScore4" xml:space="preserve">
+    <value>Damn! You're rich! 😮</value>
+  </data>
+  <data name="LaunchSettingsPage_MemoryScore5" xml:space="preserve">
+    <value>HUH?????? Σ(っ °Д °;)っ</value>
+  </data>
+  <data name="LaunchSettingsPage_MemoryViewSettingsCard.Text" xml:space="preserve">
+    <value>Preview of memory usage</value>
+  </data>
+  <data name="LaunchSettingsPage_UsedMemoryViewTextBlock.Text" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="LaunchSettingsPage_GameMemoryViewTextBlock.Text" xml:space="preserve">
+    <value>Minecraft usage</value>
   </data>
 </root>

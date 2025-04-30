@@ -19,7 +19,7 @@ public partial class JavaViewItem : ObservableObject {
 
         JavaPath = Entry.JavaPath;
 
-        SetIconPath();
+        JavaIconPath = $"ms-appx:///Assets/Icons/JavaIcons/{Entry.JavaType.ToLower()}";
     }
 
     public JavaEntry Entry { get; init; }
@@ -32,10 +32,6 @@ public partial class JavaViewItem : ObservableObject {
 
     [ObservableProperty]
     public partial string? JavaIconPath { get; private set; }
-
-    private async void SetIconPath() {
-        JavaIconPath = await Entry.GetJavaIconPathAsync();
-    }
 
     public static bool operator ==(JavaViewItem? left, JavaViewItem? right) {
         var leftDirectoryPath = Path.GetDirectoryName(left?.JavaPath);

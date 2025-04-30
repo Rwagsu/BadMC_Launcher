@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using BadMC_Launcher.Classes;
+using BadMC_Launcher.Models.Datas;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Media.Imaging;
 using MinecraftLaunch.Base.Models.Game;
@@ -24,10 +25,8 @@ public class UnitTest1 {
     }
 
     [Test]
-    public async Task Test1()
-    {
-        var a = await JavaUtil.GetJavaInfoAsync(@"C:\Program Files\Zulu\zulu-23\bin\java.exe");
-
-        Assert.Pass($"{a.JavaPath}\n{a.JavaType}\n{a.JavaVersion}\n{a.MajorVersion}");
+    public void Test1() {
+        AppParameters.SystemInfo.RefreshMemoryStatus();
+        Assert.Pass((AppParameters.SystemInfo.MemoryStatus.TotalPhysical / 8).ToString());
     }
 }

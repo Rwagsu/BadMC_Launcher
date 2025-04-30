@@ -9,22 +9,26 @@ using BadMC_Launcher.Interfaces;
 using BadMC_Launcher.Models.Datas.ViewDatas;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Settings;
+using BadMC_Launcher.Views.UserControls;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
 using Uno.UI.RemoteControl;
 
 namespace BadMC_Launcher.ViewModels.Pages;
 
 public partial class MainPageViewModel : ObservableObject {
+    private bool isLaunchPadLightEliminationEnabled = false;
 
     public MainPageViewModel() {
         //Init Property
         WindowName = App.GetService<ThemeSettingService>().WindowName;
+        IsLaunchPadOpen = true;
 
         IsMainSideBarToolShow = false;
         MainSideBarItems = MainSideBarData.MainSideBarItems;
@@ -45,6 +49,9 @@ public partial class MainPageViewModel : ObservableObject {
     
     [ObservableProperty]
     public partial Brush? AppBackground { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsLaunchPadOpen { get; set; }
 
     //MainSideBar Items
     [ObservableProperty]
@@ -75,9 +82,13 @@ public partial class MainPageViewModel : ObservableObject {
     private void ChangeToolVisibilityAndSelectedItem(object? parameter) {
         if (parameter == null) {
             IsMainSideBarToolShow = false;
+            isLaunchPadLightEliminationEnabled = false;
+            IsLaunchPadOpen = true;
         }
         else {
             IsMainSideBarToolShow = true;
+            isLaunchPadLightEliminationEnabled = true;
+            IsLaunchPadOpen = false;
         }
 
         var list = new List<MainSideBarItem>();
@@ -103,17 +114,24 @@ public partial class MainPageViewModel : ObservableObject {
                 return;
             }
         }
-        SendInvokeFuncMessage<object?>(null, MainPageMessengerTokenEnum.PageCloseToken);
+        SendInvokeFuncMessage<bool>(MainPageMessengerTokenEnum.PageCloseToken);
+    }
+
+    [RelayCommand]
+    private void CloseLaunchPad(PointerRoutedEventArgs e) {
+        if (isLaunchPadLightEliminationEnabled && e.OriginalSource.GetType() != typeof(LaunchPad)) {
+            IsLaunchPadOpen = false;
+        }
     }
 
     [RelayCommand]
     private void PageGoBack() {
-        SendInvokeFuncMessage<object?>(null, MainPageMessengerTokenEnum.PageGoBackToken);
+        SendInvokeFuncMessage<bool>(MainPageMessengerTokenEnum.PageGoBackToken);
     }
 
     [RelayCommand]
     private void ClosePage() {
-        SendInvokeFuncMessage<object?>(null, MainPageMessengerTokenEnum.PageCloseToken);
+        SendInvokeFuncMessage<bool>(MainPageMessengerTokenEnum.PageCloseToken);
     }
 
     [RelayCommand]
@@ -160,6 +178,10 @@ public partial class MainPageViewModel : ObservableObject {
 
     private void SendInvokeFuncMessage<T>(T value, Enum tokenEnum) {
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<T>(value), tokenEnum.ToString());
+    }
+
+    private RequestMessage<T> SendInvokeFuncMessage<T>(Enum tokenEnum) {
+        return WeakReferenceMessenger.Default.Send(new RequestMessage<T>(), tokenEnum.ToString());
     }
 
     partial void OnIsMainSideBarToolShowChanged(bool value) {

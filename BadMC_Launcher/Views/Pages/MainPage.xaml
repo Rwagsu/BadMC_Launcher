@@ -20,16 +20,18 @@
                                                  EmptyValue="False"
                                                  NotEmptyValue="True" />
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+        <ThemeShadow x:Name="ControlShadow" />
     </Page.Resources>
 
     <Interactivity:Interaction.Behaviors>
-        <!-- Page Clicked Event -->
+        <!-- Page clicked event -->
         <Interactivity:EventTriggerBehavior EventName="PointerPressed">
             <Interactivity:InvokeCommandAction Command="{Binding CloseLaunchPadCommand}" />
         </Interactivity:EventTriggerBehavior>
     </Interactivity:Interaction.Behaviors>
 
-    <Grid utu:SafeArea.Insets="VisibleBounds" KeyDown="OnLaunchPadKeyDownEsc" Background="{Binding AppBackground}">
+    <Grid utu:SafeArea.Insets="VisibleBounds" Background="{Binding AppBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
             <RowDefinition Height="*" />
@@ -192,8 +194,8 @@
 
                     <!-- Page Frame -->
                     <Grid x:Name="MainFrameGrid"
-                          Grid.Column="0"
-                          Margin="0,0,16,0"
+                          Grid.ColumnSpan="2"
+                          Margin="64,32"
                           Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                           CornerRadius="8"
                           Visibility="Collapsed">
@@ -288,13 +290,13 @@
                                             Grid.Column="1"
                                             Width="336"
                                             HorizontalAlignment="Right"
-                                            IsOpen="True" />
+                                            IsOpen="{x:Bind viewModel.IsLaunchPadOpen, Mode=TwoWay}" />
                 </Grid>
             </NavigationView>
         </Grid>
 
-        <Button Grid.Row="1"
+        <!--<Button Grid.Row="1"
                 Click="Button_Click"
-                Content="WAHDYWU" />
+                Content="WAHDYWU" />-->
     </Grid>
 </Page>

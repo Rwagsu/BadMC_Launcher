@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using BadMC_Launcher.Controls;
 
 
-namespace BadMC_Launcher.Models.Datas.ViewDatas;
+namespace BadMC_Launcher.Models.Data.ViewData;
 
 internal static class SettingsData {
     internal static DistinctiveItemBindingList<SettingsSideBarItem> SettingsSideBarItems { get; set; } = new();

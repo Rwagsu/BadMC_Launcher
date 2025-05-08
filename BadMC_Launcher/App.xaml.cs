@@ -1,8 +1,7 @@
 using BadMC_Launcher.Classes;
 using BadMC_Launcher.Controls;
 using BadMC_Launcher.Controls.MainSearch;
-using BadMC_Launcher.Models.Datas;
-using BadMC_Launcher.Services;
+using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Services.ViewServices;
 using BadMC_Launcher.ViewModels.ContentDialogs.Settings;
@@ -20,7 +19,8 @@ using Uno.Resizetizer;
 using Windows.Globalization;
 
 namespace BadMC_Launcher;
-public partial class App : Application {
+public partial class 
+    App : Application {
     /// <summary>
     /// Initializes the singleton application object. This is the first line of authored code
     /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -28,6 +28,7 @@ public partial class App : Application {
     public App() {
         InitializeComponent();
         //ApplicationLanguages.PrimaryLanguageOverride = "zh-Hans";
+
     }
 
     public static new App Current => (App)Application.Current;
@@ -155,18 +156,20 @@ public partial class App : Application {
     //Get Service
     public static T GetService<T>() {
         var services = Current.Host?.Services;
-        if (services != null) {
-            var service = services.GetService<T>();
-            if (service != null) {
-                return service;
-            }
+        if (services == null) {
+            throw new InvalidOperationException("Service not found.");
+        }
+
+        var service = services.GetService<T>();
+        if (service != null) {
+            return service;
         }
         throw new InvalidOperationException("Service not found.");
     }
 
     private static void GetSettings() {
         GetService<MinecraftConfigService>().SyncSettingGet();
-        GetService<MinecraftConfigService>().isSyncEnabled = true;
+        GetService<MinecraftConfigService>().IsSyncEnabled = true;
         GetService<ThemeSettingService>().SyncSettingGet();
         GetService<ThemeSettingService>().isSyncEnabled = true;
     }
@@ -190,10 +193,10 @@ public partial class App : Application {
 
         //Register SettingsSideBarItems
         GetService<SettingsService>().SideBarRegister(new SettingsSideBarItem() {
-            ItemName = GetService<ResourceLoader>().GetString("LaunchSettingsPage_PageName"),
+            ItemName = GetService<ResourceLoader>().GetString("LaunchSettingsPage_SettingsPageName"),
             ItemIcon = new FontIcon() { Glyph = "\uE7FC" },
             NavigatePage = typeof(LaunchSettingsPage),
-            PageHead = GetService<ResourceLoader>().GetString("LaunchSettingsPage_PageName"),
+            PageHead = GetService<ResourceLoader>().GetString("LaunchSettingsPage_SettingsPageName"),
         });
     }
 }

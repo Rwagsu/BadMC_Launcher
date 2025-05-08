@@ -11,8 +11,9 @@ using BadMC_Launcher.Controls.Minecraft;
 using System.ComponentModel;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Classes.Comparers;
+using BadMC_Launcher.Models.Enums;
 
-namespace BadMC_Launcher.Models.Datas.SettingsDatas;
+namespace BadMC_Launcher.Models.Data.SettingsData;
 internal static class MinecraftConfig {
     internal static DistinctiveItemBindingList<Account> minecraftAccounts = new() { PropertyName = nameof(MinecraftConfigService.MinecraftAccounts) };
 
@@ -30,13 +31,13 @@ internal static class MinecraftConfig {
 
     internal static bool isFullscreen = false;
 
-    internal static bool isEnableIndependencyCore = false;
+    internal static IndependencyCoreEnum independencyCore = IndependencyCoreEnum.ModLoader;
 
     internal static bool isAutoMemorySize = true;
 
-    internal static int minMemorySize = 512;
+    internal static uint maxGameMemory = 1024;
 
-    internal static int maxMemorySize = 1024;
+    internal static uint minGameMemory = 512;
 
     internal static string? launcherName = App.GetService<ResourceLoader>().GetString("MinecraftConfig_MinecraftTitleNameResource");
 

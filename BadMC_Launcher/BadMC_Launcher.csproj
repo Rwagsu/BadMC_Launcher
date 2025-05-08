@@ -66,6 +66,7 @@
           <PackageReference Include="CommunityToolkit.WinUI.Behaviors" />
           <PackageReference Include="CommunityToolkit.WinUI.Controls.MetadataControl" />
           <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" />
+          <PackageReference Include="CommunityToolkit.WinUI.Controls.RangeSelector" />
           <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" />
           <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" />
           <PackageReference Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" />
@@ -89,6 +90,12 @@
         <PackageReference Include="CommunityToolkit.WinUI.Controls.RichSuggestBox" />
         <PackageReference Include="CommunityToolkit.WinUI.Lottie" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Page Update="Dictionaries\Styles\ShadowStyle.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
     
     <ItemGroup>

@@ -7,8 +7,8 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using BadMC_Launcher.Classes;
-using BadMC_Launcher.Models.Datas;
-using BadMC_Launcher.Models.Datas.SettingsDatas;
+using BadMC_Launcher.Models.Data;
+using BadMC_Launcher.Models.Data.SettingsData;
 using BadMC_Launcher.Models.Enums;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -21,90 +21,102 @@ public class ThemeSettingService : ConfigClass {
     public BackgroundTypeEnum BackgroundType {
         get => ThemeSetting.backgroundType;
         set {
-            ThemeSetting.backgroundType = value;
+            if (ThemeSetting.backgroundType != value) {
+                ThemeSetting.backgroundType = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(BackgroundType));
+                // Trigger Event
+                OnPropertyChanged(nameof(BackgroundType));
 
-            // Sync Setting
-            SyncSettingSet();
+                // Sync Setting
+                SyncSettingSet();
 
-            // Set Background
-            SetBackground();
+                // Set Background
+                SetBackground();
+            }
         }
     }
 
     public ThemeTypeEnum ThemeType { 
         get => ThemeSetting.themeType;
         set {
-            ThemeSetting.themeType = value;
+            if (ThemeSetting.themeType != value) {
+                ThemeSetting.themeType = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(ThemeType));
+                // Trigger Event
+                OnPropertyChanged(nameof(ThemeType));
 
-            // Sync Setting
-            SyncSettingSet();
+                // Sync Setting
+                SyncSettingSet();
+            }
         }
     }
 
     public string ImageBackgroundName {
         get => ThemeSetting.imageBackgroundName;
         set {
-            ThemeSetting.imageBackgroundName = value;
+            if (ThemeSetting.imageBackgroundName != value) {
+                ThemeSetting.imageBackgroundName = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(ImageBackgroundName));
+                // Trigger Event
+                OnPropertyChanged(nameof(ImageBackgroundName));
 
-            // Sync Setting
-            SyncSettingSet();
+                // Sync Setting
+                SyncSettingSet();
 
-            // Set Background
-            SetBackground();
+                // Set Background
+                SetBackground();
+            }
         }
     }
 
     public Stretch BackgroundStretch {
         get => ThemeSetting.backgroundStretch;
         set {
-            ThemeSetting.backgroundStretch = value;
+            if (ThemeSetting.backgroundStretch != value) {
+                ThemeSetting.backgroundStretch = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(BackgroundStretch));
+                // Trigger Event
+                OnPropertyChanged(nameof(BackgroundStretch));
 
-            // Sync Setting
-            SyncSettingSet();
+                // Sync Setting
+                SyncSettingSet();
 
-            // Set Background
-            SetBackground();
+                // Set Background
+                SetBackground();
+            }
         }
     }
 
     public string SolidColorBackgroundCode {
         get => ThemeSetting.solidColorBackgroundCode;
         set {
-            ThemeSetting.solidColorBackgroundCode = value;
+            if (ThemeSetting.solidColorBackgroundCode != value) {
+                ThemeSetting.solidColorBackgroundCode = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(SolidColorBackgroundCode));
+                // Trigger Event
+                OnPropertyChanged(nameof(SolidColorBackgroundCode));
 
-            // Sync Setting
-            SyncSettingSet();
+                // Sync Setting
+                SyncSettingSet();
 
-            // Set Background
-            SetBackground();
+                // Set Background
+                SetBackground();
+            }
         }
     }
 
     public string WindowName {
         get => ThemeSetting.windowName;
         set {
-            ThemeSetting.windowName = value;
+            if (ThemeSetting.windowName != value) {
+                ThemeSetting.windowName = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(WindowName));
+                // Trigger Event
+                OnPropertyChanged(nameof(WindowName));
 
-            // Sync Setting
-            SyncSettingSet();
+                // Sync Setting
+                SyncSettingSet();
+            }
         }
     }
 
@@ -113,7 +125,7 @@ public class ThemeSettingService : ConfigClass {
             //TODO: 这应该得从代码介入了，应该得Dialog(
             return;
         }
-        App.GetService<FileService>().CheckFolderAndFile(Path.Combine(AppDataPath.AssetsPath, "Wallpapers"), false);
+        App.GetService<FileService>().CheckPath(Path.Combine(AppDataPath.AssetsPath, "Wallpapers"), false);
         switch (ThemeSetting.backgroundType) {
             case BackgroundTypeEnum.SolidColor:
                 var color = ColorTranslator.FromHtml(ThemeSetting.solidColorBackgroundCode);
@@ -136,7 +148,7 @@ public class ThemeSettingService : ConfigClass {
     }
 
     public override bool SyncSettingGet() {
-        if (App.GetService<FileService>().ReadConfig(Path.Combine(AppDataPath.ConfigsPath, @"Settings\ThemeSettings.json"), ThemeSettingServiceContext.Default.ThemeSettingService, out var jsonClass) && jsonClass != null) {
+        if (App.GetService<FileService>().TryReadConfig(Path.Combine(AppDataPath.ConfigsPath, @"Settings\ThemeSettings.json"), ThemeSettingServiceContext.Default.ThemeSettingService, out var jsonClass) && jsonClass != null) {
             ThemeSetting.backgroundType = jsonClass.BackgroundType;
             ThemeSetting.themeType = jsonClass.ThemeType;
             ThemeSetting.imageBackgroundName = jsonClass.ImageBackgroundName;

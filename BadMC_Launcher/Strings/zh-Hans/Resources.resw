@@ -61,7 +61,7 @@
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
+    <xsd:element name="root" msdata:IsDataet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
@@ -165,7 +165,7 @@
   <data name="SettingsDashboardPage_SideBar.PaneTitle" xml:space="preserve">
     <value>设置</value>
   </data>
-  <data name="LaunchSettingsPage_PageName" xml:space="preserve">
+  <data name="LaunchSettingsPage_SettingsPageName" xml:space="preserve">
     <value>Minecraft 设置</value>
   </data>
   <data name="LaunchSettingsPage_MinecraftFolderSettingsCard.Header" xml:space="preserve">
@@ -181,16 +181,16 @@
   <data name="LaunchSettingsPage_MinecraftFolderSettingsCard.Description" xml:space="preserve">
     <value>对本体以及资源的存储位置进行管理.</value>
   </data>
-  <data name="LaunchSettingsPage_JavaPathSettingsCard.Header" xml:space="preserve">
-    <value>管理 Java 运行时内存</value>
+  <data name="LaunchSettingsPage_SetGameMemorySettingsCard.Header" xml:space="preserve">
+    <value>手动设置 Minecraft 运行时内存</value>
   </data>
   <data name="LaunchSettingsPage_JavaPathSettingsCard.Description" xml:space="preserve">
     <value>为 Minecraft Java 设置 Java 运行时.</value>
   </data>
-  <data name="LaunchSettingsPage_MemorySizeSettingsExpander.Header" xml:space="preserve">
-    <value>Java 运行时内存</value>
+  <data name="LaunchSettingsPage_GameMemorySizeSettingsExpander.Header" xml:space="preserve">
+    <value>Minecraft 使用内存</value>
   </data>
-  <data name="LaunchSettingsPage_MemorySizeSettingsExpander.Description" xml:space="preserve">
+  <data name="LaunchSettingsPage_GameMemorySizeSettingsExpander.Description" xml:space="preserve">
     <value>设置运行 Minecraft Java 时所使用的内存.</value>
   </data>
   <data name="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch.OnContent" xml:space="preserve">
@@ -292,31 +292,49 @@
   <data name="Global_AutoJavaPath" xml:space="preserve">
     <value>自动设置</value>
   </data>
-  <data name="LaunchSettingsPage_MemoryScore0" xml:space="preserve">
+  <data name="LaunchSettingsPage_GameMemoryScore0" xml:space="preserve">
     <value>好像哪里出错了! (不可能会这样啊?😨)</value>
   </data>
-  <data name="LaunchSettingsPage_MemoryScore1" xml:space="preserve">
+  <data name="LaunchSettingsPage_GameMemoryScore3" xml:space="preserve">
     <value>对于 Minecraft 可能非常吃力...... 😟</value>
   </data>
-  <data name="LaunchSettingsPage_MemoryScore2" xml:space="preserve">
-    <value>这个内存大小对于 Minecraft 来说不错🙂</value>
+  <data name="LaunchSettingsPage_GameMemoryScore4" xml:space="preserve">
+    <value>这个内存大小对于 Minecraft 来说不错. 🙂</value>
   </data>
-  <data name="LaunchSettingsPage_MemoryScore3" xml:space="preserve">
+  <data name="LaunchSettingsPage_GameMemoryScore5" xml:space="preserve">
     <value>这个内存大小很棒! 😋</value>
   </data>
-  <data name="LaunchSettingsPage_MemoryScore4" xml:space="preserve">
+  <data name="LaunchSettingsPage_GameMemoryScore6" xml:space="preserve">
     <value>woc! 有钱人! 😮</value>
   </data>
-  <data name="LaunchSettingsPage_MemoryScore5" xml:space="preserve">
+  <data name="LaunchSettingsPage_GameMemoryScore7" xml:space="preserve">
     <value>啊?????? Σ(っ °Д °;)っ</value>
   </data>
   <data name="LaunchSettingsPage_MemoryViewSettingsCard.Text" xml:space="preserve">
     <value>内存预览</value>
   </data>
   <data name="LaunchSettingsPage_UsedMemoryViewTextBlock.Text" xml:space="preserve">
-    <value>已使用</value>
+    <value>已使用 \ 可用</value>
   </data>
   <data name="LaunchSettingsPage_GameMemoryViewTextBlock.Text" xml:space="preserve">
-    <value>Minecraft 已分配</value>
+    <value>Minecraft 最大已分配</value>
+  </data>
+  <data name="LaunchSettingsPage_GameMemoryScore1" xml:space="preserve">
+    <value>最大已分配超出总内存可能会把 Minecraft 搞崩啊! 😨</value>
+  </data>
+  <data name="LaunchSettingsPage_GameMemoryScore2" xml:space="preserve">
+    <value>等等! 这内存可能连 Minecraft 都运行不起来吧! 😰</value>
+  </data>
+  <data name="LaunchSettingsPage_JavaPathSettingsCard.Header" xml:space="preserve">
+    <value>设置 Java 运行时</value>
+  </data>
+  <data name="LaunchSettingsPage_SetMemoryFlyoutTitleTextBlock.Text" xml:space="preserve">
+    <value>手动设置 Minecraft 最大 &amp; 最小内存</value>
+  </data>
+  <data name="LaunchSettingsPage_SetMaxGameMemoryNumberBox.PlaceholderText" xml:space="preserve">
+    <value>最大 (MB)</value>
+  </data>
+  <data name="LaunchSettingsPage_SetGameMinMemoryNumberBox.PlaceholderText" xml:space="preserve">
+    <value>最小 (MB)</value>
   </data>
 </root>

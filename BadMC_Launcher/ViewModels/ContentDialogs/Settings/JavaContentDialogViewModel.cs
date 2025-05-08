@@ -1,22 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BadMC_Launcher.Controls.Minecraft;
 using BadMC_Launcher.Services.Settings;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI;
-using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
 using MinecraftLaunch.Base.Models.Game;
 using MinecraftLaunch.Utilities;
-using Uno.Extensions;
-using Windows.ApplicationModel.Core;
 using Windows.Storage.Pickers;
-using Windows.UI.Core;
+using Uno.Extensions.Specialized;
 using WinRT.Interop;
 
 namespace BadMC_Launcher.ViewModels.ContentDialogs.Settings;
@@ -33,7 +22,7 @@ public partial class JavaContentDialogViewModel : ObservableObject {
         IsJavasListLoading = false;
 
         // Initialize List
-        JavasList = new();
+        JavasList = [];
         SetJavaList();
     }
 
@@ -58,8 +47,8 @@ public partial class JavaContentDialogViewModel : ObservableObject {
         var filePicker = new FileOpenPicker();
 
         // Get window handle
-        var hwnd = WindowNative.GetWindowHandle(App.Current.MainWindow);
-        InitializeWithWindow.Initialize(filePicker, hwnd);
+        var windowHandle = WindowNative.GetWindowHandle(App.Current.MainWindow);
+        InitializeWithWindow.Initialize(filePicker, windowHandle);
 
         if (OperatingSystem.IsWindows()) {
             filePicker.FileTypeFilter.Add(".exe");
@@ -68,21 +57,24 @@ public partial class JavaContentDialogViewModel : ObservableObject {
         // Show file picker dialog
         var file = await filePicker.PickSingleFileAsync();
 
-        if (file != null && file.DisplayName == "java") {
-            minecraftConfigService.JavaPaths.Add(file.Path);
-            return;
-        }
-        else if(file != null && file.DisplayName == "javaw") {
-            var javaFolder = Directory.GetParent(file.Path);
+        switch (file) {
+            case { DisplayName: "java" }:
+                minecraftConfigService.JavaPaths.Add(file.Path);
+                break;
+            case { DisplayName: "javaw" }: {
+                var javaFolder = Directory.GetParent(file.Path);
 
-            if (javaFolder != null) {
-                if (OperatingSystem.IsWindows()) {
-                    minecraftConfigService.JavaPaths.Add(@$"{javaFolder.FullName}\java{file.FileType}");
+                if (javaFolder != null) {
+                    if (OperatingSystem.IsWindows()) {
+                        minecraftConfigService.JavaPaths.Add(@$"{javaFolder.FullName}\java{file.FileType}");
+                        return;
+                    }
+
+                    minecraftConfigService.JavaPaths.Add($"{javaFolder.FullName}/java{file.FileType}");
                     return;
                 }
 
-                minecraftConfigService.JavaPaths.Add($"{javaFolder.FullName}/java{file.FileType}");
-                return;
+                break;
             }
         }
 
@@ -98,16 +90,13 @@ public partial class JavaContentDialogViewModel : ObservableObject {
     private async Task SearchJavas() {
         IAsyncEnumerable<JavaEntry>? javas = JavaUtil.EnumerableJavaAsync();
         if (javas != null) {
-            var javaList = await Task.Run(async () => {
-                var list = new List<string>();
-                await foreach (var item in javas) {
-                    list.Add(item.JavaPath);
-                }
-                return list;
-            });
+            var javaList = await Task.Run(async () => await javas.ToListAsync());
 
-            minecraftConfigService.JavaPaths.MargeItems(javaList);
-            return;
+            if (!javaList.All(item => JavasList.Contains(item.JavaPath))) {
+                JavasList.MargeItems(javaList.Select(item => new JavaViewItem(item)));
+                minecraftConfigService.JavaPaths.MargeItems(javaList.Select(item => item.JavaPath));
+                return;
+            }
         }
 
         //TODO: Show tip toast
@@ -130,17 +119,26 @@ public partial class JavaContentDialogViewModel : ObservableObject {
     [RelayCommand]
     private void DeleteJava(string parameter) {
         // Check if parameter is null or empty
-        if (minecraftConfigService.JavaPaths.Contains(parameter)) {
-            // Remove Java path
-            minecraftConfigService.JavaPaths.Remove(parameter);
+        if (!minecraftConfigService.JavaPaths.Contains(parameter)) {
             return;
         }
+
+        
+        var deleteItem = JavasList.FirstOrDefault(item => item.JavaPath == parameter);
+        if (deleteItem != null) {
+            // Remove Java path
+            JavasList.Remove(deleteItem);
+            minecraftConfigService.JavaPaths.Remove(deleteItem.JavaPath);
+            // TODO: Toast Tips
+            return;
+        }
+        
         // TODO: Toast Tips
     }
 
     [RelayCommand]
     private void LocalViewJava(string parameter) {
-        App.GetService<FileService>().TryOpenFolderFromPath(parameter);
+        App.GetService<FileService>().TryOpenFolderOrFileFromPath(parameter);
     }
 
     partial void OnJavasListChanged(ObservableDataList<JavaViewItem> value) {
@@ -183,20 +181,18 @@ public partial class JavaContentDialogViewModel : ObservableObject {
     private void JavaList_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
         switch(e.PropertyName) {
             case nameof(MinecraftConfigService.JavaPaths):
-
-                // Update Java list
-                SetJavaList();
+                if (!minecraftConfigService.JavaPaths.SequenceEqual(JavasList.Select(item => item.JavaPath))) {
+                    // Update Java list
+                    SetJavaList();
+                }
                 break;
             case nameof(MinecraftConfigService.ActiveJavaPath):
-                // Update selected index
-                // TODO: Debug
-                JavasListSelectedIndex = JavasList.GetIndex(item => item.JavaPath == minecraftConfigService.ActiveJavaPath);
+                if (minecraftConfigService.ActiveJavaPath != JavasList.ElementAtOrDefault(JavasListSelectedIndex)?.JavaPath) {
+                    // Update selected index
+                    JavasListSelectedIndex = JavasList.GetIndex(item => item.JavaPath == minecraftConfigService.ActiveJavaPath);
+                }
                 break;
         }
         IsJavasListEmpty = !JavasList.Any();
-    }
-
-    partial void OnIsJavasListLoadingChanged(bool oldValue, bool newValue) {
-        OnPropertyChanged(nameof(IsJavasListLoading));
     }
 }

@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace BadMC_Launcher.Extensions;
 public static class ConverterExtension {
-    public static double BytesToGB(this ulong bytes) {
+    public static double BytesToGb(this ulong bytes) {
         return Math.Round(bytes / ( 1024.0 * 1024.0 * 1024.0 ), 2);
+    }
+
+    public static uint BytesToMb(this ulong bytes) {
+        return checked((uint)(bytes / ( 1024 * 1024 )));
+    }
+
+    public static uint GetAutoGameMemoryMb(this uint maxMemory, uint usedMemory) {
+        // TODO: 等什么时候再做（
+        return (maxMemory - usedMemory) / 2;
     }
 }

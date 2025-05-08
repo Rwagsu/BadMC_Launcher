@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BadMC_Launcher.Models.Datas.ViewDatas;
+using BadMC_Launcher.Models.Data.ViewData;
 using BadMC_Launcher.ViewModels.Pages;
 using BadMC_Launcher.Classes;
 using Microsoft.Windows.ApplicationModel.Resources;

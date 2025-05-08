@@ -1,20 +1,16 @@
 using System.ComponentModel;
-using System.Linq;
 using System.Text.Json.Serialization;
 using BadMC_Launcher.Classes;
 using BadMC_Launcher.Controls.Minecraft;
-using BadMC_Launcher.Models.Datas;
-using BadMC_Launcher.Models.Datas.Mappings;
-using BadMC_Launcher.Models.Datas.SettingsDatas;
+using BadMC_Launcher.Models.Data;
+using BadMC_Launcher.Models.Data.Mappings;
+using BadMC_Launcher.Models.Data.SettingsData;
+using BadMC_Launcher.Models.Enums;
 using MinecraftLaunch.Base.Models.Authentication;
-using MinecraftLaunch.Base.Models.Game;
-using Newtonsoft.Json.Linq;
-using Uno.Extensions;
-using Uno.Extensions.Specialized;
 
 namespace BadMC_Launcher.Services.Settings;
 public class MinecraftConfigService : ConfigClass {
-    internal bool isSyncEnabled = false;
+    internal bool IsSyncEnabled = false;
 
     public MinecraftConfigService() {
         //Triggers an event when a property is changed
@@ -27,11 +23,13 @@ public class MinecraftConfigService : ConfigClass {
     public DistinctiveItemBindingList<Account> MinecraftAccounts {
         get => MinecraftConfig.minecraftAccounts;
         set {
-            MinecraftConfig.minecraftAccounts.Clear();
-            MinecraftConfig.minecraftAccounts.MargeItems(value);
+            if (!MinecraftConfig.minecraftAccounts.SequenceEqual(value)) {
+                MinecraftConfig.minecraftAccounts.Clear();
+                MinecraftConfig.minecraftAccounts.MargeItems(value);
 
-            // Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
     public DistinctiveItemBindingList<string> JavaPaths {
@@ -47,11 +45,13 @@ public class MinecraftConfigService : ConfigClass {
             return MinecraftConfig.javaPaths;
         }
         set {
-            MinecraftConfig.javaPaths.Clear();
-            MinecraftConfig.javaPaths.MargeItems(value);
+            if (!MinecraftConfig.javaPaths.SequenceEqual(value)) {
+                MinecraftConfig.javaPaths.Clear();
+                MinecraftConfig.javaPaths.MargeItems(value);
 
-            // Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
     public DistinctiveItemBindingList<MinecraftFolderViewItem> MinecraftFolders {
@@ -67,18 +67,20 @@ public class MinecraftConfigService : ConfigClass {
             return MinecraftConfig.minecraftFolders;
         }
         set {
-            MinecraftConfig.minecraftFolders.Clear();
-            MinecraftConfig.minecraftFolders.MargeItems(value);
+            if (!MinecraftConfig.minecraftFolders.SequenceEqual(value)) {
+                MinecraftConfig.minecraftFolders.Clear();
+                MinecraftConfig.minecraftFolders.MargeItems(value);
 
-            // Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
     public string? ActiveJavaPath {
         get => MinecraftConfig.activeJavaPath;
         set {
-            // CHeck folder is exists
+            // Check folder is existing
             if (!Path.Exists(value)) {
                 MinecraftConfig.activeJavaPath = string.Empty;
                 // TODO: Tip Toast
@@ -98,7 +100,7 @@ public class MinecraftConfigService : ConfigClass {
     public string? ActiveMinecraftFolderPath {
         get => MinecraftConfig.activeMinecraftFolder;
         set {
-            // CHeck folder is exists
+            // Check folder is existing
             if (!Path.Exists(value)) {
                 MinecraftConfig.activeMinecraftFolder = string.Empty;
                 // TODO: Tip Toast
@@ -118,119 +120,154 @@ public class MinecraftConfigService : ConfigClass {
     public Account? ActiveMinecraftAccount {
         get => MinecraftConfig.activeMinecraftAccount;
         set {
-            MinecraftConfig.activeMinecraftAccount = value;
+            if (MinecraftConfig.activeMinecraftAccount != value) {
+                MinecraftConfig.activeMinecraftAccount = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(ActiveMinecraftAccount));
+                // Trigger Event
+                OnPropertyChanged(nameof(ActiveMinecraftAccount));
 
-            //Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
     public bool IsAutoJavaEnabled {
         get => MinecraftConfig.isAutoJavaEnabled;
         set {
-            MinecraftConfig.isAutoJavaEnabled = value;
+            if (MinecraftConfig.isAutoJavaEnabled != value) {
+                MinecraftConfig.isAutoJavaEnabled = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(IsAutoJavaEnabled));
+                // Trigger Event
+                OnPropertyChanged(nameof(IsAutoJavaEnabled));
 
-            //Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
     public bool IsFullscreen {
         get => MinecraftConfig.isFullscreen;
         set {
-            MinecraftConfig.isFullscreen = value;
+            if (MinecraftConfig.isFullscreen != value) {
+                MinecraftConfig.isFullscreen = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(JavaPaths));
+                // Trigger Event
+                OnPropertyChanged(nameof(IsFullscreen));
 
-            //Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
-    public bool IsEnableIndependencyCore {
-        get => MinecraftConfig.isEnableIndependencyCore;
+    public IndependencyCoreEnum IndependencyCore {
+        get => MinecraftConfig.independencyCore;
         set {
-            MinecraftConfig.isEnableIndependencyCore = value;
+            if (MinecraftConfig.independencyCore != value) {
+                MinecraftConfig.independencyCore = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(IsEnableIndependencyCore));
+                // Trigger Event
+                OnPropertyChanged(nameof(IndependencyCore));
 
-            //Write to Json
-            SyncSettingSet();
+                //Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
     public bool IsAutoMemorySize {
         get => MinecraftConfig.isAutoMemorySize;
         set {
-            MinecraftConfig.isAutoMemorySize = value;
+            if (MinecraftConfig.isAutoMemorySize != value) {
+                MinecraftConfig.isAutoMemorySize = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(IsAutoMemorySize));
+                // Trigger Event
+                OnPropertyChanged(nameof(IsAutoMemorySize));
 
-            //Write to Json
-            SyncSettingSet();
+                //Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
-    public int MinMemorySize {
-        get => MinecraftConfig.minMemorySize;
+    public uint MaxGameMemory {
+        get => MinecraftConfig.maxGameMemory;
         set {
-            MinecraftConfig.minMemorySize = value;
+            if (MinecraftConfig.maxGameMemory != value) {
+                // Check max game memory
+                AppParameters.SystemInfo.RefreshMemoryStatus();
+                if (value == 0 || value > AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToMb() || value <= MinecraftConfig.minGameMemory) {
+                    // TODO: Toast Tips
+                    OnPropertyChanged(nameof(MaxGameMemory));
+                    return;
+                }
 
-            // Trigger Event
-            OnPropertyChanged(nameof(MinMemorySize));
+                MinecraftConfig.maxGameMemory = value;
 
-            //Write to Json
-            SyncSettingSet();
+                // Trigger Event
+                OnPropertyChanged(nameof(MaxGameMemory));
+
+                //Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
-    public int MaxMemorySize {
-        get => MinecraftConfig.maxMemorySize;
+    public uint MinGameMemory {
+        get => MinecraftConfig.minGameMemory;
         set {
-            MinecraftConfig.maxMemorySize = value;
+            if (MinecraftConfig.minGameMemory != value) {
+                // Check min game memory
+                AppParameters.SystemInfo.RefreshMemoryStatus();
+                if (value == 0 || value > AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToMb() || value >= MinecraftConfig.maxGameMemory) {
+                    // TODO: Toast Tips
+                    OnPropertyChanged(nameof(MinGameMemory));
+                    return;
+                }
 
-            // Trigger Event
-            OnPropertyChanged(nameof(MaxMemorySize));
+                MinecraftConfig.minGameMemory = value;
 
-            //Write to Json
-            SyncSettingSet();
+                // Trigger Event
+                OnPropertyChanged(nameof(MinGameMemory));
+
+                //Write to Json
+                SyncSettingSet();
+
+            }
         }
     }
 
     public string? LauncherName {
         get => MinecraftConfig.launcherName;
         set {
-            MinecraftConfig.launcherName = value;
+            if (MinecraftConfig.launcherName != value) {
+                MinecraftConfig.launcherName = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(LauncherName));
+                // Trigger Event
+                OnPropertyChanged(nameof(LauncherName));
 
-            //Write to Json
-            SyncSettingSet();
+                //Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
     public BindingList<string> JvmArguments {
         get => MinecraftConfig.jvmArguments;
         set {
-            MinecraftConfig.jvmArguments.RaiseListChangedEvents = false;
+            if (!MinecraftConfig.jvmArguments.SequenceEqual(value)) {
+                MinecraftConfig.jvmArguments.RaiseListChangedEvents = false;
 
-            MinecraftConfig.jvmArguments.Clear();
-            MinecraftConfig.jvmArguments.AddRange(value);
+                MinecraftConfig.jvmArguments.Clear();
+                MinecraftConfig.jvmArguments.AddRange(value);
 
-            MinecraftConfig.jvmArguments.RaiseListChangedEvents = true;
+                MinecraftConfig.jvmArguments.RaiseListChangedEvents = true;
 
-            // Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
@@ -238,17 +275,17 @@ public class MinecraftConfigService : ConfigClass {
         if (sender is DistinctiveItemBindingList<T> senderList && !string.IsNullOrWhiteSpace(senderList.PropertyName)) {
             switch (senderList.PropertyName) {
                 case nameof(MinecraftFolders):
-                    if (!MinecraftFolders.Any(item => item.MinecraftFolderPath == ActiveMinecraftFolderPath) && !string.IsNullOrWhiteSpace(ActiveMinecraftFolderPath)) {
+                    if (MinecraftFolders.All(item => item.MinecraftFolderPath != ActiveMinecraftFolderPath) && !string.IsNullOrWhiteSpace(ActiveMinecraftFolderPath)) {
                         ActiveMinecraftFolderPath = string.Empty;
                     }
                     break;
                 case nameof(JavaPaths):
-                    if (!JavaPaths.Any(item => item == ActiveJavaPath) && !string.IsNullOrWhiteSpace(ActiveJavaPath)) {
+                    if (JavaPaths.All(item => item != ActiveJavaPath) && !string.IsNullOrWhiteSpace(ActiveJavaPath)) {
                         ActiveJavaPath = string.Empty;
                     }
                     break;
                 case nameof(MinecraftAccounts):
-                    if (!MinecraftAccounts.Any(item => item.Uuid == ActiveMinecraftAccount?.Uuid) && ActiveMinecraftAccount != null) {
+                    if (MinecraftAccounts.All(item => item.Uuid != ActiveMinecraftAccount?.Uuid) && ActiveMinecraftAccount != null) {
                         ActiveMinecraftAccount = null;
                     }
                     break;
@@ -264,17 +301,17 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public override bool SyncSettingGet() {
-        if (App.GetService<FileService>().ReadConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigServiceContext.Default.MinecraftConfigService, out var jsonClass, UpdateMapping.MinecraftConfig) && jsonClass != null) {
+        if (App.GetService<FileService>().TryReadConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigServiceContext.Default.MinecraftConfigService, out var jsonClass, UpdateMapping.minecraftConfigPropertyNameMapping, UpdateMapping.minecraftConfigPropertyTypeMapping) && jsonClass != null) {
             //TODO: 解蜜
             MinecraftConfig.activeJavaPath = jsonClass.ActiveJavaPath;
             MinecraftConfig.activeMinecraftFolder = jsonClass.ActiveMinecraftFolderPath;
             //MinecraftConfig.activeMinecraftAccount = jsonClass.ActiveMinecraftAccount;
             MinecraftConfig.isAutoJavaEnabled = jsonClass.IsAutoJavaEnabled;
             MinecraftConfig.isFullscreen = jsonClass.IsFullscreen;
-            MinecraftConfig.isEnableIndependencyCore = jsonClass.IsEnableIndependencyCore;
+            MinecraftConfig.independencyCore = jsonClass.IndependencyCore;
             MinecraftConfig.isAutoMemorySize = jsonClass.IsAutoMemorySize;
-            MinecraftConfig.minMemorySize = jsonClass.MinMemorySize;
-            MinecraftConfig.maxMemorySize = jsonClass.MaxMemorySize;
+            MinecraftConfig.minGameMemory = jsonClass.MinGameMemory;
+            MinecraftConfig.maxGameMemory = jsonClass.MaxGameMemory;
             MinecraftConfig.launcherName = jsonClass.LauncherName;
 
             return true;
@@ -283,7 +320,7 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public override bool SyncSettingSet() {
-        if (isSyncEnabled == false) {
+        if (IsSyncEnabled == false) {
             return false;
         }
         MinecraftConfigService classValue = this;

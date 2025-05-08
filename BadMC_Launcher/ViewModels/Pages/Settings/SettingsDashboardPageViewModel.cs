@@ -1,18 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using BadMC_Launcher.Models.Datas.ViewDatas;
-using BadMC_Launcher.Services.ViewServices;
+using BadMC_Launcher.Models.Data.ViewData;
 using BadMC_Launcher.Controls;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.UI.Xaml.Media.Animation;
-using BadMC_Launcher.Extensions;
 
 namespace BadMC_Launcher.ViewModels.Pages.Settings;
 

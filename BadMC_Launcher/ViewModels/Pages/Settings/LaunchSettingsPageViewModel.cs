@@ -1,43 +1,30 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BadMC_Launcher.Controls.Minecraft;
-using BadMC_Launcher.Models.Datas;
-using BadMC_Launcher.Models.Datas.SettingsDatas;
+using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Settings;
-using BadMC_Launcher.ViewModels.ContentDialogs.Settings;
 using BadMC_Launcher.Views.ContentDialogs.Settings;
-using BadMC_Launcher.Views.Pages.Settings;
-using BadMC_Launcher.Views.UserControls;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using CommunityToolkit.WinUI.Converters;
-using Hardware.Info;
 using MinecraftLaunch.Base.Models.Game;
 using MinecraftLaunch.Utilities;
 using Serilog;
-using Uno.Logging;
-
 
 namespace BadMC_Launcher.ViewModels.Pages.Settings;
 
 public partial class LaunchSettingsPageViewModel : ObservableObject {
     private readonly CancellationTokenSource cancelLoopToken = new();
     private readonly XamlRoot? mainPageXamlRoot;
-    private MinecraftConfigService minecraftService = App.GetService<MinecraftConfigService>();
-    private ResourceLoader sourceService = App.GetService<ResourceLoader>();
+    private readonly MinecraftConfigService minecraftService = App.GetService<MinecraftConfigService>();
+    private readonly ResourceLoader sourceService = App.GetService<ResourceLoader>();
+    private bool isRangeSelectorDragStarted = false;
     private MinecraftFolderViewItem? minecraftFolder;
     private JavaEntry? java;
    
     public LaunchSettingsPageViewModel() {
         mainPageXamlRoot = SendGetValueMessage<XamlRoot?>(MainPageMessengerTokenEnum.XamlRootToken).Response;
         minecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
-        IsAutoMemorySize = minecraftService.IsAutoMemorySize;
 
         minecraftService.PropertyChanged += MinecraftConfig_PropertyChanged;
 
@@ -46,6 +33,10 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
 
         JavaId = sourceService.GetString("Global_NullJavaId");
         JavaPath = sourceService.GetString("Global_NullJavaPath");
+
+        IsAutoGameMemorySize = minecraftService.IsAutoMemorySize;
+        MinGameMemory = minecraftService.MinGameMemory;
+        MaxGameMemory = minecraftService.MaxGameMemory;
 
         RefreshMemory(cancelLoopToken.Token);
 
@@ -68,22 +59,22 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
 
     // Memory settings
     [ObservableProperty]
-    public partial bool IsAutoMemorySize { get; set; }
+    public partial bool IsAutoGameMemorySize { get; set; }
 
     [ObservableProperty]
-    public partial double MaxMemoryView { get; set; }
+    public partial uint MaxMemoryView { get; set; }
 
     [ObservableProperty]
-    public partial double UsedMemoryView { get; set; }
+    public partial uint UsedMemoryView { get; set; }
 
     [ObservableProperty]
-    public partial double GameMemoryView { get; set; }
+    public partial uint GameMemoryView { get; set; }
 
     [ObservableProperty]
-    public partial uint MinMemory { get; set; }
+    public partial uint MinGameMemory { get; set; }
 
     [ObservableProperty]
-    public partial uint MaxMemory { get; set; }
+    public partial uint MaxGameMemory { get; set; }
 
     [RelayCommand]
     private void CancelLoop() {
@@ -114,8 +105,36 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     }
 
     [RelayCommand]
-    private void SetIsAutoMemorySize() {
-        minecraftService.IsAutoMemorySize = IsAutoMemorySize;
+    private void DisableNumberBoxEvent() {
+        isRangeSelectorDragStarted = true;
+    }
+
+    [RelayCommand]
+    private void EnableNumberBoxEvent() {
+        isRangeSelectorDragStarted = false;
+    }
+
+    [RelayCommand]
+    private void SetGameMemory() {
+        if (isRangeSelectorDragStarted) {
+            return;
+        }
+        // Set min memory
+        minecraftService.MinGameMemory = MinGameMemory;
+
+        // Set max memory
+        minecraftService.MaxGameMemory = MaxGameMemory;
+    }
+
+    partial void OnIsAutoGameMemorySizeChanged(bool value) {
+        minecraftService.IsAutoMemorySize = IsAutoGameMemorySize;
+
+        if (value) {
+            GameMemoryView = MaxMemoryView.GetAutoGameMemoryMb(UsedMemoryView);
+        }
+        else {
+            GameMemoryView = MaxGameMemory;
+        }
     }
 
     private async void GetJavaInfo() {
@@ -124,7 +143,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         // Set Java information
         JavaId = minecraftService.IsAutoJavaEnabled ?
              $"{sourceService.GetString("Global_AutoJavaPath")}" :
-             ( java != null ? $"{java.JavaType} {java.JavaVersion}" : sourceService.GetString("Global_NullJavaId") );
+             java != null ? $"{java.JavaType} {java.JavaVersion}" : sourceService.GetString("Global_NullJavaId");
         JavaPath = java != null ? java.JavaPath : sourceService.GetString("Global_NullJavaPath");
     }
 
@@ -133,14 +152,19 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
             while (true) {
                 AppParameters.SystemInfo.RefreshMemoryStatus();
 
-                MaxMemoryView = AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToGB();
-                UsedMemoryView = (AppParameters.SystemInfo.MemoryStatus.TotalPhysical - AppParameters.SystemInfo.MemoryStatus.AvailablePhysical).BytesToGB();
-                GameMemoryView = ( AppParameters.SystemInfo.MemoryStatus.TotalPhysical - ( AppParameters.SystemInfo.MemoryStatus.AvailablePhysical / 2 ) ).BytesToGB();
+                MaxMemoryView = AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToMb();
+                UsedMemoryView = (AppParameters.SystemInfo.MemoryStatus.TotalPhysical - AppParameters.SystemInfo.MemoryStatus.AvailablePhysical).BytesToMb();
+
+                if (IsAutoGameMemorySize) {
+                    GameMemoryView = MaxMemoryView.GetAutoGameMemoryMb(UsedMemoryView);
+                }
+                else {
+                    GameMemoryView = MaxGameMemory;
+                }
 
                 // Wait 1 second
                 await Task.Delay(1000, cancellationToken);
             }
-
         }
         catch(TaskCanceledException ex) {
             Log.Information($"RefreshMemory method is Exited: {ex.Source}");
@@ -153,17 +177,34 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
 
     private void MinecraftConfig_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
         switch (e.PropertyName) {
-            case nameof(minecraftService.ActiveJavaPath):
-            case nameof(minecraftService.IsAutoJavaEnabled):
-                GetJavaInfo();
+            case nameof(MinecraftConfigService.ActiveJavaPath):
+            case nameof(MinecraftConfigService.IsAutoJavaEnabled):
+                if (minecraftService.ActiveJavaPath != JavaId || JavaId != sourceService.GetString("Global_NullJavaId")) {
+                    GetJavaInfo();
+                }
                 break;
-            case nameof(minecraftService.MinecraftFolders):
-            case nameof(minecraftService.ActiveMinecraftFolderPath):
-                minecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
+            case nameof(MinecraftConfigService.ActiveMinecraftFolderPath):
+                if (minecraftService.ActiveMinecraftFolderPath != MinecraftFolderPath) {
+                    minecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
 
-                MinecraftFolderId = minecraftFolder != null ? minecraftFolder.MinecraftFolderId : sourceService.GetString("Global_NullMinecraftFolderId");
-                MinecraftFolderPath = minecraftFolder != null ? minecraftFolder.MinecraftFolderPath : sourceService.GetString("Global_NullMinecraftFolderPath");
+                    MinecraftFolderId = minecraftFolder != null ? minecraftFolder.MinecraftFolderId : sourceService.GetString("Global_NullMinecraftFolderId");
+                    MinecraftFolderPath = minecraftFolder != null ? minecraftFolder.MinecraftFolderPath : sourceService.GetString("Global_NullMinecraftFolderPath");
+                }
+                break;
+            case nameof(MinecraftConfigService.MinGameMemory):
+                if (minecraftService.MinGameMemory != MinGameMemory) {
+                    MinGameMemory = minecraftService.MinGameMemory;
+                }
+                break;
+            case nameof(MinecraftConfigService.MaxGameMemory):
+                if (minecraftService.MaxGameMemory != MaxGameMemory) {
+                    MaxGameMemory = minecraftService.MaxGameMemory;
+                }
                 break;
         }
+    }
+
+    partial void OnMaxGameMemoryChanged(uint value)  {
+        
     }
 }

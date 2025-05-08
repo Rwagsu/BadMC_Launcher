@@ -10,18 +10,18 @@ using Windows.System;
 
 namespace BadMC_Launcher.Views.UserControls;
 public sealed partial class LaunchPad : UserControl {
-    public LaunchPad() {
-        this.InitializeComponent();
-        DataContext = new LaunchPadViewModel();
-    }
-
     // Register property
     public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(
          nameof(IsOpen),
          typeof(bool),
-         typeof(LoadingAnimation),
+         typeof(LaunchPad),
          new PropertyMetadata(true, OnIsOpenChanged)
     );
+
+    public LaunchPad() {
+        DataContext = new LaunchPadViewModel();
+        this.InitializeComponent();
+    }
 
     public bool IsOpen {
         get => (bool)GetValue(IsOpenProperty);
@@ -44,7 +44,7 @@ public sealed partial class LaunchPad : UserControl {
 #if WINAPPSDK_PACKAGED
             control.CloseLaunchPadAnimation.Start();
 #else
-            control.Translation = new(-100, 0, 0);
+            control.Translation = new(320, 0, 0);
 #endif
             control.LaunchPadBorder.IsHitTestVisible = false;
         }
@@ -52,13 +52,21 @@ public sealed partial class LaunchPad : UserControl {
 
     private void OnLaunchPadPointEntered(object sender, PointerRoutedEventArgs e) {
         if (!IsOpen) {
+#if WINAPPSDK_PACKAGED
             LaunchPadPointerInAnimation.Start();
+#else
+            LaunchPadBorder.Translation = new(280, 0, 0);
+#endif
         }
     }
 
     private void OnLaunchPadPointExited(object sender, PointerRoutedEventArgs e) {
         if (!IsOpen) {
+#if WINAPPSDK_PACKAGED
             LaunchPadPointerOutAnimation.Start();
+#else
+            LaunchPadBorder.Translation = new(320, 0, 0);
+#endif
         }
     }
 

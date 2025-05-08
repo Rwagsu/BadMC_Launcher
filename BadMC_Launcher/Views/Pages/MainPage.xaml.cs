@@ -12,6 +12,7 @@ using Windows.System;
 namespace BadMC_Launcher.Views.Pages;
 
 public sealed partial class MainPage : Page {
+    private MainPageViewModel viewModel => (MainPageViewModel)DataContext;
     public MainPage() {
         this.InitializeComponent();
         DataContext = new MainPageViewModel();
@@ -55,19 +56,5 @@ public sealed partial class MainPage : Page {
             message.Reply(true);
         }
         message.Reply(false);
-    }
-
-    private void Button_Click(object sender, RoutedEventArgs e) {
-        if (LaunchPadControl.IsOpen) {
-            LaunchPadControl.IsOpen = false;
-        }
-        else {
-            LaunchPadControl.IsOpen = true;
-        }
-    }
-    private void OnLaunchPadKeyDownEsc(object sender, KeyRoutedEventArgs e) {
-        if (e.Key == VirtualKey.Escape) {
-            LaunchPadControl.IsOpen = false;
-        }
     }
 }

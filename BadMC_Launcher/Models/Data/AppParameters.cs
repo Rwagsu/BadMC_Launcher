@@ -12,12 +12,12 @@ using Microsoft.Windows.ApplicationModel.Resources;
 using Uno.UI.RemoteControl.Host;
 using Windows.Graphics;
 
-namespace BadMC_Launcher.Models.Datas;
+namespace BadMC_Launcher.Models.Data;
 
 public static class AppParameters {
     public static SizeInt32 WindowSize { get; } = new() {
-        Width = 1024,
-        Height = 620
+        Width = 960,
+        Height = 600
     };
 
     public static HardwareInfo SystemInfo { get; } = new();

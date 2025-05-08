@@ -17,10 +17,6 @@ using Windows.Foundation.Collections;
 
 namespace BadMC_Launcher.Views.UserControls;
 public sealed partial class LoadingAnimation : UserControl {
-    public LoadingAnimation() {
-        InitializeComponent();
-    }
-
     // Register property
     public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register(
          nameof(IsLoading),
@@ -35,6 +31,10 @@ public sealed partial class LoadingAnimation : UserControl {
         typeof(LoadingAnimation),
         new PropertyMetadata(string.Empty, OnLoadDescriptionChanged)
     );
+
+    public LoadingAnimation() {
+        InitializeComponent();
+    }
 
     public bool IsLoading {
         get => (bool)GetValue(IsLoadingProperty);

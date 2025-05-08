@@ -8,12 +8,12 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using BadMC_Launcher.Classes;
 using BadMC_Launcher.Extensions;
-using BadMC_Launcher.Models.Datas.SettingsDatas;
+using BadMC_Launcher.Models.Data.SettingsData;
 using MinecraftLaunch.Base.Models.Game;
 
 namespace BadMC_Launcher.Services.Settings;
 public class SingleMinecraftConfigService : ConfigClass {
-    private SingleMinecraftConfig singleMinecraftConfigInstance = new();
+    private readonly SingleMinecraftConfig singleMinecraftConfigInstance = new();
 
     public SingleMinecraftConfigService() {
         JvmArguments.ListChanged += OnListChanged;
@@ -22,132 +22,152 @@ public class SingleMinecraftConfigService : ConfigClass {
     public string? TargetMinecraftEntryPath {
         get => singleMinecraftConfigInstance.targetMinecraftEntryPath;
         set {
-            singleMinecraftConfigInstance.targetMinecraftEntryPath = value;
+            if (singleMinecraftConfigInstance.targetMinecraftEntryPath != value) {
+                singleMinecraftConfigInstance.targetMinecraftEntryPath = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(TargetMinecraftEntryPath));
+                // Trigger Event
+                OnPropertyChanged(nameof(TargetMinecraftEntryPath));
 
-            //Write to Json or other logic
-            SyncSettingSet();
+                // Write to Json or other logic
+                SyncSettingSet();
+            }
         }
     }
 
-    public bool IsAutoJavaEnabled {
+    public bool? IsAutoJavaEnabled {
         get => singleMinecraftConfigInstance.isAutoJavaEnabled;
         set {
-            singleMinecraftConfigInstance.isAutoJavaEnabled = value;
+            if (singleMinecraftConfigInstance.isAutoJavaEnabled != value) {
+                singleMinecraftConfigInstance.isAutoJavaEnabled = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(IsAutoJavaEnabled));
+                // Trigger Event
+                OnPropertyChanged(nameof(IsAutoJavaEnabled));
 
-            //Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
     public bool? IsFullscreen {
         get => singleMinecraftConfigInstance.isFullscreen;
         set {
-            singleMinecraftConfigInstance.isFullscreen = value;
+            if (singleMinecraftConfigInstance.isFullscreen != value) {
+                singleMinecraftConfigInstance.isFullscreen = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(IsFullscreen));
+                // Trigger Event
+                OnPropertyChanged(nameof(IsFullscreen));
 
-            //Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
     public bool? IsEnableIndependencyCore {
         get => singleMinecraftConfigInstance.isEnableIndependencyCore;
         set {
-            singleMinecraftConfigInstance.isEnableIndependencyCore = value;
+            if (singleMinecraftConfigInstance.isEnableIndependencyCore != value) {
+                singleMinecraftConfigInstance.isEnableIndependencyCore = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(IsEnableIndependencyCore));
+                // Trigger Event
+                OnPropertyChanged(nameof(IsEnableIndependencyCore));
 
-            //Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
     public bool? IsAutoMemorySize {
         get => singleMinecraftConfigInstance.isAutoMemorySize;
         set {
-            singleMinecraftConfigInstance.isAutoMemorySize = value;
+            if (singleMinecraftConfigInstance.isAutoMemorySize != value) {
+                singleMinecraftConfigInstance.isAutoMemorySize = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(IsAutoMemorySize));
+                // Trigger Event
+                OnPropertyChanged(nameof(IsAutoMemorySize));
 
-            //Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
-    public int? MinMemorySize {
-        get => singleMinecraftConfigInstance.minMemorySize;
-        set {
-            singleMinecraftConfigInstance.minMemorySize = value;
-
-            // Trigger Event
-            OnPropertyChanged(nameof(MinMemorySize));
-
-            //Write to Json
-            SyncSettingSet();
-        }
-    }
-
-    public int? MaxMemorySize {
+    public uint? MaxMemorySize {
         get => singleMinecraftConfigInstance.maxMemorySize;
         set {
-            singleMinecraftConfigInstance.maxMemorySize = value;
+            if (singleMinecraftConfigInstance.maxMemorySize != value) {
+                singleMinecraftConfigInstance.maxMemorySize = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(MaxMemorySize));
+                // Trigger Event
+                OnPropertyChanged(nameof(MaxMemorySize));
 
-            //Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
-    public JavaEntry? JavaPath {
+    public uint? MinMemorySize {
+        get => singleMinecraftConfigInstance.minMemorySize;
+        set {
+            if (singleMinecraftConfigInstance.minMemorySize != value) {
+                singleMinecraftConfigInstance.minMemorySize = value;
+
+                // Trigger Event
+                OnPropertyChanged(nameof(MinMemorySize));
+
+                // Write to Json
+                SyncSettingSet();
+            }
+        }
+    }
+
+    public string? JavaPath {
         get => singleMinecraftConfigInstance.javaPath;
         set {
-            singleMinecraftConfigInstance.javaPath = value;
+            if (singleMinecraftConfigInstance.javaPath != value) {
+                singleMinecraftConfigInstance.javaPath = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(JavaPath));
+                // Trigger Event
+                OnPropertyChanged(nameof(JavaPath));
 
-            //Write to Json 
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
     public string? LauncherName {
         get => singleMinecraftConfigInstance.launcherName;
         set {
-            singleMinecraftConfigInstance.launcherName = value;
+            if (singleMinecraftConfigInstance.launcherName != value) {
+                singleMinecraftConfigInstance.launcherName = value;
 
-            // Trigger Event
-            OnPropertyChanged(nameof(LauncherName));
+                // Trigger Event
+                OnPropertyChanged(nameof(LauncherName));
 
-            //Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
     public BindingList<string> JvmArguments {
         get => singleMinecraftConfigInstance.jvmArguments;
         set {
-            singleMinecraftConfigInstance.jvmArguments.RaiseListChangedEvents = false;
+            if (!singleMinecraftConfigInstance.jvmArguments.SequenceEqual(value)) {
+                singleMinecraftConfigInstance.jvmArguments.RaiseListChangedEvents = false;
 
-            singleMinecraftConfigInstance.jvmArguments.Clear();
-            singleMinecraftConfigInstance.jvmArguments.AddRange(value);
+                singleMinecraftConfigInstance.jvmArguments.Clear();
+                singleMinecraftConfigInstance.jvmArguments.AddRange(value);
 
-            singleMinecraftConfigInstance.jvmArguments.RaiseListChangedEvents = true;
+                singleMinecraftConfigInstance.jvmArguments.RaiseListChangedEvents = true;
 
-            // Write to Json
-            SyncSettingSet();
+                // Write to Json
+                SyncSettingSet();
+            }
         }
     }
 
@@ -161,7 +181,7 @@ public class SingleMinecraftConfigService : ConfigClass {
     public override bool SyncSettingGet() {
         if(TargetMinecraftEntryPath != null
             && File.Exists(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"))
-            && App.GetService<FileService>().ReadConfig(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, out var jsonClass) && jsonClass != null) {
+            && App.GetService<FileService>().TryReadConfig(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"), SingleMinecraftConfigServiceContext.Default.SingleMinecraftConfigService, out var jsonClass) && jsonClass != null) {
             singleMinecraftConfigInstance.isFullscreen = jsonClass.IsFullscreen;
             singleMinecraftConfigInstance.isEnableIndependencyCore = jsonClass.IsEnableIndependencyCore;
             singleMinecraftConfigInstance.isAutoMemorySize = jsonClass.IsAutoMemorySize;

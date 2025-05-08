@@ -9,7 +9,7 @@ using BadMC_Launcher.Controls;
 using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Interfaces;
 
-namespace BadMC_Launcher.Models.Datas.ViewDatas;
+namespace BadMC_Launcher.Models.Data.ViewData;
 internal static class MainSideBarData {
     internal static DistinctiveItemBindingList<MainSideBarItem> MainSideBarItems { get; set; } = new();
 

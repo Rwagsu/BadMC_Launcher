@@ -1,4 +1,4 @@
-namespace BadMC_Launcher.Models.Datas;
+namespace BadMC_Launcher.Models.Data;
 public static class AppDataPath {
     public static readonly string DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BadMC_Launcher");
 

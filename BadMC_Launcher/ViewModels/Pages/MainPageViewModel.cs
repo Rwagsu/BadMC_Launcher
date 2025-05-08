@@ -1,12 +1,7 @@
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Reflection.Metadata;
-using BadMC_Launcher.Classes;
 using BadMC_Launcher.Controls;
 using BadMC_Launcher.Controls.MainSearch;
-using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Interfaces;
-using BadMC_Launcher.Models.Datas.ViewDatas;
+using BadMC_Launcher.Models.Data.ViewData;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Views.UserControls;
@@ -14,16 +9,13 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.WinUI.Controls;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media.Animation;
-using Uno.UI.RemoteControl;
 
 namespace BadMC_Launcher.ViewModels.Pages;
 
 public partial class MainPageViewModel : ObservableObject {
-    private bool isLaunchPadLightEliminationEnabled = false;
+    private bool isLaunchPadLightEliminationEnabled;
 
     public MainPageViewModel() {
         //Init Property
@@ -119,7 +111,7 @@ public partial class MainPageViewModel : ObservableObject {
 
     [RelayCommand]
     private void CloseLaunchPad(PointerRoutedEventArgs e) {
-        if (isLaunchPadLightEliminationEnabled && e.OriginalSource.GetType() != typeof(LaunchPad)) {
+        if (isLaunchPadLightEliminationEnabled && !IsVisualTreeRootLaunchPad((DependencyObject)e.OriginalSource)) {
             IsLaunchPadOpen = false;
         }
     }
@@ -184,8 +176,15 @@ public partial class MainPageViewModel : ObservableObject {
         return WeakReferenceMessenger.Default.Send(new RequestMessage<T>(), tokenEnum.ToString());
     }
 
-    partial void OnIsMainSideBarToolShowChanged(bool value) {
-        
+    private bool IsVisualTreeRootLaunchPad(DependencyObject sourceElement) {
+        while (sourceElement != null) {
+            if (sourceElement is LaunchPad)
+            {
+                return true;
+            }
+            sourceElement = VisualTreeHelper.GetParent(sourceElement);
+        }
+        return false;
     }
 }
  

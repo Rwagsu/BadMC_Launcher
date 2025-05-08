@@ -3,12 +3,16 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-      xmlns:converter="using:BadMC_Launcher.Controls.Converters"
+      xmlns:converters="using:CommunityToolkit.WinUI.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:triggers="using:CommunityToolkit.WinUI"
       mc:Ignorable="d">
-    <Page.Resources />
+    <Page.Resources>
+        <converters:BoolToObjectConverter x:Key="BoolInvertConverter"
+                                          FalseValue="True"
+                                          TrueValue="False" />
+    </Page.Resources>
 
     <Interactivity:Interaction.Behaviors>
         <Interactivity:EventTriggerBehavior EventName="Unloaded">
@@ -78,17 +82,17 @@
                 </Button>
             </controls:SettingsCard>
 
-            <!-- Memory size Setting -->
-            <controls:SettingsExpander x:Uid="LaunchSettingsPage_MemorySizeSettingsExpander">
+            <!-- Game memory size Setting -->
+            <controls:SettingsExpander x:Uid="LaunchSettingsPage_GameMemorySizeSettingsExpander">
                 <!-- Icons -->
                 <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xE9D9;" />
                 </controls:SettingsExpander.HeaderIcon>
 
-                <!-- Memory settings -->
+                <!-- Game memory settings -->
                 <controls:SettingsExpander.Items>
-                    <!-- Memory View -->
-                    <controls:SettingsCard Description="{x:Bind GetGameMemoryScore(viewModel.GameMemoryView, viewModel.UsedMemoryView), Mode=OneWay}">
+                    <!-- Game memory View -->
+                    <controls:SettingsCard Description="{x:Bind GetGameMemoryScore(viewModel.GameMemoryView, viewModel.UsedMemoryView, viewModel.MaxMemoryView), Mode=OneWay}">
                         <!-- Icons -->
                         <controls:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE95E;" />
@@ -96,9 +100,9 @@
 
                         <!-- Header -->
                         <controls:SettingsCard.Header>
-                            <VariableSizedWrapGrid HorizontalAlignment="Stretch"
-                                                   Background="Aqua"
-                                                   Orientation="Horizontal">
+                            <StackPanel VerticalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        Spacing="6">
                                 <!-- Max memory view -->
                                 <TextBlock x:Uid="LaunchSettingsPage_MemoryViewSettingsCard"
                                            VerticalAlignment="Center"
@@ -106,17 +110,18 @@
                                 <Border VerticalAlignment="Center"
                                         Background="{ThemeResource ControlFillColorDefaultBrush}"
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
                                         CornerRadius="4">
                                     <TextBlock Margin="6,2"
                                                VerticalAlignment="Center"
                                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                                Style="{ThemeResource BodyStrongTextBlockStyle}"
                                                TextTrimming="Clip">
-                                        <Run Text="{Binding MaxMemoryView}" />
+                                        <Run Text="{x:Bind MbToGbString(viewModel.MaxMemoryView), Mode=OneWay}" />
                                         <Run Text="GB" />
                                     </TextBlock>
                                 </Border>
-                            </VariableSizedWrapGrid>
+                            </StackPanel>
                         </controls:SettingsCard.Header>
 
                         <Grid>
@@ -141,7 +146,9 @@
                                                    VerticalAlignment="Center"
                                                    Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
                                                    Style="{ThemeResource BodyStrongTextBlockStyle}">
-                                            <Run Text="{Binding UsedMemoryView}" />
+                                            <Run Text="{x:Bind MbToGbString(viewModel.UsedMemoryView), Mode=OneWay}" />
+                                            <Run Text="/" />
+                                            <Run Text="{x:Bind GetAvailableMemoryView(viewModel.UsedMemoryView, viewModel.MaxMemoryView), Mode=OneWay}" />
                                             <Run Text="GB" />
                                         </TextBlock>
                                     </Border>
@@ -161,14 +168,14 @@
                                                    VerticalAlignment="Center"
                                                    Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
                                                    Style="{ThemeResource BodyStrongTextBlockStyle}">
-                                            <Run Text="{x:Bind GetStringGameMemory(viewModel.GameMemoryView, viewModel.UsedMemoryView), Mode=OneWay}" />
+                                            <Run Text="{x:Bind MbToGbString(viewModel.GameMemoryView), Mode=OneWay}" />
                                             <Run Text="GB" />
                                         </TextBlock>
                                     </Border>
                                 </StackPanel>
                             </StackPanel>
                             <!-- Memory view -->
-                            <!-- Used memory -->
+                            <!-- Game memory -->
                             <ProgressRing Grid.Column="1"
                                           Width="50"
                                           Height="50"
@@ -176,9 +183,9 @@
                                           VerticalAlignment="Center"
                                           Foreground="{ThemeResource SystemFillColorSuccessBrush}"
                                           IsIndeterminate="False"
-                                          Value="{x:Bind GetProgressRingMemoryView(viewModel.GameMemoryView, viewModel.MaxMemoryView), Mode=OneWay}" />
+                                          Value="{x:Bind GetProgressRingMemoryView(viewModel.UsedMemoryView, viewModel.MaxMemoryView, viewModel.GameMemoryView), Mode=OneWay}" />
 
-                            <!-- Seted memory -->
+                            <!-- Used memory -->
                             <ProgressRing Grid.Column="1"
                                           Width="50"
                                           Height="50"
@@ -186,39 +193,143 @@
                                           VerticalAlignment="Center"
                                           IsIndeterminate="False"
                                           Value="{x:Bind GetProgressRingMemoryView(viewModel.UsedMemoryView, viewModel.MaxMemoryView), Mode=OneWay}" />
-
                         </Grid>
                     </controls:SettingsCard>
 
-                    <!-- Memory Setting -->
-                    <controls:SettingsCard x:Name="MemorySettingCard" x:Uid="LaunchSettingsPage_JavaPathSettingsCard">
+                    <!-- Game memory setting -->
+                    <controls:SettingsCard x:Name="MemorySettingCard"
+                                           x:Uid="LaunchSettingsPage_SetGameMemorySettingsCard"
+                                           IsEnabled="{Binding IsAutoGameMemorySize, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}">
                         <!-- Icons -->
                         <controls:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE67A;" />
                         </controls:SettingsCard.HeaderIcon>
 
-                        <StackPanel Orientation="Horizontal" Spacing="4">
-                            <NumberBox LargeChange="100"
-                                       PlaceholderText="Enter an integer:"
-                                       SmallChange="16"
-                                       SpinButtonPlacementMode="Compact"
-                                       Value="1" />
-                        </StackPanel>
+                        <!-- SetGameMemory button -->
+                        <Button Style="{ThemeResource AccentButtonStyle}">
+                            <!-- Button text -->
+                            <Button.Content>
+                                <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}">
+                                    <Run Text="{x:Bind MbToGbString(viewModel.MinGameMemory), Mode=OneWay}" />
+                                    <Run Text="/" />
+                                    <Run Text="{x:Bind MbToGbString(viewModel.MaxGameMemory), Mode=OneWay}" />
+                                    <Run Text="GB" />
+                                </TextBlock>
+                            </Button.Content>
+
+                            <!-- Button flyout -->
+                            <Button.Flyout>
+                                <Flyout Opened="OnMemoryFlyoutOpened" Placement="Left">
+                                    <!-- Flyout Style -->
+                                    <Flyout.FlyoutPresenterStyle>
+                                        <Style TargetType="FlyoutPresenter">
+                                            <Setter Property="MaxWidth" Value="800" />
+                                            <Setter Property="CornerRadius" Value="6" />
+                                            <Setter Property="Shadow">
+                                                <Setter.Value>
+                                                    <ThemeShadow />
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Padding" Value="12" />
+                                        </Style>
+                                    </Flyout.FlyoutPresenterStyle>
+                                    <!-- Set game memory controls -->
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <!-- Min game memory NumberBox -->
+                                        <NumberBox x:Name="MinGameMemoryNumberBox"
+                                                   x:Uid="LaunchSettingsPage_SetGameMinMemoryNumberBox"
+                                                   Grid.Row="0"
+                                                   MinWidth="70"
+                                                   IsEnabled="{Binding IsAutoGameMemorySize, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}"
+                                                   LargeChange="128"
+                                                   Maximum="{Binding MaxMemoryView, Mode=OneWay}"
+                                                   Minimum="4"
+                                                   SmallChange="64"
+                                                   SpinButtonPlacementMode="Compact"
+                                                   ValidationMode="InvalidInputOverwritten"
+                                                   Value="{Binding MinGameMemory, Mode=TwoWay}">
+                                            <NumberBox.Header>
+                                                <TextBlock HorizontalAlignment="Right" Style="{ThemeResource BodyStrongTextBlockStyle}">
+                                                    <Run Text="128" />
+                                                    <Run Text="MB" />
+                                                </TextBlock>
+                                            </NumberBox.Header>
+
+                                            <!-- NumberBox event -->
+                                            <Interactivity:Interaction.Behaviors>
+                                                <Interactivity:EventTriggerBehavior EventName="LostFocus">
+                                                    <Interactivity:InvokeCommandAction Command="{Binding SetGameMemoryCommand}" />
+                                                </Interactivity:EventTriggerBehavior>
+                                            </Interactivity:Interaction.Behaviors>
+                                        </NumberBox>
+
+                                        <!-- Game memory RangeSelector -->
+                                        <controls:RangeSelector x:Name="GameMemoryRangeSelector"
+                                                                Grid.Row="0"
+                                                                MinWidth="300"
+                                                                VerticalAlignment="Bottom"
+                                                                IsEnabled="{Binding IsAutoGameMemorySize, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}"
+                                                                Maximum="{Binding MaxMemoryView, Mode=OneWay}"
+                                                                Minimum="128"
+                                                                RangeEnd="{Binding MaxGameMemory, Mode=TwoWay}"
+                                                                RangeStart="{Binding MinGameMemory, Mode=TwoWay}"
+                                                                StepFrequency="128">
+                                            <Interactivity:Interaction.Behaviors>
+                                                <Interactivity:EventTriggerBehavior EventName="ThumbDragStarted">
+                                                    <!-- Disable CanWriteToJson -->
+                                                    <Interactivity:InvokeCommandAction Command="{Binding DisableNumberBoxEventCommand}" />
+                                                </Interactivity:EventTriggerBehavior>
+
+                                                <Interactivity:EventTriggerBehavior EventName="ThumbDragCompleted">
+                                                    <!-- Enable CanWriteToJson -->
+                                                    <Interactivity:InvokeCommandAction Command="{Binding EnableNumberBoxEventCommand}" />
+
+                                                    <!-- Set game memory -->
+                                                    <Interactivity:InvokeCommandAction Command="{Binding SetGameMemoryCommand}" />
+                                                </Interactivity:EventTriggerBehavior>
+                                            </Interactivity:Interaction.Behaviors>
+                                        </controls:RangeSelector>
+
+                                        <!-- Max game memory NumberBox -->
+                                        <NumberBox x:Name="MaxGameMemoryNumberBox"
+                                                   x:Uid="LaunchSettingsPage_SetMaxGameMemoryNumberBox"
+                                                   Grid.Row="0"
+                                                   MinWidth="70"
+                                                   IsEnabled="{Binding IsAutoGameMemorySize, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}"
+                                                   LargeChange="128"
+                                                   Maximum="{Binding MaxMemoryView, Mode=TwoWay}"
+                                                   Minimum="4"
+                                                   SmallChange="64"
+                                                   SpinButtonPlacementMode="Compact"
+                                                   ValidationMode="InvalidInputOverwritten"
+                                                   Value="{Binding MaxGameMemory, Mode=TwoWay}">
+                                            <NumberBox.Header>
+                                                <TextBlock HorizontalAlignment="Left" Style="{ThemeResource BodyStrongTextBlockStyle}">
+                                                    <Run Text="{Binding MaxMemoryView, Mode=OneWay}" />
+                                                    <Run Text="MB" />
+                                                </TextBlock>
+                                            </NumberBox.Header>
+
+                                            <!-- NumberBox event -->
+                                            <Interactivity:Interaction.Behaviors>
+                                                <Interactivity:EventTriggerBehavior EventName="LostFocus">
+                                                    <Interactivity:InvokeCommandAction Command="{Binding SetGameMemoryCommand}" />
+                                                </Interactivity:EventTriggerBehavior>
+                                            </Interactivity:Interaction.Behaviors>
+                                        </NumberBox>
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
                     </controls:SettingsCard>
                 </controls:SettingsExpander.Items>
 
                 <!-- Content -->
-                <ToggleSwitch x:Name="IsAutoMemorySizeSwitchToggle"
-                              x:Uid="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch"
-                              IsOn="{Binding IsAutoMemorySize, Mode=Twoway}">
-                    <Interactivity:Interaction.Behaviors>
-                        <Interactivity:EventTriggerBehavior EventName="Toggled" SourceObject="{Binding ElementName=IsAutoMemorySizeSwitchToggle}">
-                            <Interactivity:InvokeCommandAction Command="{Binding SetIsAutoMemorySizeCommand}" />
-                        </Interactivity:EventTriggerBehavior>
-                    </Interactivity:Interaction.Behaviors>
-                </ToggleSwitch>
+                <ToggleSwitch x:Uid="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch" IsOn="{Binding IsAutoGameMemorySize, Mode=Twoway}" />
 
             </controls:SettingsExpander>
+
+
         </StackPanel>
     </ScrollViewer>
 

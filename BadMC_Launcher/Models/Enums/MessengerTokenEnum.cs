@@ -20,3 +20,5 @@ public enum MinecraftFolderContentDialogMessengerTokenEnum {
     HideRenameFlyoutToken,
     ShowRenameFlyoutToken
 }
+
+

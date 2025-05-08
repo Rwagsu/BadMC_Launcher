@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BadMC_Launcher.Models.Enums;
 
-namespace BadMC_Launcher.Models.Datas.SettingsDatas;
+namespace BadMC_Launcher.Models.Data.SettingsData;
 internal static class ThemeSetting {
     internal static BackgroundTypeEnum backgroundType = BackgroundTypeEnum.StaticImage;
 

@@ -19,5 +19,5 @@ public class AppAssetsService {
         }
     }
 
-    public Dictionary<MinecraftEntryImageEnum, Lazy<WeakReference<BitmapImage>>> MinecraftImageInstance { get; init; } = new();
+    public Dictionary<MinecraftEntryImageEnum, Lazy<WeakReference<BitmapImage>>> MinecraftImageInstance { get; } = new();
 }

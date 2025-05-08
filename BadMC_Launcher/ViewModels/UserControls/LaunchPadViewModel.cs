@@ -112,7 +112,7 @@ public partial class LaunchPadViewModel : ObservableObject {
     [RelayCommand(CanExecute = nameof(SetIsNotActiveMinecraftEntryEmpty))]
     private void ViewLoaclMinecraftFolder() {
         if (MinecraftFolderEntryList.TryElementAt(MinecraftFolderEntryListSelectedIndex, out var selectedItem) && selectedItem != null) {
-            App.GetService<FileService>().TryOpenFolderFromPath(selectedItem.MinecraftFolderPath);
+            App.GetService<FileService>().TryOpenFolderOrFileFromPath(selectedItem.MinecraftFolderPath);
         }
     }
 
@@ -155,16 +155,21 @@ public partial class LaunchPadViewModel : ObservableObject {
         // Update Property
         switch (args.PropertyName) {
             case nameof(MinecraftConfigService.ActiveMinecraftFolderPath):
-                // Set MinecraftFolderEntries SelectedIndex
-                MinecraftFolderEntryListSelectedIndex = MinecraftFolderEntryList.GetIndex(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath); 
+                if (MinecraftFolderEntryList.ElementAtOrDefault(MinecraftFolderEntryListSelectedIndex)
+                        ?.MinecraftFolderPath != minecraftService.ActiveMinecraftFolderPath) {
+                    // Set MinecraftFolderEntries SelectedIndex
+                    MinecraftFolderEntryListSelectedIndex = MinecraftFolderEntryList.GetIndex(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath); 
 
-                // Update MinecraftEntryList
-                MinecraftEntryList.Clear();
-                MinecraftEntryList.AddRange(selectedItem?.GetMinecraftItems());
+                    // Update MinecraftEntryList
+                    MinecraftEntryList.Clear();
+                    MinecraftEntryList.AddRange(selectedItem?.GetMinecraftItems());
 
-                MinecraftEntryListSelectedIndex = MinecraftEntryList.GetIndex(item => item.MinecraftId == selectedItem?.ActiveMinecraftEntryId);
+                    MinecraftEntryListSelectedIndex = MinecraftEntryList.GetIndex(item => item.MinecraftId == selectedItem?.ActiveMinecraftEntryId);
+                }
+                
                 break;
             case nameof(MinecraftConfigService.MinecraftFolders):
+                if (MinecraftFolderEntryList.SequenceEqual(minecraftService.MinecraftFolders))
                 // Update MinecraftFolderEntryList
                 MinecraftFolderEntryList = minecraftService.MinecraftFolders.ToObservableCollection();
                 

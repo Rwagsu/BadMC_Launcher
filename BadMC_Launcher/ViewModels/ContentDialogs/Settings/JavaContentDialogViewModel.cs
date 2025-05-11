@@ -7,14 +7,15 @@ using MinecraftLaunch.Utilities;
 using Windows.Storage.Pickers;
 using Uno.Extensions.Specialized;
 using WinRT.Interop;
+using BadMC_Launcher.Services.Configs;
 
 namespace BadMC_Launcher.ViewModels.ContentDialogs.Settings;
 
 public partial class JavaContentDialogViewModel : ObservableObject {
-    private readonly MinecraftConfigService minecraftConfigService;
+    private readonly MinecraftConfigsService minecraftConfigService;
 
     public JavaContentDialogViewModel() {
-        minecraftConfigService = App.GetService<MinecraftConfigService>();
+        minecraftConfigService = App.GetService<MinecraftConfigsService>();
 
         minecraftConfigService.PropertyChanged += JavaList_PropertyChanged;
 
@@ -180,13 +181,13 @@ public partial class JavaContentDialogViewModel : ObservableObject {
 
     private void JavaList_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
         switch(e.PropertyName) {
-            case nameof(MinecraftConfigService.JavaPaths):
+            case nameof(MinecraftConfigsService.JavaPaths):
                 if (!minecraftConfigService.JavaPaths.SequenceEqual(JavasList.Select(item => item.JavaPath))) {
                     // Update Java list
                     SetJavaList();
                 }
                 break;
-            case nameof(MinecraftConfigService.ActiveJavaPath):
+            case nameof(MinecraftConfigsService.ActiveJavaPath):
                 if (minecraftConfigService.ActiveJavaPath != JavasList.ElementAtOrDefault(JavasListSelectedIndex)?.JavaPath) {
                     // Update selected index
                     JavasListSelectedIndex = JavasList.GetIndex(item => item.JavaPath == minecraftConfigService.ActiveJavaPath);

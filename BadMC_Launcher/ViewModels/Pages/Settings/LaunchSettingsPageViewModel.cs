@@ -2,6 +2,7 @@ using System.ComponentModel;
 using BadMC_Launcher.Controls.Minecraft;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Enums;
+using BadMC_Launcher.Services.Configs;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Views.ContentDialogs.Settings;
 using CommunityToolkit.Mvvm.Input;
@@ -16,7 +17,7 @@ namespace BadMC_Launcher.ViewModels.Pages.Settings;
 public partial class LaunchSettingsPageViewModel : ObservableObject {
     private readonly CancellationTokenSource cancelLoopToken = new();
     private readonly XamlRoot? mainPageXamlRoot;
-    private readonly MinecraftConfigService minecraftService = App.GetService<MinecraftConfigService>();
+    private readonly MinecraftConfigsService minecraftService = App.GetService<MinecraftConfigsService>();
     private readonly ResourceLoader sourceService = App.GetService<ResourceLoader>();
     private bool isRangeSelectorDragStarted = false;
     private MinecraftFolderViewItem? minecraftFolder;
@@ -177,13 +178,13 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
 
     private void MinecraftConfig_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
         switch (e.PropertyName) {
-            case nameof(MinecraftConfigService.ActiveJavaPath):
-            case nameof(MinecraftConfigService.IsAutoJavaEnabled):
+            case nameof(MinecraftConfigsService.ActiveJavaPath):
+            case nameof(MinecraftConfigsService.IsAutoJavaEnabled):
                 if (minecraftService.ActiveJavaPath != JavaId || JavaId != sourceService.GetString("Global_NullJavaId")) {
                     GetJavaInfo();
                 }
                 break;
-            case nameof(MinecraftConfigService.ActiveMinecraftFolderPath):
+            case nameof(MinecraftConfigsService.ActiveMinecraftFolderPath):
                 if (minecraftService.ActiveMinecraftFolderPath != MinecraftFolderPath) {
                     minecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
 
@@ -191,12 +192,12 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
                     MinecraftFolderPath = minecraftFolder != null ? minecraftFolder.MinecraftFolderPath : sourceService.GetString("Global_NullMinecraftFolderPath");
                 }
                 break;
-            case nameof(MinecraftConfigService.MinGameMemory):
+            case nameof(MinecraftConfigsService.MinGameMemory):
                 if (minecraftService.MinGameMemory != MinGameMemory) {
                     MinGameMemory = minecraftService.MinGameMemory;
                 }
                 break;
-            case nameof(MinecraftConfigService.MaxGameMemory):
+            case nameof(MinecraftConfigsService.MaxGameMemory):
                 if (minecraftService.MaxGameMemory != MaxGameMemory) {
                     MaxGameMemory = minecraftService.MaxGameMemory;
                 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BadMC_Launcher.Controls.Minecraft;
 using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Interfaces;
-using BadMC_Launcher.Services.Settings;
+using BadMC_Launcher.Services.Configs;
 using MinecraftLaunch.Base.Models.Game;
 using Uno.Extensions.Specialized;
 
@@ -19,7 +19,7 @@ public class MainMenuSearchMinecraftEntryFilter : IMainMenuSharchFilterItem {
     public IEnumerable<MainMenuSearchResultItem> Search(string searchText) {
         var returnList = new List<MainMenuSearchResultItem>();
         //Get MinecraftFolders
-        App.GetService<MinecraftConfigService>().MinecraftFolders.ForEach(minecraftPath => {
+        App.GetService<MinecraftConfigsService>().MinecraftFolders.ForEach(minecraftPath => {
             MinecraftFolderViewItem pathEntry = minecraftPath;
             foreach (var minecraftEntry in pathEntry.GetMinecrafts().Where(item => item.Id.Contains(searchText))) {
                 var viewItem = pathEntry.GetMinecraftItem(minecraftEntry);

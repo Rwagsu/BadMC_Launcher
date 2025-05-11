@@ -3,6 +3,7 @@ using BadMC_Launcher.Controls.MainSearch;
 using BadMC_Launcher.Interfaces;
 using BadMC_Launcher.Models.Data.ViewData;
 using BadMC_Launcher.Models.Enums;
+using BadMC_Launcher.Services.Configs;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Views.UserControls;
 using CommunityToolkit.Mvvm.Input;
@@ -11,6 +12,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
+using Uno.Extensions;
 
 namespace BadMC_Launcher.ViewModels.Pages;
 
@@ -19,7 +21,7 @@ public partial class MainPageViewModel : ObservableObject {
 
     public MainPageViewModel() {
         //Init Property
-        WindowName = App.GetService<ThemeSettingService>().WindowName;
+        WindowName = App.GetService<ThemeConfigsService>().WindowName;
         IsLaunchPadOpen = true;
 
         IsMainSideBarToolShow = false;
@@ -31,9 +33,7 @@ public partial class MainPageViewModel : ObservableObject {
         SearchFilterSelectedItems = new();
         SearchText = string.Empty;
 
-        App.GetService<ThemeSettingService>().SetBackground((brush) => {
-            AppBackground = brush;
-        });
+        SetBackground();
     }
 
     [ObservableProperty]
@@ -170,6 +170,11 @@ public partial class MainPageViewModel : ObservableObject {
 
     private void SendInvokeFuncMessage<T>(T value, Enum tokenEnum) {
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<T>(value), tokenEnum.ToString());
+    }
+
+    private async void SetBackground() {
+        var themeConfigsService = App.GetService<ThemeConfigsService>();
+        AppBackground = await themeConfigsService.SetBackground(themeConfigsService.BackgroundType);
     }
 
     private RequestMessage<T> SendInvokeFuncMessage<T>(Enum tokenEnum) {

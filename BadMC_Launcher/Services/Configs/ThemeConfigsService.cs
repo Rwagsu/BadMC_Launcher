@@ -14,33 +14,30 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.UI.Xaml.Media.Imaging;
 
-namespace BadMC_Launcher.Services.Settings;
-public class ThemeSettingService : ConfigClass {
+namespace BadMC_Launcher.Services.Configs;
+public class ThemeConfigsService : ConfigClass {
     internal bool isSyncEnabled = false;
 
     public BackgroundTypeEnum BackgroundType {
-        get => ThemeSetting.backgroundType;
+        get => ThemeConfigs.backgroundType;
         set {
-            if (ThemeSetting.backgroundType != value) {
-                ThemeSetting.backgroundType = value;
+            if (ThemeConfigs.backgroundType != value) {
+                ThemeConfigs.backgroundType = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(BackgroundType));
 
                 // Sync Setting
                 SyncSettingSet();
-
-                // Set Background
-                SetBackground();
             }
         }
     }
 
     public ThemeTypeEnum ThemeType { 
-        get => ThemeSetting.themeType;
+        get => ThemeConfigs.themeType;
         set {
-            if (ThemeSetting.themeType != value) {
-                ThemeSetting.themeType = value;
+            if (ThemeConfigs.themeType != value) {
+                ThemeConfigs.themeType = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(ThemeType));
@@ -52,132 +49,111 @@ public class ThemeSettingService : ConfigClass {
     }
 
     public string ImageBackgroundName {
-        get => ThemeSetting.imageBackgroundName;
+        get => ThemeConfigs.imageBackgroundName;
         set {
-            if (ThemeSetting.imageBackgroundName != value) {
-                ThemeSetting.imageBackgroundName = value;
+            if (ThemeConfigs.imageBackgroundName != value) {
+                ThemeConfigs.imageBackgroundName = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(ImageBackgroundName));
 
                 // Sync Setting
                 SyncSettingSet();
-
-                // Set Background
-                SetBackground();
             }
         }
     }
 
     public Stretch BackgroundStretch {
-        get => ThemeSetting.backgroundStretch;
+        get => ThemeConfigs.backgroundStretch;
         set {
-            if (ThemeSetting.backgroundStretch != value) {
-                ThemeSetting.backgroundStretch = value;
+            if (ThemeConfigs.backgroundStretch != value) {
+                ThemeConfigs.backgroundStretch = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(BackgroundStretch));
 
                 // Sync Setting
                 SyncSettingSet();
-
-                // Set Background
-                SetBackground();
             }
         }
     }
 
     public string SolidColorBackgroundCode {
-        get => ThemeSetting.solidColorBackgroundCode;
+        get => ThemeConfigs.solidColorBackgroundCode;
         set {
-            if (ThemeSetting.solidColorBackgroundCode != value) {
-                ThemeSetting.solidColorBackgroundCode = value;
+            if (ThemeConfigs.solidColorBackgroundCode != value) {
+                ThemeConfigs.solidColorBackgroundCode = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(SolidColorBackgroundCode));
 
                 // Sync Setting
                 SyncSettingSet();
-
-                // Set Background
-                SetBackground();
             }
         }
     }
 
     public string WindowName {
-        get => ThemeSetting.windowName;
+        get => ThemeConfigs.windowName;
         set {
-            if (ThemeSetting.windowName != value) {
-                ThemeSetting.windowName = value;
+            if (ThemeConfigs.windowName != value) {
+                ThemeConfigs.windowName = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(WindowName));
-
-                // Sync Setting
-                SyncSettingSet();
             }
         }
     }
 
-    public async void SetBackground(Action<Brush>? backgroundChanged = null) {
-        if (backgroundChanged == null) {
-            //TODO: 这应该得从代码介入了，应该得Dialog(
-            return;
-        }
+    public async Task<Brush> SetBackground(BackgroundTypeEnum backgroundType) {
         App.GetService<FileService>().CheckPath(Path.Combine(AppDataPath.AssetsPath, "Wallpapers"), false);
-        switch (ThemeSetting.backgroundType) {
-            case BackgroundTypeEnum.SolidColor:
-                var color = ColorTranslator.FromHtml(ThemeSetting.solidColorBackgroundCode);
-                    SetBrush(Windows.UI.Color.FromArgb(color.A, color.R, color.G, color.B), backgroundChanged);
-                break;
+        switch (backgroundType) {
             case BackgroundTypeEnum.StaticImage:
-                if (string.IsNullOrWhiteSpace(ThemeSetting.imageBackgroundName)) {
+                if (string.IsNullOrWhiteSpace(ThemeConfigs.imageBackgroundName)) {
                     //TODO :Dialog EXCEPTION
-                    return;
+                    return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1)); ;
                 }
-                SetBrush(new BitmapImage(new Uri(Path.Combine(AppDataPath.AssetsPath, "Wallpapers", ThemeSetting.imageBackgroundName))), backgroundChanged);
-                break;
+                return SetBrush(new BitmapImage(new Uri(Path.Combine(AppDataPath.AssetsPath, "Wallpapers", ThemeConfigs.imageBackgroundName))));
             case BackgroundTypeEnum.BingWallpaper:
-                SetBrush(new BitmapImage(new Uri(await GetBingWallpaperUrl())), backgroundChanged);
-                break;
+                return SetBrush(new BitmapImage(new Uri(await GetBingWallpaperUrl())));
             case BackgroundTypeEnum.Acrylic:
                 //TODO: Only MacOS
-                break;
+                return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1));
+            default:
+                var color = ColorTranslator.FromHtml(ThemeConfigs.solidColorBackgroundCode);
+                return SetBrush(Windows.UI.Color.FromArgb(color.A, color.R, color.G, color.B));
         }
     }
 
     public override bool SyncSettingGet() {
-        if (App.GetService<FileService>().TryReadConfig(Path.Combine(AppDataPath.ConfigsPath, @"Settings\ThemeSettings.json"), ThemeSettingServiceContext.Default.ThemeSettingService, out var jsonClass) && jsonClass != null) {
-            ThemeSetting.backgroundType = jsonClass.BackgroundType;
-            ThemeSetting.themeType = jsonClass.ThemeType;
-            ThemeSetting.imageBackgroundName = jsonClass.ImageBackgroundName;
-            ThemeSetting.backgroundStretch = jsonClass.BackgroundStretch;
-            ThemeSetting.solidColorBackgroundCode = jsonClass.SolidColorBackgroundCode;
-            ThemeSetting.windowName = jsonClass.WindowName;
+        if (App.GetService<FileService>().TryReadConfig(Path.Combine(AppDataPath.ConfigsPath, @"ThemeConfigs.json"), ThemeConfigsServiceContext.Default.ThemeConfigsService, out var jsonClass) && jsonClass != null) {
+            ThemeConfigs.backgroundType = jsonClass.BackgroundType;
+            ThemeConfigs.themeType = jsonClass.ThemeType;
+            ThemeConfigs.imageBackgroundName = jsonClass.ImageBackgroundName;
+            ThemeConfigs.backgroundStretch = jsonClass.BackgroundStretch;
+            ThemeConfigs.solidColorBackgroundCode = jsonClass.SolidColorBackgroundCode;
+            ThemeConfigs.windowName = jsonClass.WindowName;
             return true;
         }
         return false;
     }
 
     public override bool SyncSettingSet() {
-        if (App.GetService<FileService>().WriteConfig(Path.Combine(AppDataPath.ConfigsPath, @"Settings\ThemeSettings.json"), ThemeSettingServiceContext.Default.ThemeSettingService, this)) {
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ThemeSettingService>(this), "MinecraftConfigChanged");
+        if (App.GetService<FileService>().WriteConfig(Path.Combine(AppDataPath.ConfigsPath, @"ThemeConfigs.json"), ThemeConfigsServiceContext.Default.ThemeConfigsService, this)) {
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ThemeConfigsService>(this), "MinecraftConfigChanged");
             return true;
         }
         return false;
     }
-    public void SetBrush<T>(T color, Action<Brush> backgroundChanged) {
+    public Brush SetBrush<T>(T color) {
         if (typeof(T) == typeof(Windows.UI.Color) && color != null) {
-            backgroundChanged(new SolidColorBrush((Windows.UI.Color)(object)color));
-            return;
+            return new SolidColorBrush((Windows.UI.Color)(object)color);
         }
         if (typeof(T) == typeof(BitmapImage) && color != null) {
-            backgroundChanged(new ImageBrush() {
+            return new ImageBrush() {
                 ImageSource = (BitmapImage)(object)color,
-                Stretch = ThemeSetting.backgroundStretch
-            });
-            return;
+                Stretch = ThemeConfigs.backgroundStretch
+            };
         }
         throw new InvalidOperationException("Unsupported type for SetBrushAsync");
     }
@@ -212,5 +188,5 @@ public class ThemeSettingService : ConfigClass {
 }
 
 [JsonSourceGenerationOptions(WriteIndented = true)]
-[JsonSerializable(typeof(ThemeSettingService))]
-internal partial class ThemeSettingServiceContext : JsonSerializerContext;
+[JsonSerializable(typeof(ThemeConfigsService))]
+internal partial class ThemeConfigsServiceContext : JsonSerializerContext;

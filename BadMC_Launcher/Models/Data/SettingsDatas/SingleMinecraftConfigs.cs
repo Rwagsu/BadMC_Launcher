@@ -8,14 +8,14 @@ using BadMC_Launcher.Extensions;
 using MinecraftLaunch.Base.Models.Game;
 
 namespace BadMC_Launcher.Models.Data.SettingsData;
-internal class SingleMinecraftConfig {
+internal class SingleMinecraftConfigs {
     internal string? targetMinecraftEntryPath;
 
     internal bool? isAutoJavaEnabled;
 
     internal bool? isFullscreen;
 
-    internal bool? isEnableIndependencyCore;
+    internal bool? isEnableVersionIsolation;
 
     internal bool? isAutoMemorySize;
     

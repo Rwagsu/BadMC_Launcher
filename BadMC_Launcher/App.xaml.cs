@@ -1,50 +1,43 @@
-using BadMC_Launcher.Classes;
 using BadMC_Launcher.Controls;
 using BadMC_Launcher.Controls.MainSearch;
 using BadMC_Launcher.Models.Data;
-using BadMC_Launcher.Services.Settings;
+using BadMC_Launcher.Services.Configs;
 using BadMC_Launcher.Services.ViewServices;
-using BadMC_Launcher.ViewModels.ContentDialogs.Settings;
-using BadMC_Launcher.ViewModels.Pages;
 using BadMC_Launcher.Views.ContentDialogs.Settings;
-using BadMC_Launcher.Views.Pages;
 using BadMC_Launcher.Views.Pages.Settings;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using BadMC_Launcher.Views.Pages;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Controls.AnimatedVisuals;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.Windows.ApplicationModel.Resources;
 using Serilog;
 using Uno.Resizetizer;
-using Windows.Globalization;
 
 namespace BadMC_Launcher;
-public partial class 
-    App : Application {
+public partial class App : Application
+{
     /// <summary>
     /// Initializes the singleton application object. This is the first line of authored code
     /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>
-    public App() {
-        InitializeComponent();
-        //ApplicationLanguages.PrimaryLanguageOverride = "zh-Hans";
-
+    public App()
+    {
+        this.InitializeComponent();
     }
 
     public static new App Current => (App)Application.Current;
 
-    public Window? MainWindow { get; private set; }
+    internal Window? MainWindow { get; private set; }
+    internal IHost? Host { get; private set; }
 
-    public IHost? Host { get; private set; }
-
-    protected override void OnLaunched(LaunchActivatedEventArgs args) {
+    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    {
         var builder = this.CreateBuilder(args)
             .Configure(host => host
 #if DEBUG
                 // Switch to Development environment when running in DEBUG
                 .UseEnvironment(Environments.Development)
 #endif
-                .UseLogging(configure: (context, logBuilder) => {
+                .UseLogging(configure: (context, logBuilder) =>
+                {
                     // Configure log levels for different categories of logging
                     logBuilder
                         .SetMinimumLevel(
@@ -53,7 +46,7 @@ public partial class
                                 LogLevel.Warning)
 
                         // Default filters for core Uno Platform namespaces
-                        .CoreLogLevel(LogLevel.Information);
+                        .CoreLogLevel(LogLevel.Warning);
 
                     // Uno Platform namespace filter groups
                     // Uncomment individual methods to see more detailed logging
@@ -68,7 +61,7 @@ public partial class
                     //// Binder memory references tracking
                     //logBuilder.BinderMemoryReferenceLogLevel(LogLevel.Debug);
                     //// DevServer and HotReload related
-                    //logBuilder.HotReloadCoreLogLevel(LogLevel.Debug);
+                    //logBuilder.HotReloadCoreLogLevel(LogLevel.Information);
                     //// Debug JS interop
                     //logBuilder.WebAssemblyLogLevel(LogLevel.Debug);
 
@@ -78,12 +71,13 @@ public partial class
                         .MinimumLevel.Error()
                         .WriteTo.Console()
                         .WriteTo.File(
-                            path: Path.Combine(AppDataPath.LogsPath, "AppLog.log"), // 更改日志文件的存储位置
+                            path: Path.Combine(AppDataPath.LogsPath, "AppLog.log"),
                             rollingInterval: RollingInterval.Day,
                             retainedFileCountLimit: 10
                         );
                 })
-                .ConfigureServices((context, services) => {
+                .ConfigureServices((context, services) =>
+                {
                     // TODO: Register your services
                     //Register third-party class
                     services.AddSingleton<HttpClient>();
@@ -91,51 +85,51 @@ public partial class
 
                     services.AddTransient<Random>();
 
-                    //Regist class
+                    //Register class
                     services.AddSingleton<ExceptionHandlingService>();
                     services.AddSingleton<FileService>();
-                    services.AddSingleton<MinecraftConfigService>();
-                    services.AddSingleton<ThemeSettingService>();
+                    services.AddSingleton<MinecraftConfigsService>();
+                    services.AddSingleton<ThemeConfigsService>();
                     services.AddSingleton<MainSideBarService>();
                     services.AddSingleton<SettingsService>();
                     services.AddSingleton<AppAssetsService>();
 
-                    services.AddTransient<SingleMinecraftConfigService>();
+                    services.AddTransient<SingleMinecraftConfigsService>();
 
                     //Register ContentDialogs
                     services.AddTransient<MinecraftFolderContentDialog>();
                     services.AddTransient<JavaContentDialog>();
-
                 })
             );
         MainWindow = builder.Window;
-        Host = builder.Build();
-
-        //Get Configs
-        GetSettings();
-
-        //Regist Pages
-        GlobalRegister();
-
-        //Set MainWindow Configs
-        MainWindow.AppWindow.Title = GetService<ThemeSettingService>().WindowName;
-        MainWindow.AppWindow.Resize(AppParameters.WindowSize);
-        MainWindow.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-        //TODO: 要是Uno Platform 3月还没回信，那自定义拖拽区域估计只能自己写啦（悲）不过Desktop的三大金刚键肯定得自己写啦（大悲）
-#if WINDOWS
-        MainWindow.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-        MainWindow.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-
-#endif
 
 #if DEBUG
         MainWindow.UseStudio();
 #endif
         MainWindow.SetWindowIcon();
 
+        Host = builder.Build();
+
+        // Get Configs
+        GetSettings();
+
+        // Register Pages
+        GlobalRegister();
+
+        //Set MainWindow Configs
+        MainWindow.AppWindow.Title = GetService<ThemeConfigsService>().WindowName;
+        MainWindow.AppWindow.Resize(AppParameters.WindowSize);
+        MainWindow.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
+        // TODO: 不等了拖拽三大金刚自己写(恼)
+#if WINDOWS
+        MainWindow.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
+        MainWindow.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+#endif
+
         // Do not repeat app initialization when the Window already has content,
         // just ensure that the window is active
-        if (MainWindow.Content is not Frame rootFrame) {
+        if (MainWindow.Content is not Frame rootFrame)
+        {
             // Create a Frame to act as the navigation context and navigate to the first page
             rootFrame = new Frame();
 
@@ -143,7 +137,8 @@ public partial class
             MainWindow.Content = rootFrame;
         }
 
-        if (rootFrame.Content == null) {
+        if (rootFrame.Content == null)
+        {
             // When the navigation stack isn't restored navigate to the first page,
             // configuring the new page by passing required information as a navigation
             // parameter
@@ -168,10 +163,10 @@ public partial class
     }
 
     private static void GetSettings() {
-        GetService<MinecraftConfigService>().SyncSettingGet();
-        GetService<MinecraftConfigService>().IsSyncEnabled = true;
-        GetService<ThemeSettingService>().SyncSettingGet();
-        GetService<ThemeSettingService>().isSyncEnabled = true;
+        GetService<MinecraftConfigsService>().SyncSettingGet();
+        GetService<MinecraftConfigsService>().IsSyncEnabled = true;
+        GetService<ThemeConfigsService>().SyncSettingGet();
+        GetService<ThemeConfigsService>().isSyncEnabled = true;
     }
 
     private void GlobalRegister() {

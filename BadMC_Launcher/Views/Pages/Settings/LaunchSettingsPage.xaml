@@ -21,14 +21,14 @@
     </Interactivity:Interaction.Behaviors>
 
     <ScrollViewer>
-        <StackPanel Margin="18,0" Spacing="8">
+        <StackPanel Margin="18,12" Spacing="8">
             <!-- Tips -->
             <InfoBar x:Uid="LaunchSettingsPage_TipsInfoBar"
                      IsClosable="False"
                      IsOpen="True"
                      Severity="Informational" />
 
-            <!-- Minecraft folder Setting -->
+            <!-- Minecraft folder setting -->
             <controls:SettingsCard x:Name="MinecraftFolderSettingsCard" x:Uid="LaunchSettingsPage_MinecraftFolderSettingsCard">
                 <!-- Icons -->
                 <controls:SettingsCard.HeaderIcon>
@@ -56,7 +56,7 @@
                 </Button>
             </controls:SettingsCard>
 
-            <!-- Java path Setting -->
+            <!-- Java path setting -->
             <controls:SettingsCard x:Name="JavaSettingsCard" x:Uid="LaunchSettingsPage_JavaPathSettingsCard">
                 <!-- Icons -->
                 <controls:SettingsCard.HeaderIcon>
@@ -82,14 +82,14 @@
                 </Button>
             </controls:SettingsCard>
 
-            <!-- Game memory size Setting -->
+            <!-- Game memory size setting -->
             <controls:SettingsExpander x:Uid="LaunchSettingsPage_GameMemorySizeSettingsExpander">
                 <!-- Icons -->
                 <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xE9D9;" />
                 </controls:SettingsExpander.HeaderIcon>
 
-                <!-- Game memory settings -->
+                <!-- Game memory setting -->
                 <controls:SettingsExpander.Items>
                     <!-- Game memory View -->
                     <controls:SettingsCard Description="{x:Bind GetGameMemoryScore(viewModel.GameMemoryView, viewModel.UsedMemoryView, viewModel.MaxMemoryView), Mode=OneWay}">
@@ -329,6 +329,14 @@
 
             </controls:SettingsExpander>
 
+            <!-- Independency core setting -->
+            <controls:SettingsCard x:Name="VersionIsolationSettingsCard" x:Uid="LaunchSettingsPage_VersionIsolationSettingsCard">
+                <!-- Icons -->
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE8B4;" />
+                </controls:SettingsCard.HeaderIcon>
+                <ComboBox />
+            </controls:SettingsCard>
 
         </StackPanel>
     </ScrollViewer>

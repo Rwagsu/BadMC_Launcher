@@ -20,7 +20,10 @@
                 <ResourceDictionary Source="/Dictionaries/Templates/ItemTemplate/JavaItemsTemplate.xaml" />
                 <ResourceDictionary Source="/Dictionaries/Templates/MainMenuSearchTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
             <!-- Add resources here -->
+
         </ResourceDictionary>
     </Application.Resources>
+
 </Application>

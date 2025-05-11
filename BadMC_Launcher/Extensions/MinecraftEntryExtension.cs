@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Enums;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -15,7 +16,7 @@ using Uno.Extensions.Specialized;
 namespace BadMC_Launcher.Extensions;
 public static class MinecraftEntryExtension {
     public static MinecraftEntryImageEnum GetMinecraftImageEnum(this MinecraftEntry minecraftEntry) {
-        if (File.Exists(Path.Combine(minecraftEntry.MinecraftFolderPath, @"BadBCConfigs\icon.png"))) {
+        if (File.Exists(Path.Combine(minecraftEntry.MinecraftFolderPath, @$"{AppDataPath.VersionPath}\icon.png"))) {
             return MinecraftEntryImageEnum.Custom;
         }
         if (minecraftEntry is VanillaMinecraftEntry vanillaEntry) {

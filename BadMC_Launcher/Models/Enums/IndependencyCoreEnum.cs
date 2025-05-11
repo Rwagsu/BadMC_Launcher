@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BadMC_Launcher.Models.Enums;
-public enum IndependencyCoreEnum {
+public enum VersionIsolationEnum {
     All,
     ModLoader,
     AllLoader,

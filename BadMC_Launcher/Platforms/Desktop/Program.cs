@@ -1,17 +1,12 @@
-using Uno.UI.Runtime.Skia;
+using BadMC_Launcher;
+using Uno.UI.Hosting;
 
-namespace BadMC_Launcher;
-public class Program {
-    [STAThread]
-    public static void Main(string[] args) {
-        var host = SkiaHostBuilder.Create()
-            .App(() => new App())
-            .UseX11()
-            .UseLinuxFrameBuffer()
-            .UseMacOS()
-            .UseWindows()
-            .Build();
+var host = UnoPlatformHostBuilder.Create()
+    .App(() => new App())
+    .UseX11()
+    .UseLinuxFrameBuffer()
+    .UseMacOS()
+    .UseWin32()
+    .Build();
 
-        host.Run();
-    }
-}
+host.Run();

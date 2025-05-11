@@ -124,7 +124,7 @@
     <value>启动 Minecraft!</value>
   </data>
   <data name="LaunchPad_LaunchButtonTagDefaultResource" xml:space="preserve">
-    <value>未选择本体 _( ﾟДﾟ)ﾉ</value>
+    <value>未选择版本 _( ﾟДﾟ)ﾉ</value>
   </data>
   <data name="MinecraftConfig_MinecraftTitleNameResource" xml:space="preserve">
     <value>使用 BadMCL（不是 BMCL！！!）启动</value>
@@ -133,16 +133,16 @@
     <value>刷新</value>
   </data>
   <data name="LaunchPad_MinecraftEntryListsManagerMenuFlyoutItem.Text" xml:space="preserve">
-    <value>管理 Minecraft 本体文件夹</value>
+    <value>管理 Minecraft 版本文件夹</value>
   </data>
   <data name="LaunchPad_ViewLocalMinecraftFolderMenuFlyoutItem.Text" xml:space="preserve">
-    <value>浏览 Minecraft 本体文件夹</value>
+    <value>浏览 Minecraft 版本文件夹</value>
   </data>
   <data name="LaunchPad_MinecraftEmptyListTipsTextBlock.Text" xml:space="preserve">
-    <value>找不到任何 Minecraft 本体 :(</value>
+    <value>找不到任何 Minecraft 版本 :(</value>
   </data>
   <data name="LaunchPad_MinecraftEmptyListTipsHyperLinkButton.Text" xml:space="preserve">
-    <value>转到本体页面以管理Minecraft本体文件夹.</value>
+    <value>转到本体页面以管理 Minecraft 版本文件夹.</value>
   </data>
   <data name="MainPage_SearchResource.PlaceholderText" xml:space="preserve">
     <value>搜点什么？ψ(｀∇´)ψ</value>
@@ -151,7 +151,7 @@
     <value>设置</value>
   </data>
   <data name="MainPage_SearchFilterMinecraftEntryNameResource" xml:space="preserve">
-    <value>Minecraft 本体</value>
+    <value>Minecraft 版本</value>
   </data>
   <data name="MainPage_SearchFilterTagsResource.Text" xml:space="preserve">
     <value>筛选搜索结果</value>
@@ -169,17 +169,17 @@
     <value>Minecraft 设置</value>
   </data>
   <data name="LaunchSettingsPage_MinecraftFolderSettingsCard.Header" xml:space="preserve">
-    <value>管理 Minecraft 本体文件夹</value>
+    <value>管理 Minecraft 版本文件夹</value>
   </data>
   <data name="LaunchSettingsPage_TipsInfoBar.Title" xml:space="preserve">
     <value>更低的优先级</value>
   </data>
   <data name="LaunchSettingsPage_TipsInfoBar.Message" xml:space="preserve">
-    <value>该设置的优先级将比特定于本体的自定义设置更低.
-如果这个设置的某些项已在特定于本体的自定义设置中更改，该项将不会对这个本体生效.</value>
+    <value>该设置的优先级将比特定于版本的自定义设置更低.
+如果这个设置的某些项已在特定于版本的自定义设置中更改，该项将不会对这个版本生效.</value>
   </data>
   <data name="LaunchSettingsPage_MinecraftFolderSettingsCard.Description" xml:space="preserve">
-    <value>对本体以及资源的存储位置进行管理.</value>
+    <value>对版本以及资源的存储位置进行管理.</value>
   </data>
   <data name="LaunchSettingsPage_SetGameMemorySettingsCard.Header" xml:space="preserve">
     <value>手动设置 Minecraft 运行时内存</value>
@@ -200,16 +200,16 @@
     <value>手动设置</value>
   </data>
   <data name="MinecraftFolderContentDialog_ViewContentDialog.Title" xml:space="preserve">
-    <value>管理 Minecraft 本体文件夹</value>
+    <value>管理 Minecraft 版本文件夹</value>
   </data>
   <data name="MinecraftFolderContentDialog_ViewContentDialog.PrimaryButtonText" xml:space="preserve">
     <value>确定</value>
   </data>
   <data name="MinecraftFolderContentDialog_AddMinecraftFolderButton.Text" xml:space="preserve">
-    <value>添加新的 Minecraft 本体文件夹</value>
+    <value>添加新的 Minecraft 版本文件夹</value>
   </data>
   <data name="MinecraftFolderContentDialog_MinecraftFolderRenameTextBlock.Text" xml:space="preserve">
-    <value>重命名项 (不影响本地文件夹)</value>
+    <value>重命名 (不影响本地文件夹)</value>
   </data>
   <data name="MinecraftFolderContentDialog_MinecraftFolderRenameApplyButton.Content" xml:space="preserve">
     <value>应用</value>
@@ -221,7 +221,7 @@
     <value>路径</value>
   </data>
   <data name="LaunchPad_MinecraftFolderComboBox.PlaceholderText" xml:space="preserve">
-    <value>未选择 Minecraft 本体文件夹 (´-ω-`)</value>
+    <value>未选择 Minecraft 版本文件夹 (´-ω-`)</value>
   </data>
   <data name="MinecraftFolderContentDialog_LocalViewMenuFlyoutItem.Text" xml:space="preserve">
     <value>在文件管理器中显示</value>
@@ -236,10 +236,10 @@
     <value>名称不可为空或与其它项重名.</value>
   </data>
   <data name="Global_NullMinecraftFolderId" xml:space="preserve">
-    <value>找不到活动的 Minecraft 本体文件夹 Σ(°ロ°)</value>
+    <value>找不到活动的 Minecraft 版本文件夹 Σ(°ロ°)</value>
   </data>
   <data name="Global_NullMinecraftFolderPath" xml:space="preserve">
-    <value>这里可以显示活动的 MInecraft 本体文件夹路径，但前提是你有设置一个活动的 Minecraft 本体文件夹路径 😏</value>
+    <value>这里可以显示活动的 MInecraft 版本文件夹路径，但前提是你有设置一个活动的 Minecraft 版本文件夹路径 😏</value>
   </data>
   <data name="Global_NullJavaId" xml:space="preserve">
     <value>找不到活动的 Java 运行时 ( `ε´ )</value>
@@ -248,10 +248,10 @@
     <value>在显示 Java 运行时之前请设置活动的 Java 运行时 😰</value>
   </data>
   <data name="MinecraftFolderContentDialog_MinecraftFolderListEmptyTipsTextBlock.Text" xml:space="preserve">
-    <value>找不到任何 Minecraft 本体文件夹 :(</value>
+    <value>找不到任何 Minecraft 版本文件夹 :(</value>
   </data>
   <data name="MinecraftFolderContentDialog_MinecraftFolderListEmptyTipsHyperLinkButton.Content" xml:space="preserve">
-    <value>从本地添加 Minecraft 本体文件夹</value>
+    <value>从本地添加 Minecraft 版本文件夹</value>
   </data>
   <data name="MinecraftFolderContentDialog_MinecraftFolderRenamePathHyperLinkButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>等等！点击时将会关闭重命名！（Flyout太难了所以修不了 QAQ）</value>
@@ -336,5 +336,11 @@
   </data>
   <data name="LaunchSettingsPage_SetGameMinMemoryNumberBox.PlaceholderText" xml:space="preserve">
     <value>最小 (MB)</value>
+  </data>
+  <data name="LaunchSettingsPage_VersionIsolationSettingsCard.Header" xml:space="preserve">
+    <value>版本隔离</value>
+  </data>
+  <data name="LaunchSettingsPage_VersionIsolationSettingsCard.Description" xml:space="preserve">
+    <value>将符合条件的 Minecraft 版本的 Mod, 光影等资源包与其它本体隔离.</value>
   </data>
 </root>

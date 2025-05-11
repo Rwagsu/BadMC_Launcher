@@ -8,24 +8,24 @@ using BadMC_Launcher.Models.Data.SettingsData;
 using BadMC_Launcher.Models.Enums;
 using MinecraftLaunch.Base.Models.Authentication;
 
-namespace BadMC_Launcher.Services.Settings;
-public class MinecraftConfigService : ConfigClass {
+namespace BadMC_Launcher.Services.Configs;
+public class MinecraftConfigsService : ConfigClass {
     internal bool IsSyncEnabled = false;
 
-    public MinecraftConfigService() {
+    public MinecraftConfigsService() {
         //Triggers an event when a property is changed
-        MinecraftConfig.minecraftAccounts.ListChanged += OnListChanged<Account>;
-        MinecraftConfig.javaPaths.ListChanged += OnListChanged<string>;
-        MinecraftConfig.minecraftFolders.ListChanged += OnListChanged<MinecraftFolderViewItem>;
-        MinecraftConfig.jvmArguments.ListChanged += OnListChanged<string>;
+        MinecraftConfigs.minecraftAccounts.ListChanged += OnListChanged<Account>;
+        MinecraftConfigs.javaPaths.ListChanged += OnListChanged<string>;
+        MinecraftConfigs.minecraftFolders.ListChanged += OnListChanged<MinecraftFolderViewItem>;
+        MinecraftConfigs.jvmArguments.ListChanged += OnListChanged<string>;
     }
 
     public DistinctiveItemBindingList<Account> MinecraftAccounts {
-        get => MinecraftConfig.minecraftAccounts;
+        get => MinecraftConfigs.minecraftAccounts;
         set {
-            if (!MinecraftConfig.minecraftAccounts.SequenceEqual(value)) {
-                MinecraftConfig.minecraftAccounts.Clear();
-                MinecraftConfig.minecraftAccounts.MargeItems(value);
+            if (!MinecraftConfigs.minecraftAccounts.SequenceEqual(value)) {
+                MinecraftConfigs.minecraftAccounts.Clear();
+                MinecraftConfigs.minecraftAccounts.MargeItems(value);
 
                 // Write to Json
                 SyncSettingSet();
@@ -35,19 +35,19 @@ public class MinecraftConfigService : ConfigClass {
     public DistinctiveItemBindingList<string> JavaPaths {
         get {
             // Check if the Java folder exists
-            foreach (var item in MinecraftConfig.javaPaths.ToList()) {
+            foreach (var item in MinecraftConfigs.javaPaths.ToList()) {
                 if (!Path.Exists(item)) {
-                    MinecraftConfig.javaPaths.Remove(item);
+                    MinecraftConfigs.javaPaths.Remove(item);
                     // TODO: Tip Toast
                 }
             }
             
-            return MinecraftConfig.javaPaths;
+            return MinecraftConfigs.javaPaths;
         }
         set {
-            if (!MinecraftConfig.javaPaths.SequenceEqual(value)) {
-                MinecraftConfig.javaPaths.Clear();
-                MinecraftConfig.javaPaths.MargeItems(value);
+            if (!MinecraftConfigs.javaPaths.SequenceEqual(value)) {
+                MinecraftConfigs.javaPaths.Clear();
+                MinecraftConfigs.javaPaths.MargeItems(value);
 
                 // Write to Json
                 SyncSettingSet();
@@ -57,19 +57,19 @@ public class MinecraftConfigService : ConfigClass {
     public DistinctiveItemBindingList<MinecraftFolderViewItem> MinecraftFolders {
         get {
             // Check if the Minecraft folder exists
-            foreach (var item in MinecraftConfig.minecraftFolders.ToList()) {
+            foreach (var item in MinecraftConfigs.minecraftFolders.ToList()) {
                 if (!Path.Exists(item.MinecraftFolderPath)) {
-                    MinecraftConfig.minecraftFolders.Remove(item);
+                    MinecraftConfigs.minecraftFolders.Remove(item);
                     // TODO: Tip Toast
                 }
             }
 
-            return MinecraftConfig.minecraftFolders;
+            return MinecraftConfigs.minecraftFolders;
         }
         set {
-            if (!MinecraftConfig.minecraftFolders.SequenceEqual(value)) {
-                MinecraftConfig.minecraftFolders.Clear();
-                MinecraftConfig.minecraftFolders.MargeItems(value);
+            if (!MinecraftConfigs.minecraftFolders.SequenceEqual(value)) {
+                MinecraftConfigs.minecraftFolders.Clear();
+                MinecraftConfigs.minecraftFolders.MargeItems(value);
 
                 // Write to Json
                 SyncSettingSet();
@@ -78,15 +78,15 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public string? ActiveJavaPath {
-        get => MinecraftConfig.activeJavaPath;
+        get => MinecraftConfigs.activeJavaPath;
         set {
             // Check folder is existing
             if (!Path.Exists(value)) {
-                MinecraftConfig.activeJavaPath = string.Empty;
+                MinecraftConfigs.activeJavaPath = string.Empty;
                 // TODO: Tip Toast
             }
             else {
-                MinecraftConfig.activeJavaPath = value;
+                MinecraftConfigs.activeJavaPath = value;
             }
 
             // Trigger Event
@@ -98,15 +98,15 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public string? ActiveMinecraftFolderPath {
-        get => MinecraftConfig.activeMinecraftFolder;
+        get => MinecraftConfigs.activeMinecraftFolder;
         set {
             // Check folder is existing
             if (!Path.Exists(value)) {
-                MinecraftConfig.activeMinecraftFolder = string.Empty;
+                MinecraftConfigs.activeMinecraftFolder = string.Empty;
                 // TODO: Tip Toast
             }
             else {
-                MinecraftConfig.activeMinecraftFolder = value;
+                MinecraftConfigs.activeMinecraftFolder = value;
             }
 
             // Trigger Event
@@ -118,10 +118,10 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public Account? ActiveMinecraftAccount {
-        get => MinecraftConfig.activeMinecraftAccount;
+        get => MinecraftConfigs.activeMinecraftAccount;
         set {
-            if (MinecraftConfig.activeMinecraftAccount != value) {
-                MinecraftConfig.activeMinecraftAccount = value;
+            if (MinecraftConfigs.activeMinecraftAccount != value) {
+                MinecraftConfigs.activeMinecraftAccount = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(ActiveMinecraftAccount));
@@ -133,10 +133,10 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public bool IsAutoJavaEnabled {
-        get => MinecraftConfig.isAutoJavaEnabled;
+        get => MinecraftConfigs.isAutoJavaEnabled;
         set {
-            if (MinecraftConfig.isAutoJavaEnabled != value) {
-                MinecraftConfig.isAutoJavaEnabled = value;
+            if (MinecraftConfigs.isAutoJavaEnabled != value) {
+                MinecraftConfigs.isAutoJavaEnabled = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(IsAutoJavaEnabled));
@@ -148,10 +148,10 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public bool IsFullscreen {
-        get => MinecraftConfig.isFullscreen;
+        get => MinecraftConfigs.isFullscreen;
         set {
-            if (MinecraftConfig.isFullscreen != value) {
-                MinecraftConfig.isFullscreen = value;
+            if (MinecraftConfigs.isFullscreen != value) {
+                MinecraftConfigs.isFullscreen = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(IsFullscreen));
@@ -162,14 +162,14 @@ public class MinecraftConfigService : ConfigClass {
         }
     }
 
-    public IndependencyCoreEnum IndependencyCore {
-        get => MinecraftConfig.independencyCore;
+    public VersionIsolationEnum VersionIsolation {
+        get => MinecraftConfigs.VersionIsolation;
         set {
-            if (MinecraftConfig.independencyCore != value) {
-                MinecraftConfig.independencyCore = value;
+            if (MinecraftConfigs.VersionIsolation != value) {
+                MinecraftConfigs.VersionIsolation = value;
 
                 // Trigger Event
-                OnPropertyChanged(nameof(IndependencyCore));
+                OnPropertyChanged(nameof(VersionIsolation));
 
                 //Write to Json
                 SyncSettingSet();
@@ -178,10 +178,10 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public bool IsAutoMemorySize {
-        get => MinecraftConfig.isAutoMemorySize;
+        get => MinecraftConfigs.isAutoMemorySize;
         set {
-            if (MinecraftConfig.isAutoMemorySize != value) {
-                MinecraftConfig.isAutoMemorySize = value;
+            if (MinecraftConfigs.isAutoMemorySize != value) {
+                MinecraftConfigs.isAutoMemorySize = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(IsAutoMemorySize));
@@ -193,18 +193,18 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public uint MaxGameMemory {
-        get => MinecraftConfig.maxGameMemory;
+        get => MinecraftConfigs.maxGameMemory;
         set {
-            if (MinecraftConfig.maxGameMemory != value) {
+            if (MinecraftConfigs.maxGameMemory != value) {
                 // Check max game memory
                 AppParameters.SystemInfo.RefreshMemoryStatus();
-                if (value == 0 || value > AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToMb() || value <= MinecraftConfig.minGameMemory) {
+                if (value == 0 || value > AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToMb() || value <= MinecraftConfigs.minGameMemory) {
                     // TODO: Toast Tips
                     OnPropertyChanged(nameof(MaxGameMemory));
                     return;
                 }
 
-                MinecraftConfig.maxGameMemory = value;
+                MinecraftConfigs.maxGameMemory = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(MaxGameMemory));
@@ -216,18 +216,18 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public uint MinGameMemory {
-        get => MinecraftConfig.minGameMemory;
+        get => MinecraftConfigs.minGameMemory;
         set {
-            if (MinecraftConfig.minGameMemory != value) {
+            if (MinecraftConfigs.minGameMemory != value) {
                 // Check min game memory
                 AppParameters.SystemInfo.RefreshMemoryStatus();
-                if (value == 0 || value > AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToMb() || value >= MinecraftConfig.maxGameMemory) {
+                if (value == 0 || value > AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToMb() || value >= MinecraftConfigs.maxGameMemory) {
                     // TODO: Toast Tips
                     OnPropertyChanged(nameof(MinGameMemory));
                     return;
                 }
 
-                MinecraftConfig.minGameMemory = value;
+                MinecraftConfigs.minGameMemory = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(MinGameMemory));
@@ -240,10 +240,10 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public string? LauncherName {
-        get => MinecraftConfig.launcherName;
+        get => MinecraftConfigs.launcherName;
         set {
-            if (MinecraftConfig.launcherName != value) {
-                MinecraftConfig.launcherName = value;
+            if (MinecraftConfigs.launcherName != value) {
+                MinecraftConfigs.launcherName = value;
 
                 // Trigger Event
                 OnPropertyChanged(nameof(LauncherName));
@@ -255,15 +255,15 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public BindingList<string> JvmArguments {
-        get => MinecraftConfig.jvmArguments;
+        get => MinecraftConfigs.jvmArguments;
         set {
-            if (!MinecraftConfig.jvmArguments.SequenceEqual(value)) {
-                MinecraftConfig.jvmArguments.RaiseListChangedEvents = false;
+            if (!MinecraftConfigs.jvmArguments.SequenceEqual(value)) {
+                MinecraftConfigs.jvmArguments.RaiseListChangedEvents = false;
 
-                MinecraftConfig.jvmArguments.Clear();
-                MinecraftConfig.jvmArguments.AddRange(value);
+                MinecraftConfigs.jvmArguments.Clear();
+                MinecraftConfigs.jvmArguments.AddRange(value);
 
-                MinecraftConfig.jvmArguments.RaiseListChangedEvents = true;
+                MinecraftConfigs.jvmArguments.RaiseListChangedEvents = true;
 
                 // Write to Json
                 SyncSettingSet();
@@ -301,18 +301,18 @@ public class MinecraftConfigService : ConfigClass {
     }
 
     public override bool SyncSettingGet() {
-        if (App.GetService<FileService>().TryReadConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigServiceContext.Default.MinecraftConfigService, out var jsonClass, UpdateMapping.minecraftConfigPropertyNameMapping, UpdateMapping.minecraftConfigPropertyTypeMapping) && jsonClass != null) {
+        if (App.GetService<FileService>().TryReadConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigsServiceContext.Default.MinecraftConfigsService, out var jsonClass, UpdateMapping.minecraftConfigPropertyNameMapping, UpdateMapping.minecraftConfigPropertyTypeMapping) && jsonClass != null) {
             //TODO: 解蜜
-            MinecraftConfig.activeJavaPath = jsonClass.ActiveJavaPath;
-            MinecraftConfig.activeMinecraftFolder = jsonClass.ActiveMinecraftFolderPath;
+            MinecraftConfigs.activeJavaPath = jsonClass.ActiveJavaPath;
+            MinecraftConfigs.activeMinecraftFolder = jsonClass.ActiveMinecraftFolderPath;
             //MinecraftConfig.activeMinecraftAccount = jsonClass.ActiveMinecraftAccount;
-            MinecraftConfig.isAutoJavaEnabled = jsonClass.IsAutoJavaEnabled;
-            MinecraftConfig.isFullscreen = jsonClass.IsFullscreen;
-            MinecraftConfig.independencyCore = jsonClass.IndependencyCore;
-            MinecraftConfig.isAutoMemorySize = jsonClass.IsAutoMemorySize;
-            MinecraftConfig.minGameMemory = jsonClass.MinGameMemory;
-            MinecraftConfig.maxGameMemory = jsonClass.MaxGameMemory;
-            MinecraftConfig.launcherName = jsonClass.LauncherName;
+            MinecraftConfigs.isAutoJavaEnabled = jsonClass.IsAutoJavaEnabled;
+            MinecraftConfigs.isFullscreen = jsonClass.IsFullscreen;
+            MinecraftConfigs.VersionIsolation = jsonClass.VersionIsolation;
+            MinecraftConfigs.isAutoMemorySize = jsonClass.IsAutoMemorySize;
+            MinecraftConfigs.minGameMemory = jsonClass.MinGameMemory;
+            MinecraftConfigs.maxGameMemory = jsonClass.MaxGameMemory;
+            MinecraftConfigs.launcherName = jsonClass.LauncherName;
 
             return true;
         }
@@ -323,12 +323,12 @@ public class MinecraftConfigService : ConfigClass {
         if (IsSyncEnabled == false) {
             return false;
         }
-        MinecraftConfigService classValue = this;
+        MinecraftConfigsService classValue = this;
         //TODO: 加蜜
-        return App.GetService<FileService>().WriteConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigServiceContext.Default.MinecraftConfigService, classValue);
+        return App.GetService<FileService>().WriteConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigsServiceContext.Default.MinecraftConfigsService, classValue);
     }
 }
 
 [JsonSourceGenerationOptions(WriteIndented = true)]
-[JsonSerializable(typeof(MinecraftConfigService))]
-internal partial class MinecraftConfigServiceContext : JsonSerializerContext;
+[JsonSerializable(typeof(MinecraftConfigsService))]
+internal partial class MinecraftConfigsServiceContext : JsonSerializerContext;

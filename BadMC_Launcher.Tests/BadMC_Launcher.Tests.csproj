@@ -1,34 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <Platforms>AnyCPU;ARM64;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" />
-    <PackageReference Include="BenchmarkDotNet.TestAdapter" />
-    <PackageReference Include="CommunityToolkit.WinUI.Behaviors" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.MetadataControl" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" />
     <PackageReference Include="FluentAssertions" />
-    <PackageReference Include="GEmojiSharp" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="MinecraftLaunch" />
     <PackageReference Include="NUnit" />
     <PackageReference Include="NUnit3TestAdapter" />
-    <PackageReference Include="coverlet.collector">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="coverlet.collector" />
     <PackageReference Include="GitHubActionsTestLogger">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Uno.WinUI.DevServer.Messaging" />
   </ItemGroup>
 
   <ItemGroup>

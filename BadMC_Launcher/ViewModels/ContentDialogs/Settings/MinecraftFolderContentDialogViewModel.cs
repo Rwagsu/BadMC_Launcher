@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using BadMC_Launcher.Controls.Minecraft;
 using BadMC_Launcher.Models.Enums;
+using BadMC_Launcher.Services.Configs;
 using BadMC_Launcher.Services.Settings;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -13,7 +14,7 @@ using WinRT.Interop;
 
 namespace BadMC_Launcher.ViewModels.ContentDialogs.Settings;
 public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
-    private readonly MinecraftConfigService minecraftConfigService = App.GetService<MinecraftConfigService>();
+    private readonly MinecraftConfigsService minecraftConfigService = App.GetService<MinecraftConfigsService>();
 
     public MinecraftFolderContentDialogViewModel() {
         MinecraftFoldersList = minecraftConfigService.MinecraftFolders.ToObservableCollection();
@@ -198,12 +199,12 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
     private void MinecraftConfig_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
         // Update Property
         switch (e.PropertyName) {
-            case nameof(MinecraftConfigService.ActiveMinecraftFolderPath):
+            case nameof(MinecraftConfigsService.ActiveMinecraftFolderPath):
                 if (minecraftConfigService.ActiveMinecraftFolderPath != MinecraftFoldersList.ElementAtOrDefault(MinecraftFoldersListSelectedIndex)?.MinecraftFolderPath) {
                     MinecraftFoldersListSelectedIndex = MinecraftFoldersList.GetIndex(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
                 }
                 break;
-            case nameof(MinecraftConfigService.MinecraftFolders):
+            case nameof(MinecraftConfigsService.MinecraftFolders):
                 if (!MinecraftFoldersList.SequenceEqual(minecraftConfigService.MinecraftFolders)) {
                     MinecraftFoldersList = minecraftConfigService.MinecraftFolders.ToObservableCollection();
                     MinecraftFoldersListSelectedIndex = MinecraftFoldersList.GetIndex(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);

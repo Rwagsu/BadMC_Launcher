@@ -1,6 +1,7 @@
 using BadMC_Launcher.Models.Data.ViewData;
 using BadMC_Launcher.Controls;
 using CommunityToolkit.Mvvm.Input;
+using BadMC_Launcher.Extensions;
 
 namespace BadMC_Launcher.ViewModels.Pages.Settings;
 

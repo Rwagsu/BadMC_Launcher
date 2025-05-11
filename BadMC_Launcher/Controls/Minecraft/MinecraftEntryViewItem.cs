@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using BadMC_Launcher.Extensions;
+using BadMC_Launcher.Services.Configs;
 using BadMC_Launcher.Services.Settings;
 using GEmojiSharp;
 using MinecraftLaunch.Base.Models.Game;
@@ -62,7 +63,7 @@ public partial class MinecraftFolderViewItem : ObservableObject {
 
     partial void OnActiveMinecraftEntryIdChanged(string? value) {
         ActiveMinecraftEntryIdChanged?.Invoke(this.ActiveMinecraftEntryId, new PropertyChangedEventArgs(nameof(ActiveMinecraftEntryId)));
-        App.GetService<MinecraftConfigService>().SyncSettingSet();
+        App.GetService<MinecraftConfigsService>().SyncSettingSet();
     }
 
     public override int GetHashCode() {

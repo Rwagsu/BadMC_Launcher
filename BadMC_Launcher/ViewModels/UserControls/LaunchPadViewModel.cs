@@ -20,10 +20,11 @@ using MinecraftLaunch.Base.Models.Game;
 using Newtonsoft.Json.Linq;
 using Uno.Extensions.Specialized;
 using BadMC_Launcher.Models.Enums;
+using BadMC_Launcher.Services.Configs;
 
 namespace BadMC_Launcher.ViewModels.UserControls;
 public partial class LaunchPadViewModel : ObservableObject {
-    MinecraftConfigService minecraftService = App.GetService<MinecraftConfigService>();
+    MinecraftConfigsService minecraftService = App.GetService<MinecraftConfigsService>();
 
     public LaunchPadViewModel() {
         MinecraftFolderEntryList = minecraftService.MinecraftFolders.ToObservableCollection();
@@ -154,7 +155,7 @@ public partial class LaunchPadViewModel : ObservableObject {
 
         // Update Property
         switch (args.PropertyName) {
-            case nameof(MinecraftConfigService.ActiveMinecraftFolderPath):
+            case nameof(MinecraftConfigsService.ActiveMinecraftFolderPath):
                 if (MinecraftFolderEntryList.ElementAtOrDefault(MinecraftFolderEntryListSelectedIndex)
                         ?.MinecraftFolderPath != minecraftService.ActiveMinecraftFolderPath) {
                     // Set MinecraftFolderEntries SelectedIndex
@@ -168,7 +169,7 @@ public partial class LaunchPadViewModel : ObservableObject {
                 }
                 
                 break;
-            case nameof(MinecraftConfigService.MinecraftFolders):
+            case nameof(MinecraftConfigsService.MinecraftFolders):
                 if (MinecraftFolderEntryList.SequenceEqual(minecraftService.MinecraftFolders))
                 // Update MinecraftFolderEntryList
                 MinecraftFolderEntryList = minecraftService.MinecraftFolders.ToObservableCollection();

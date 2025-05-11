@@ -12,14 +12,15 @@ using System.ComponentModel;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Classes.Comparers;
 using BadMC_Launcher.Models.Enums;
+using BadMC_Launcher.Services.Configs;
 
 namespace BadMC_Launcher.Models.Data.SettingsData;
-internal static class MinecraftConfig {
-    internal static DistinctiveItemBindingList<Account> minecraftAccounts = new() { PropertyName = nameof(MinecraftConfigService.MinecraftAccounts) };
+internal static class MinecraftConfigs {
+    internal static DistinctiveItemBindingList<Account> minecraftAccounts = new() { PropertyName = nameof(MinecraftConfigsService.MinecraftAccounts) };
 
-    internal static DistinctiveItemBindingList<string> javaPaths = new(new JavaPathListComparer()) { PropertyName = nameof(MinecraftConfigService.JavaPaths) };
+    internal static DistinctiveItemBindingList<string> javaPaths = new(new JavaPathListComparer()) { PropertyName = nameof(MinecraftConfigsService.JavaPaths) };
 
-    internal static DistinctiveItemBindingList<MinecraftFolderViewItem> minecraftFolders = new() { PropertyName = nameof(MinecraftConfigService.MinecraftFolders) };
+    internal static DistinctiveItemBindingList<MinecraftFolderViewItem> minecraftFolders = new() { PropertyName = nameof(MinecraftConfigsService.MinecraftFolders) };
 
     internal static string? activeJavaPath;
 
@@ -31,7 +32,7 @@ internal static class MinecraftConfig {
 
     internal static bool isFullscreen = false;
 
-    internal static IndependencyCoreEnum independencyCore = IndependencyCoreEnum.ModLoader;
+    internal static VersionIsolationEnum VersionIsolation = VersionIsolationEnum.ModLoader;
 
     internal static bool isAutoMemorySize = true;
 

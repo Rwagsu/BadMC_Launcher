@@ -12,11 +12,11 @@ public static class UpdateMapping {
     };
 
     public readonly static Dictionary<string, Func<object, object>> minecraftConfigPropertyTypeMapping = new() {
-        { "IndependencyCore", (oldValue) => {
+        { "VersionIsolation", (oldValue) => {
             if (oldValue is bool value && value) {
-                return IndependencyCoreEnum.ModLoader;
+                return VersionIsolationEnum.ModLoader;
             }
-            return IndependencyCoreEnum.Disabled;
+            return VersionIsolationEnum.Disabled;
         } }
     };
 }

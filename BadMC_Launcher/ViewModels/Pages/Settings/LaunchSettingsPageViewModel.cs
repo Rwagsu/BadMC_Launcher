@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using BadMC_Launcher.Classes.DataClasses;
 using BadMC_Launcher.Controls.Minecraft;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Enums;
@@ -19,6 +20,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     private readonly XamlRoot? mainPageXamlRoot;
     private readonly MinecraftConfigsService minecraftService = App.GetService<MinecraftConfigsService>();
     private readonly ResourceLoader sourceService = App.GetService<ResourceLoader>();
+    private readonly LaunchSettingsService launchSettingsService = App.GetService<LaunchSettingsService>();
     private bool isRangeSelectorDragStarted = false;
     private MinecraftFolderViewItem? minecraftFolder;
     private JavaEntry? java;
@@ -38,6 +40,10 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         IsAutoGameMemorySize = minecraftService.IsAutoMemorySize;
         MinGameMemory = minecraftService.MinGameMemory;
         MaxGameMemory = minecraftService.MaxGameMemory;
+
+        VersionIsolationFilters = launchSettingsService.VersionIsolationFilters;
+        VersionIsolationFilterSelectedItem = launchSettingsService.VersionIsolationFilters.FirstOrDefault(item => item.Id == minecraftService.VersionIsolationFilterId) ?? VersionIsolationFilters[0];
+
 
         RefreshMemory(cancelLoopToken.Token);
 
@@ -76,6 +82,13 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
 
     [ObservableProperty]
     public partial uint MaxGameMemory { get; set; }
+
+    // Version isolation settings
+    [ObservableProperty]
+    public partial ObservableDataList<VersionIsolationFilter> VersionIsolationFilters { get; set; }
+
+    [ObservableProperty]
+    public partial VersionIsolationFilter? VersionIsolationFilterSelectedItem { get; set; }
 
     [RelayCommand]
     private void CancelLoop() {
@@ -127,6 +140,11 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         minecraftService.MaxGameMemory = MaxGameMemory;
     }
 
+    [RelayCommand]
+    private void SetVersionIsolationFilterId() {
+        minecraftService.VersionIsolationFilterId = VersionIsolationFilterSelectedItem?.Id ?? launchSettingsService.VersionIsolationFilters[0].Id;
+    }
+
     partial void OnIsAutoGameMemorySizeChanged(bool value) {
         minecraftService.IsAutoMemorySize = IsAutoGameMemorySize;
 
@@ -148,6 +166,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         JavaPath = java != null ? java.JavaPath : sourceService.GetString("Global_NullJavaPath");
     }
 
+    // Refresh memory status
     private async void RefreshMemory(CancellationToken cancellationToken) {
         try {
             while (true) {
@@ -171,10 +190,11 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
             Log.Information($"RefreshMemory method is Exited: {ex.Source}");
         }
     }
+
+    // Send Message to get value
     private RequestMessage<T> SendGetValueMessage<T>(Enum tokenEnum) {
         return WeakReferenceMessenger.Default.Send(new RequestMessage<T>(), tokenEnum.ToString());
     }
-
 
     private void MinecraftConfig_PropertyChanged(object? sender, PropertyChangedEventArgs e) {
         switch (e.PropertyName) {
@@ -185,7 +205,8 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
                 }
                 break;
             case nameof(MinecraftConfigsService.ActiveMinecraftFolderPath):
-                if (minecraftService.ActiveMinecraftFolderPath != MinecraftFolderPath) {
+            case nameof(MinecraftConfigsService.MinecraftFolders):
+                if (minecraftService.ActiveMinecraftFolderPath != MinecraftFolderPath || minecraftService.MinecraftFolders.Any(item => item.MinecraftFolderId != MinecraftFolderId)) {
                     minecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
 
                     MinecraftFolderId = minecraftFolder != null ? minecraftFolder.MinecraftFolderId : sourceService.GetString("Global_NullMinecraftFolderId");
@@ -202,10 +223,11 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
                     MaxGameMemory = minecraftService.MaxGameMemory;
                 }
                 break;
+             case nameof(MinecraftConfigsService.VersionIsolationFilterId):
+                if (minecraftService.VersionIsolationFilterId != VersionIsolationFilterSelectedItem?.Id) {
+                    VersionIsolationFilterSelectedItem = launchSettingsService.VersionIsolationFilters.FirstOrDefault(item => item.Id == minecraftService.VersionIsolationFilterId) ?? VersionIsolationFilters[0];
+                }
+                break;
         }
-    }
-
-    partial void OnMaxGameMemoryChanged(uint value)  {
-        
     }
 }

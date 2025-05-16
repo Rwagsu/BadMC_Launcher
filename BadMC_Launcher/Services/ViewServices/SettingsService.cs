@@ -11,10 +11,10 @@ namespace BadMC_Launcher.Services.ViewServices;
 public class SettingsService {
     public void SideBarRegister(SettingsSideBarItem settingsSideBarItem, bool isFooter = false) {
         if (isFooter) {
-            SettingsData.SettingsSideBarFooterItems.Add(settingsSideBarItem);
+            SettingsData.settingsSideBarFooterItems.Add(settingsSideBarItem);
         }
         else {
-            SettingsData.SettingsSideBarItems.Add(settingsSideBarItem);
+            SettingsData.settingsSideBarItems.Add(settingsSideBarItem);
         }
     }
 }

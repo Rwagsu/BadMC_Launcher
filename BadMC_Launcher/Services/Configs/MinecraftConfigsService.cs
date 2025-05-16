@@ -4,15 +4,29 @@ using BadMC_Launcher.Classes;
 using BadMC_Launcher.Controls.Minecraft;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Data.Mappings;
-using BadMC_Launcher.Models.Data.SettingsData;
+using BadMC_Launcher.Models.Data.ConfigsData;
 using BadMC_Launcher.Models.Enums;
 using MinecraftLaunch.Base.Models.Authentication;
+using BadMC_Launcher.Classes.DataClasses;
 
 namespace BadMC_Launcher.Services.Configs;
 public class MinecraftConfigsService : ConfigClass {
+    private PathService pathService;
     internal bool IsSyncEnabled = false;
 
+    public MinecraftConfigsService(PathService service) {
+        pathService = service;
+
+        //Triggers an event when a property is changed
+        MinecraftConfigs.minecraftAccounts.ListChanged += OnListChanged<Account>;
+        MinecraftConfigs.javaPaths.ListChanged += OnListChanged<string>;
+        MinecraftConfigs.minecraftFolders.ListChanged += OnListChanged<MinecraftFolderViewItem>;
+        MinecraftConfigs.jvmArguments.ListChanged += OnListChanged<string>;
+    }
+
     public MinecraftConfigsService() {
+        pathService = App.GetService<PathService>();
+
         //Triggers an event when a property is changed
         MinecraftConfigs.minecraftAccounts.ListChanged += OnListChanged<Account>;
         MinecraftConfigs.javaPaths.ListChanged += OnListChanged<string>;
@@ -162,14 +176,14 @@ public class MinecraftConfigsService : ConfigClass {
         }
     }
 
-    public VersionIsolationEnum VersionIsolation {
-        get => MinecraftConfigs.VersionIsolation;
+    public string VersionIsolationFilterId {
+        get => MinecraftConfigs.versionIsolationFilterId;
         set {
-            if (MinecraftConfigs.VersionIsolation != value) {
-                MinecraftConfigs.VersionIsolation = value;
+            if (MinecraftConfigs.versionIsolationFilterId != value) {
+                MinecraftConfigs.versionIsolationFilterId = value;
 
                 // Trigger Event
-                OnPropertyChanged(nameof(VersionIsolation));
+                OnPropertyChanged(nameof(VersionIsolationFilterId));
 
                 //Write to Json
                 SyncSettingSet();
@@ -301,14 +315,14 @@ public class MinecraftConfigsService : ConfigClass {
     }
 
     public override bool SyncSettingGet() {
-        if (App.GetService<FileService>().TryReadConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigsServiceContext.Default.MinecraftConfigsService, out var jsonClass, UpdateMapping.minecraftConfigPropertyNameMapping, UpdateMapping.minecraftConfigPropertyTypeMapping) && jsonClass != null) {
+        if (pathService.TryReadConfig(Path.Combine(AppDataPath.pathsList["ConfigsPath"], "MinecraftConfigs.json"), MinecraftConfigsServiceContext.Default.MinecraftConfigsService, out var jsonClass, UpdateMapping.minecraftConfigPropertyNameMapping, UpdateMapping.minecraftConfigPropertyTypeMapping) && jsonClass != null) {
             //TODO: 解蜜
             MinecraftConfigs.activeJavaPath = jsonClass.ActiveJavaPath;
             MinecraftConfigs.activeMinecraftFolder = jsonClass.ActiveMinecraftFolderPath;
             //MinecraftConfig.activeMinecraftAccount = jsonClass.ActiveMinecraftAccount;
             MinecraftConfigs.isAutoJavaEnabled = jsonClass.IsAutoJavaEnabled;
             MinecraftConfigs.isFullscreen = jsonClass.IsFullscreen;
-            MinecraftConfigs.VersionIsolation = jsonClass.VersionIsolation;
+            MinecraftConfigs.versionIsolationFilterId = jsonClass.VersionIsolationFilterId;
             MinecraftConfigs.isAutoMemorySize = jsonClass.IsAutoMemorySize;
             MinecraftConfigs.minGameMemory = jsonClass.MinGameMemory;
             MinecraftConfigs.maxGameMemory = jsonClass.MaxGameMemory;
@@ -325,7 +339,7 @@ public class MinecraftConfigsService : ConfigClass {
         }
         MinecraftConfigsService classValue = this;
         //TODO: 加蜜
-        return App.GetService<FileService>().WriteConfig(Path.Combine(AppDataPath.ConfigsPath, "MinecraftConfigs.json"), MinecraftConfigsServiceContext.Default.MinecraftConfigsService, classValue);
+        return pathService.WriteConfig(Path.Combine(AppDataPath.pathsList["ConfigsPath"], "MinecraftConfigs.json"), MinecraftConfigsServiceContext.Default.MinecraftConfigsService, classValue);
     }
 }
 

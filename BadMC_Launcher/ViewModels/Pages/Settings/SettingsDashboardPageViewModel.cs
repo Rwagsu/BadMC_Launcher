@@ -7,8 +7,8 @@ namespace BadMC_Launcher.ViewModels.Pages.Settings;
 
 public partial class SettingsDashboardPageViewModel : ObservableObject {
     public SettingsDashboardPageViewModel() {
-        SideBarItems = SettingsData.SettingsSideBarItems;
-        FootSideBarItems = SettingsData.SettingsSideBarFooterItems;
+        SideBarItems = SettingsData.settingsSideBarItems;
+        FootSideBarItems = SettingsData.settingsSideBarFooterItems;
     }
     [ObservableProperty]
     public partial DistinctiveItemBindingList<SettingsSideBarItem> SideBarItems { get; set; }

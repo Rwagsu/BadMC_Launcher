@@ -25,10 +25,10 @@ public partial class MainPageViewModel : ObservableObject {
         IsLaunchPadOpen = true;
 
         IsMainSideBarToolShow = false;
-        MainSideBarItems = MainSideBarData.MainSideBarItems;
-        MainSideBarFooterItems = MainSideBarData.MainSideBarFooterItems;
+        MainSideBarItems = MainSideBarData.mainSideBarItems;
+        MainSideBarFooterItems = MainSideBarData.mainSideBarFooterItems;
 
-        SearchFilterItems = MainSideBarData.MainMenuSharchFilterItems;
+        SearchFilterItems = MainSideBarData.mainMenuSharchFilterItems;
         SearchItems = new();
         SearchFilterSelectedItems = new();
         SearchText = string.Empty;

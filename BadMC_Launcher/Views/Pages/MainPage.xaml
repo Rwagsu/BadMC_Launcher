@@ -47,18 +47,20 @@
                         VerticalAlignment="Center"
                         Orientation="Horizontal"
                         Spacing="6">
-                <Button Width="36"
-                        Height="36"
-                        Style="{StaticResource ButtonTransparentStyle}">
-                    <FontIcon Glyph="&#xE7C4;" />
-                </Button>
-                <Button Width="36"
-                        Height="36"
-                        Style="{StaticResource ButtonTransparentStyle}">
-                    <ImageIcon Width="24"
-                               Height="24"
-                               Source="\Assets\Icons\appicon_foreground.png" />
-                </Button>
+                <StackPanel Orientation="Horizontal" Spacing="6" x:Name="AppTitleBarButtons">
+                    <Button Width="36"
+                            Height="36"
+                            Style="{StaticResource ButtonTransparentStyle}">
+                        <FontIcon Glyph="&#xE7C4;" />
+                    </Button>
+                    <Button Width="36"
+                            Height="36"
+                            Style="{StaticResource ButtonTransparentStyle}">
+                        <ImageIcon Width="24"
+                                   Height="24"
+                                   Source="\Assets\Icons\appicon_foreground.png" />
+                    </Button>
+                </StackPanel>
 
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"

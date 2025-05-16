@@ -1,15 +1,23 @@
 using BadMC_Launcher.Controls;
 using BadMC_Launcher.Controls.MainSearch;
+using BadMC_Launcher.Helpers;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Services.Configs;
+using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Services.ViewServices;
 using BadMC_Launcher.Views.ContentDialogs.Settings;
-using BadMC_Launcher.Views.Pages.Settings;
 using BadMC_Launcher.Views.Pages;
+using BadMC_Launcher.Views.Pages.Settings;
+using BadMC_Launcher.Views.UserControls;
 using Microsoft.UI;
+using Microsoft.UI.Input;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls.AnimatedVisuals;
 using Serilog;
 using Uno.Resizetizer;
+using Windows.Foundation;
+using Windows.Graphics;
 
 namespace BadMC_Launcher;
 public partial class App : Application
@@ -21,6 +29,13 @@ public partial class App : Application
     public App()
     {
         this.InitializeComponent();
+
+        // Check if the app data path exists, if not create it
+        AppDataPath.pathsList.Values.ForEach(item => {
+            if (!Directory.Exists(item)) {
+                Directory.CreateDirectory(item);
+            }
+        });
     }
 
     public static new App Current => (App)Application.Current;
@@ -71,7 +86,7 @@ public partial class App : Application
                         .MinimumLevel.Error()
                         .WriteTo.Console()
                         .WriteTo.File(
-                            path: Path.Combine(AppDataPath.LogsPath, "AppLog.log"),
+                            path: Path.Combine(AppDataPath.pathsList["LogsPath"], "AppLog.log"),
                             rollingInterval: RollingInterval.Day,
                             retainedFileCountLimit: 10
                         );
@@ -87,12 +102,13 @@ public partial class App : Application
 
                     //Register class
                     services.AddSingleton<ExceptionHandlingService>();
-                    services.AddSingleton<FileService>();
+                    services.AddSingleton<PathService>();
                     services.AddSingleton<MinecraftConfigsService>();
                     services.AddSingleton<ThemeConfigsService>();
                     services.AddSingleton<MainSideBarService>();
                     services.AddSingleton<SettingsService>();
                     services.AddSingleton<AppAssetsService>();
+                    services.AddSingleton<LaunchSettingsService>();
 
                     services.AddTransient<SingleMinecraftConfigsService>();
 
@@ -113,23 +129,21 @@ public partial class App : Application
         // Get Configs
         GetSettings();
 
-        // Register Pages
-        GlobalRegister();
-
         //Set MainWindow Configs
         MainWindow.AppWindow.Title = GetService<ThemeConfigsService>().WindowName;
         MainWindow.AppWindow.Resize(AppParameters.WindowSize);
         MainWindow.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
+
         // TODO: 不等了拖拽三大金刚自己写(恼)
-#if WINDOWS
+#if WINAPPSDK_PACKAGED
+        MainWindow.AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
         MainWindow.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
         MainWindow.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 #endif
 
         // Do not repeat app initialization when the Window already has content,
         // just ensure that the window is active
-        if (MainWindow.Content is not Frame rootFrame)
-        {
+        if (MainWindow.Content is not Frame rootFrame) {
             // Create a Frame to act as the navigation context and navigate to the first page
             rootFrame = new Frame();
 
@@ -137,13 +151,35 @@ public partial class App : Application
             MainWindow.Content = rootFrame;
         }
 
-        if (rootFrame.Content == null)
-        {
+        if (rootFrame.Content == null) {
             // When the navigation stack isn't restored navigate to the first page,
             // configuring the new page by passing required information as a navigation
             // parameter
             rootFrame.Navigate(typeof(MainPage), args.Arguments);
         }
+
+#if WINAPPSDK_PACKAGED
+        // Set TitleBar area
+        var nonClientInputSrc = InputNonClientPointerSource.GetForWindowId(MainWindow.AppWindow.Id);
+        var buttonsNonClientArea = UIHelper.FindElementByName(MainWindow.Content, "AppTitleBarButtons") as FrameworkElement;
+
+        if (buttonsNonClientArea != null) {
+            GeneralTransform transformButtons = buttonsNonClientArea.TransformToVisual(null);
+            Rect bounds = transformButtons.TransformBounds(new Rect(0, 0, buttonsNonClientArea.ActualWidth, buttonsNonClientArea.ActualHeight));
+
+            var scale = MainWindow.Content.XamlRoot?.RasterizationScale ?? 0.0;
+            var transparentRect = new RectInt32() {
+                X = (int)Math.Round(bounds.X * scale),
+                Y = (int)Math.Round(bounds.Y * scale),
+                Width = (int)Math.Round(bounds.Width * scale),
+                Height = (int)Math.Round(bounds.Height * scale)
+            };
+            var rects = new RectInt32[] { transparentRect };
+
+            nonClientInputSrc.SetRegionRects(NonClientRegionKind.Passthrough, rects);
+        }
+#endif
+
         // Ensure the current window is active
         MainWindow.Activate();
     }
@@ -167,31 +203,5 @@ public partial class App : Application
         GetService<MinecraftConfigsService>().IsSyncEnabled = true;
         GetService<ThemeConfigsService>().SyncSettingGet();
         GetService<ThemeConfigsService>().isSyncEnabled = true;
-    }
-
-    private void GlobalRegister() {
-        //Register MainSideBarItems
-        GetService<MainSideBarService>().Register(new MainSideBarItem() {
-            ItemName = GetService<ResourceLoader>().GetString("MainPage_SettingsNameResource"),
-            ItemIcon = new AnimatedIcon() {
-                Source = new AnimatedSettingsVisualSource(),
-                FallbackIconSource = new FontIconSource() { Glyph = "\uE713" },
-            },
-            NavigatePage = typeof(SettingsDashboardPage)
-        }, true);
-
-        //Register MainMenuSearchFilterItems
-        GetService<MainSideBarService>().SearchFilterRegister(new MainMenuSearchMinecraftEntryFilter() {
-            ItemName = GetService<ResourceLoader>().GetString("MainPage_SearchFilterMinecraftEntryNameResource"),
-            IconGlyph = "\uE7FC"
-        });
-
-        //Register SettingsSideBarItems
-        GetService<SettingsService>().SideBarRegister(new SettingsSideBarItem() {
-            ItemName = GetService<ResourceLoader>().GetString("LaunchSettingsPage_SettingsPageName"),
-            ItemIcon = new FontIcon() { Glyph = "\uE7FC" },
-            NavigatePage = typeof(LaunchSettingsPage),
-            PageHead = GetService<ResourceLoader>().GetString("LaunchSettingsPage_SettingsPageName"),
-        });
     }
 }

@@ -53,12 +53,11 @@ public partial class MinecraftViewItem : ObservableObject {
             if (ReferenceEquals(this.MinecraftId, entryItem.MinecraftId)) {
                 return true;
             }
-
-            if (!ReferenceEquals(this.MinecraftId, entryItem.MinecraftId)) {
+            else if (!ReferenceEquals(this.MinecraftId, entryItem.MinecraftId)) {
                 return false;
             }
         }
-        throw new NotImplementedException();
+        return ReferenceEquals(this, obj);
     }
 
     public override int GetHashCode() {

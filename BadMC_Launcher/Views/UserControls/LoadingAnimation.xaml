@@ -3,7 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:animations="using:CommunityToolkit.WinUI.Animations"
              xmlns:converters="using:CommunityToolkit.WinUI.Converters"
-             xmlns:local="using:BadMC_Launcher.Views.UserControls">
+             xmlns:local="using:BadMC_Launcher.Views.UserControls"
+             IsHitTestVisible="{x:Bind IsLoading}"
+             Opacity="{x:Bind IsLoading, Converter={StaticResource BoolToOpacityConverter}}">
+    <UserControl.Resources>
+        <converters:BoolToObjectConverter x:Key="BoolToOpacityConverter"
+                                          FalseValue="0"
+                                          TrueValue="1" />
+    </UserControl.Resources>
+
     <animations:Explicit.Animations>
         <animations:AnimationSet x:Name="LoadBeginAnimation">
             <animations:OpacityAnimation EasingMode="EaseOut"

@@ -33,8 +33,8 @@
                 </Interactivity:EventTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
 
-            <Border Grid.RowSpan="2"
-                    x:Name="IconBorder"
+            <Border x:Name="IconBorder"
+                    Grid.RowSpan="2"
                     Grid.Column="0"
                     Width="48"
                     Height="48"
@@ -45,18 +45,17 @@
                     BorderThickness="4"
                     CornerRadius="8">
                 <Border.Background>
-                    <ImageBrush ImageSource="{Binding JavaIconPath}" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="{Binding JavaIconPath}" Stretch="UniformToFill">
+                        <Interactivity:Interaction.Behaviors>
+                            <Interactivity:EventTriggerBehavior EventName="ImageFailed">
+                                <Interactivity:ChangePropertyAction PropertyName="ImageSource"
+                                                                    Value="ms-appx:///Assets/Icons/JavaIcons/openjdk.png" />
+                            </Interactivity:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </ImageBrush>
                 </Border.Background>
-
-                <Interactivity:Interaction.Behaviors>
-                    <Interactivity:EventTriggerBehavior EventName="ImageFailed">
-                        <Interactivity:ChangePropertyAction PropertyName="Background"
-                                    TargetObject="{Binding ElementName=IconBorder}"
-                                    Value="ms-appx:///Assets/Icons/JavaIcons/openjdk.png" />
-                    </Interactivity:EventTriggerBehavior>
-                </Interactivity:Interaction.Behaviors>
             </Border>
-            
+
             <StackPanel Grid.Row="0"
                         Grid.Column="1"
                         Margin="6,6,0,0"

@@ -23,18 +23,18 @@ public class MainSideBarService {
 
     public void Register(MainSideBarItem mainSideBarItem, bool isFooter = false) {
         if (isFooter) {
-            MainSideBarData.MainSideBarFooterItems.Add(mainSideBarItem);
+            MainSideBarData.mainSideBarFooterItems.Add(mainSideBarItem);
         }
         else {
-            MainSideBarData.MainSideBarItems.Add(mainSideBarItem);
+            MainSideBarData.mainSideBarItems.Add(mainSideBarItem);
         }
     }
 
     public void SearchFilterRegister(IMainMenuSharchFilterItem mainMenuSharchItem) {
-        MainSideBarData.MainMenuSharchFilterItems.Add(mainMenuSharchItem);
+        MainSideBarData.mainMenuSharchFilterItems.Add(mainMenuSharchItem);
     }
 
     public void MenuItemRegister(MainMenuItem mainMenuItem) {
-        MainSideBarData.MainMenuItems.Add(mainMenuItem);
+        MainSideBarData.mainMenuItems.Add(mainMenuItem);
     }
 }

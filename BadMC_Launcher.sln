@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36105.17 d17.14
+VisualStudioVersion = 17.14.36105.17
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadMC_Launcher", "BadMC_Launcher\BadMC_Launcher.csproj", "{FB41FFC8-CFBD-4596-AEEF-6EAFE339AEBA}"
 EndProject
@@ -44,6 +44,8 @@ Global
 		{5DDF52C5-900B-9D9B-8D63-7F70EBA69900} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_SaveFilesImmediatelyUponChange = False
+		RESX_NeutralResourcesLanguage = zh-Hans
 		SolutionGuid = {D48ABA40-866E-4A92-B9F1-24BE0CC05649}
 	EndGlobalSection
 EndGlobal

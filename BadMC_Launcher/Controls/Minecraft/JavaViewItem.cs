@@ -19,7 +19,7 @@ public partial class JavaViewItem : ObservableObject {
 
         JavaPath = Entry.JavaPath;
 
-        JavaIconPath = $"ms-appx:///Assets/Icons/JavaIcons/{Entry.JavaType.ToLower()}";
+        JavaIconPath = $"ms-appx:///Assets/Icons/JavaIcons/{Entry.JavaType.ToLower()}.png";
     }
 
     public JavaEntry Entry { get; init; }

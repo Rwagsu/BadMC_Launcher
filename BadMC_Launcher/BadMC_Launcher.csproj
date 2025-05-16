@@ -53,6 +53,10 @@
             ThemeService;
             SkiaRenderer;
         </UnoFeatures>
+        <DefaultLanguage>zh-Hans</DefaultLanguage>
+        <PackageCertificateThumbprint>05B5FAA397F0AB59434B91A8010FDC6780F8F126</PackageCertificateThumbprint>
+        <PackageCertificateKeyFile>BadMC_Launcher_TemporaryKey.pfx</PackageCertificateKeyFile>
+        <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.WinUI.Animations" />
@@ -65,6 +69,7 @@
         <PackageReference Include="GEmojiSharp" />
         <PackageReference Include="Hardware.Info" />
         <PackageReference Include="MinecraftLaunch" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" />
 
         <UnoImage Include="Assets\Icons\MinecraftIcons\*" />
         <UnoImage Include="Assets\Icons\JavaIcons\*" />

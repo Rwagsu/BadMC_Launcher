@@ -8,8 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
-namespace BadMC_Launcher.Extensions;
-
+namespace BadMC_Launcher.Utilities;
 
 public class DistinctiveItemBindingList<T> : BindingList<T> {
     private readonly IEqualityComparer<T> _comparer;

@@ -12,11 +12,6 @@ public static class UpdateMapping {
     };
 
     public readonly static Dictionary<string, Func<object, object>> minecraftConfigPropertyTypeMapping = new() {
-        { "VersionIsolation", (oldValue) => {
-            if (oldValue is bool value && value) {
-                return VersionIsolationEnum.ModLoader;
-            }
-            return VersionIsolationEnum.Disabled;
-        } }
+
     };
 }

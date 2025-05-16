@@ -16,7 +16,7 @@ using Uno.Extensions.Specialized;
 namespace BadMC_Launcher.Extensions;
 public static class MinecraftEntryExtension {
     public static MinecraftEntryImageEnum GetMinecraftImageEnum(this MinecraftEntry minecraftEntry) {
-        if (File.Exists(Path.Combine(minecraftEntry.MinecraftFolderPath, @$"{AppDataPath.VersionPath}\icon.png"))) {
+        if (File.Exists(Path.Combine(minecraftEntry.MinecraftFolderPath, Path.Combine(AppDataPath.VersionConfigsPath, "icon.png")))) {
             return MinecraftEntryImageEnum.Custom;
         }
         if (minecraftEntry is VanillaMinecraftEntry vanillaEntry) {

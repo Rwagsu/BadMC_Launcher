@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using BadMC_Launcher.Extensions;
 using MinecraftLaunch.Base.Models.Game;
 
-namespace BadMC_Launcher.Models.Data.SettingsData;
+namespace BadMC_Launcher.Models.Data.ConfigsData;
 internal class SingleMinecraftConfigs {
     internal string? targetMinecraftEntryPath;
 

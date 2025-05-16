@@ -54,8 +54,6 @@ public sealed partial class LoadingAnimation : UserControl {
             return;
         }
         else if ((bool)e.NewValue) {
-            control.IsHitTestVisible = true;
-
 #if WINAPPSDK_PACKAGED
             control.LoadBeginAnimation.Start();
 #else
@@ -70,8 +68,6 @@ public sealed partial class LoadingAnimation : UserControl {
 #else
             control.Opacity = 0;
 #endif
-
-        control.IsHitTestVisible = false;
     }
 
     private static void OnLoadDescriptionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

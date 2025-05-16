@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using BadMC_Launcher.Classes;
 using BadMC_Launcher.Models.Data;
-using BadMC_Launcher.Models.Data.SettingsData;
+using BadMC_Launcher.Models.Data.ConfigsData;
 using BadMC_Launcher.Models.Enums;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -16,7 +16,16 @@ using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace BadMC_Launcher.Services.Configs;
 public class ThemeConfigsService : ConfigClass {
+    private readonly PathService pathService;
     internal bool isSyncEnabled = false;
+
+    public ThemeConfigsService(PathService _pathService) {
+        pathService = _pathService;
+    }
+
+    public ThemeConfigsService() {
+        pathService = App.GetService<PathService>();
+    }
 
     public BackgroundTypeEnum BackgroundType {
         get => ThemeConfigs.backgroundType;
@@ -106,27 +115,32 @@ public class ThemeConfigsService : ConfigClass {
     }
 
     public async Task<Brush> SetBackground(BackgroundTypeEnum backgroundType) {
-        App.GetService<FileService>().CheckPath(Path.Combine(AppDataPath.AssetsPath, "Wallpapers"), false);
-        switch (backgroundType) {
-            case BackgroundTypeEnum.StaticImage:
-                if (string.IsNullOrWhiteSpace(ThemeConfigs.imageBackgroundName)) {
-                    //TODO :Dialog EXCEPTION
-                    return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1)); ;
-                }
-                return SetBrush(new BitmapImage(new Uri(Path.Combine(AppDataPath.AssetsPath, "Wallpapers", ThemeConfigs.imageBackgroundName))));
-            case BackgroundTypeEnum.BingWallpaper:
-                return SetBrush(new BitmapImage(new Uri(await GetBingWallpaperUrl())));
-            case BackgroundTypeEnum.Acrylic:
-                //TODO: Only MacOS
-                return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1));
-            default:
-                var color = ColorTranslator.FromHtml(ThemeConfigs.solidColorBackgroundCode);
-                return SetBrush(Windows.UI.Color.FromArgb(color.A, color.R, color.G, color.B));
+        if (App.GetService<PathService>().CheckPath(Path.Combine(AppDataPath.pathsList["AssetsPath"], "Wallpapers"))) {
+            if (!Directory.Exists(Path.Combine(AppDataPath.pathsList["AssetsPath"], "Wallpapers"))) {
+                Directory.CreateDirectory(Path.Combine(AppDataPath.pathsList["AssetsPath"], "Wallpapers"));
+            }
+            switch (backgroundType) {
+                case BackgroundTypeEnum.StaticImage:
+                    if (string.IsNullOrWhiteSpace(ThemeConfigs.imageBackgroundName)) {
+                        //TODO :Dialog EXCEPTION
+                        return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1)); ;
+                    }
+                    return SetBrush(new BitmapImage(new Uri(Path.Combine(AppDataPath.pathsList["AssetsPath"], "Wallpapers", ThemeConfigs.imageBackgroundName))));
+                case BackgroundTypeEnum.BingWallpaper:
+                    return SetBrush(new BitmapImage(new Uri(await GetBingWallpaperUrl())));
+                case BackgroundTypeEnum.Acrylic:
+                    //TODO: Only MacOS
+                    return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1));
+                default:
+                    var color = ColorTranslator.FromHtml(ThemeConfigs.solidColorBackgroundCode);
+                    return SetBrush(Windows.UI.Color.FromArgb(color.A, color.R, color.G, color.B));
+            }
         }
+        return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1));
     }
 
     public override bool SyncSettingGet() {
-        if (App.GetService<FileService>().TryReadConfig(Path.Combine(AppDataPath.ConfigsPath, @"ThemeConfigs.json"), ThemeConfigsServiceContext.Default.ThemeConfigsService, out var jsonClass) && jsonClass != null) {
+        if (pathService.TryReadConfig(Path.Combine(AppDataPath.pathsList["ConfigsPath"], @"ThemeConfigs.json"), ThemeConfigsServiceContext.Default.ThemeConfigsService, out var jsonClass) && jsonClass != null) {
             ThemeConfigs.backgroundType = jsonClass.BackgroundType;
             ThemeConfigs.themeType = jsonClass.ThemeType;
             ThemeConfigs.imageBackgroundName = jsonClass.ImageBackgroundName;
@@ -139,7 +153,7 @@ public class ThemeConfigsService : ConfigClass {
     }
 
     public override bool SyncSettingSet() {
-        if (App.GetService<FileService>().WriteConfig(Path.Combine(AppDataPath.ConfigsPath, @"ThemeConfigs.json"), ThemeConfigsServiceContext.Default.ThemeConfigsService, this)) {
+        if (pathService.WriteConfig(Path.Combine(AppDataPath.pathsList["ConfigsPath"], @"ThemeConfigs.json"), ThemeConfigsServiceContext.Default.ThemeConfigsService, this)) {
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ThemeConfigsService>(this), "MinecraftConfigChanged");
             return true;
         }

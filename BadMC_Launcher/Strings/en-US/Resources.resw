@@ -343,4 +343,19 @@ If something in this setting has been changed in an version-specific customizati
   <data name="LaunchSettingsPage_VersionIsolationSettingsCard.Description" xml:space="preserve">
     <value>Isolates Mods, Lights and Shadows of eligible Minecraft versions from other versions.</value>
   </data>
+  <data name="VersionIsolationFilter_NotReleaseFilterViewName" xml:space="preserve">
+    <value>All non-release versions</value>
+  </data>
+  <data name="VersionIsolationFilter_ModLoaderFilterViewName" xml:space="preserve">
+    <value>Mod-installable versions only</value>
+  </data>
+  <data name="VersionIsolationFilter_ModifiedFilterViewName" xml:space="preserve">
+    <value>Modified versions only</value>
+  </data>
+  <data name="VersionIsolationFilter_DisabledFilterViewName" xml:space="preserve">
+    <value>Disabled for all versions</value>
+  </data>
+  <data name="VersionIsolationFilter_EnabledFilterViewName" xml:space="preserve">
+    <value>Enabled for all versions</value>
+  </data>
 </root>

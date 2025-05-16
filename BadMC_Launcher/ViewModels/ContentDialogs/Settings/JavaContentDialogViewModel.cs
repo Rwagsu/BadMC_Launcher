@@ -13,6 +13,7 @@ namespace BadMC_Launcher.ViewModels.ContentDialogs.Settings;
 
 public partial class JavaContentDialogViewModel : ObservableObject {
     private readonly MinecraftConfigsService minecraftConfigService;
+    private Task? setJavaListTask;
 
     public JavaContentDialogViewModel() {
         minecraftConfigService = App.GetService<MinecraftConfigsService>();
@@ -24,11 +25,9 @@ public partial class JavaContentDialogViewModel : ObservableObject {
 
         // Initialize List
         JavasList = [];
-        SetJavaList();
-    }
 
-    [ObservableProperty]
-    public partial bool IsJavasListEmpty { get; set; }
+        setJavaListTask = SetJavaList();
+    }
 
     [ObservableProperty]
     public partial bool IsJavasListLoading { get; set; }
@@ -40,7 +39,7 @@ public partial class JavaContentDialogViewModel : ObservableObject {
     public partial ObservableDataList<JavaViewItem> JavasList { get; set; }
 
     [ObservableProperty]
-    public partial int JavasListSelectedIndex { get; set; }
+    public partial JavaViewItem? JavasListSelectedItem { get; set; }
 
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]
     private async Task AddJava() {
@@ -96,6 +95,7 @@ public partial class JavaContentDialogViewModel : ObservableObject {
             if (!javaList.All(item => JavasList.Contains(item.JavaPath))) {
                 JavasList.MargeItems(javaList.Select(item => new JavaViewItem(item)));
                 minecraftConfigService.JavaPaths.MargeItems(javaList.Select(item => item.JavaPath));
+                OnPropertyChanged();
                 return;
             }
         }
@@ -105,11 +105,14 @@ public partial class JavaContentDialogViewModel : ObservableObject {
 
     [RelayCommand]
     private void SetActiveJava() {
-        // Get selected item
-        var selectedItem = JavasList.ElementAtOrDefault(JavasListSelectedIndex);
+        var isCompleted = setJavaListTask?.IsCompleted;
+        if (isCompleted is bool isTaskCompleted && isTaskCompleted) {
+            // Get selected item
+            var selectedItem = JavasListSelectedItem;
 
-        // Set active Java path
-        minecraftConfigService.ActiveJavaPath = minecraftConfigService.JavaPaths.FirstOrDefault(item => item == selectedItem?.JavaPath);
+            // Set active Java path
+            minecraftConfigService.ActiveJavaPath = minecraftConfigService.JavaPaths.FirstOrDefault(item => item == selectedItem?.JavaPath);
+        }
     }
 
     [RelayCommand]
@@ -139,28 +142,23 @@ public partial class JavaContentDialogViewModel : ObservableObject {
 
     [RelayCommand]
     private void LocalViewJava(string parameter) {
-        App.GetService<FileService>().TryOpenFolderOrFileFromPath(parameter);
+        App.GetService<PathService>().TryOpenFolderOrFileFromPath(parameter);
     }
 
-    partial void OnJavasListChanged(ObservableDataList<JavaViewItem> value) {
-        IsJavasListEmpty = !JavasList.Any();
-    }
-
-    private async void SetJavaList() {
+    private async Task SetJavaList() {
         if (!minecraftConfigService.JavaPaths.Any()) {
             return;
         }
 
         IsJavasListLoading = true;
 
-        
         var javaEntries = await Task.Run(async () => {
-            // Get Java paths
-            var tasks = minecraftConfigService.JavaPaths
-                .Select(async item => await JavaUtil.GetJavaInfoAsync(item)).ToList();
-
             // Convert list
-            return await Task.WhenAll(tasks);
+            var list = new List<JavaEntry>();
+            foreach (var item in minecraftConfigService.JavaPaths) {
+                list.Add(await JavaUtil.GetJavaInfoAsync(item));
+            }
+            return list;
         });
 
         // Clear list
@@ -171,10 +169,8 @@ public partial class JavaContentDialogViewModel : ObservableObject {
             JavasList.Add(new JavaViewItem(item));
         }
 
-        IsJavasListEmpty = !JavasList.Any();
-
         // Find selected Java
-        JavasListSelectedIndex = JavasList.GetIndex(item => item.JavaPath == minecraftConfigService.ActiveJavaPath);
+        JavasListSelectedItem = JavasList.FirstOrDefault(item => item.JavaPath == minecraftConfigService.ActiveJavaPath);
 
         IsJavasListLoading = false;
     }
@@ -184,16 +180,15 @@ public partial class JavaContentDialogViewModel : ObservableObject {
             case nameof(MinecraftConfigsService.JavaPaths):
                 if (!minecraftConfigService.JavaPaths.SequenceEqual(JavasList.Select(item => item.JavaPath))) {
                     // Update Java list
-                    SetJavaList();
+                    setJavaListTask = SetJavaList();
                 }
                 break;
             case nameof(MinecraftConfigsService.ActiveJavaPath):
-                if (minecraftConfigService.ActiveJavaPath != JavasList.ElementAtOrDefault(JavasListSelectedIndex)?.JavaPath) {
+                if (minecraftConfigService.ActiveJavaPath != JavasListSelectedItem?.JavaPath) {
                     // Update selected index
-                    JavasListSelectedIndex = JavasList.GetIndex(item => item.JavaPath == minecraftConfigService.ActiveJavaPath);
+                    JavasListSelectedItem = JavasList.FirstOrDefault(item => item.JavaPath == minecraftConfigService.ActiveJavaPath);
                 }
                 break;
         }
-        IsJavasListEmpty = !JavasList.Any();
     }
 }

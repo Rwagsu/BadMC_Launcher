@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -8,16 +9,18 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using BadMC_Launcher.Models.Data;
+using BadMC_Launcher.Models.Data.ConfigsData;
 using BadMC_Launcher.Models.Data.Mappings;
+using CommunityToolkit.Mvvm.Collections;
 using Microsoft.UI.Xaml.Controls;
 using MinecraftLaunch.Extensions;
 using Uno.UI.Helpers;
 
 namespace BadMC_Launcher.Services;
 
-public class FileService {
+public class PathService {
     private readonly bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-    private readonly HashSet<string> WindowsPathReservedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    private readonly HashSet<string> windowsPathReservedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
         "CON", "PRN", "AUX", "NUL",
         "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
@@ -30,7 +33,7 @@ public class FileService {
     /// <param name="path">The path of the string to be checked.</param>
     /// <param name="isCheckPathPointing">If enabled, the path is additionally checked to see if it points to a valid file.</param>
     /// <returns>Returns true if the path is valid and absolute.</returns>
-    public bool CheckPath(string path, bool isCheckPathPointing) {
+    public bool CheckPath(string path) {
         try {
             // Segment path
             var parts = path.Split([Path.DirectorySeparatorChar,
@@ -46,7 +49,7 @@ public class FileService {
                     // Check is has invalid chars or Name
                     if (part.EndsWith('.') ||
                         part.EndsWith(' ') ||
-                        WindowsPathReservedNames.Contains(Path.GetFileNameWithoutExtension(part))) {
+                        windowsPathReservedNames.Contains(Path.GetFileNameWithoutExtension(part))) {
                         return false;
                     }
                 }
@@ -56,9 +59,7 @@ public class FileService {
                     }
                 }
             }
-            if (isCheckPathPointing) {
-                return Path.Exists(path);
-            }
+            return true;
         }
         catch (Exception ex) {
             ShowErrorToast(ex);
@@ -97,7 +98,7 @@ public class FileService {
     /// <param name="propertyValueTypeMapping">If an update results in a change in the type of an attribute value, the incorrect attribute value type can be mapped to the correct attribute value type through mapping.</param>
     /// <returns>Returns a boolean indicating whether the Json file was deserialized successfully.</returns>
     public bool TryReadConfig<T>(string filePath, JsonTypeInfo<T> jsonTypeInfo, out T? returnValue, Dictionary<string, string>? propertyNameMapping = null, Dictionary<string, Func<object, object>>? propertyValueTypeMapping = null) {
-        if (CheckPath(filePath, true)) {
+        if (CheckPath(filePath) && Path.Exists(filePath)) {
             try {
                 var fileValue = File.ReadAllText(filePath);
                 if (!string.IsNullOrWhiteSpace(fileValue)) {
@@ -134,7 +135,7 @@ public class FileService {
     /// <param name="returnValue">If the deserialization succeeds, return a usable JsonElement instance, if it doesn't, return the default value of the JsonElement (never use the default value!)</param>
     /// <returns>Returns a boolean value indicating whether the Json file was read successfully.</returns>
     public bool TryReadConfigToJsonElement(string filePath, out JsonElement? returnValue) {
-        if (CheckPath(filePath, true)) {
+        if (CheckPath(filePath) && Path.Exists(filePath)) {
             try {
                 var fileValue = File.ReadAllText(filePath);
                 if (!string.IsNullOrWhiteSpace(fileValue)) {
@@ -161,7 +162,10 @@ public class FileService {
     /// <param name="JsonTypeInfo">Contains information about the class to be serialized.</param>
     /// <returns>Returns a boolean value indicating whether the class has been properly serialized into the Json file.</returns>
     public bool WriteConfig<T>(string filePath, JsonTypeInfo<T> jsonTypeInfo, T value) {
-        if (CheckPath(filePath, true)) {
+        if (CheckPath(filePath)) {
+            if (!File.Exists(filePath)) {
+                File.Create(filePath);
+            }
             try {
                 var jsonValue = value.Serialize(jsonTypeInfo);
                 File.WriteAllText(filePath, jsonValue);
@@ -190,7 +194,7 @@ public class FileService {
             throw new ArgumentNullException($"{nameof(propertyNameMapping)}, {nameof(propertyValueTypeMapping)}", "propertyNameMapping and valueTypeMapping cannot both be null.");
         }
         try {
-            if (CheckPath(filePath, true)) {
+            if (CheckPath(filePath) && Path.Exists(filePath)) {
                 var content = File.ReadAllText(filePath);
 
                 if (string.IsNullOrWhiteSpace(content)) {
@@ -222,7 +226,7 @@ public class FileService {
     /// <returns>Returns a value indicating whether the folder or file has been opened.</returns>
     public bool TryOpenFolderOrFileFromPath(string path) {
         try {
-            if (CheckPath(path, true)) {
+            if (CheckPath(path) && Path.Exists(path)) {
                 using (Process.Start(new ProcessStartInfo(path) {
                     UseShellExecute = true,
                     Verb = "open"

@@ -140,7 +140,7 @@
                                                VerticalAlignment="Center"
                                                Style="{ThemeResource BodyStrongTextBlockStyle}" />
                                     <Border VerticalAlignment="Center"
-                                            Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                            Background="{ThemeResource SystemFillColorAttentionBrush}"
                                             CornerRadius="4">
                                         <TextBlock Margin="6,2"
                                                    VerticalAlignment="Center"
@@ -191,6 +191,7 @@
                                           Height="50"
                                           HorizontalAlignment="Right"
                                           VerticalAlignment="Center"
+                                          Foreground="{ThemeResource SystemFillColorAttentionBrush}"
                                           IsIndeterminate="False"
                                           Value="{x:Bind GetProgressRingMemoryView(viewModel.UsedMemoryView, viewModel.MaxMemoryView), Mode=OneWay}" />
                         </Grid>
@@ -335,7 +336,29 @@
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xE8B4;" />
                 </controls:SettingsCard.HeaderIcon>
-                <ComboBox />
+                <ComboBox ItemsSource="{Binding VersionIsolationFilters}" SelectedItem="{Binding VersionIsolationFilterSelectedItem, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Padding="0,2"
+                                        Orientation="Horizontal"
+                                        Spacing="6">
+                                <IconSourceElement Width="24"
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   IconSource="{Binding ViewIcon}" />
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="{Binding ViewName}"
+                                           TextWrapping="Wrap" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
+                    <Interactivity:Interaction.Behaviors>
+                        <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
+                            <Interactivity:InvokeCommandAction Command="{Binding SetVersionIsolationFilterIdCommand}" />
+                        </Interactivity:EventTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>
+                </ComboBox>
             </controls:SettingsCard>
 
         </StackPanel>

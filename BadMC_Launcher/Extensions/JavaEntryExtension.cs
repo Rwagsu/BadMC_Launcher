@@ -10,6 +10,7 @@ using Uno.Disposables;
 
 namespace BadMC_Launcher.Extensions;
 public static class JavaEntryExtension {
+
     public async static Task<string> GetJavaIconPathAsync(this JavaEntry javaEntry) {
         var imageFolder = await Package.Current.InstalledLocation.GetFolderAsync("Assets/Icons/JavaIcons");
         var image = await imageFolder.TryGetItemAsync($"{javaEntry.JavaType.ToLower()}.png");

@@ -343,4 +343,19 @@
   <data name="LaunchSettingsPage_VersionIsolationSettingsCard.Description" xml:space="preserve">
     <value>将符合条件的 Minecraft 版本的 Mod, 光影等资源包与其它本体隔离.</value>
   </data>
+  <data name="VersionIsolationFilter_NotReleaseFilterViewName" xml:space="preserve">
+    <value>所有非正式版</value>
+  </data>
+  <data name="VersionIsolationFilter_ModLoaderFilterViewName" xml:space="preserve">
+    <value>仅可安装Mod的版本</value>
+  </data>
+  <data name="VersionIsolationFilter_ModifiedFilterViewName" xml:space="preserve">
+    <value>仅已被修改的版本</value>
+  </data>
+  <data name="VersionIsolationFilter_DisabledFilterViewName" xml:space="preserve">
+    <value>对所有版本禁用</value>
+  </data>
+  <data name="VersionIsolationFilter_EnabledFilterViewName" xml:space="preserve">
+    <value>对所有版本启用</value>
+  </data>
 </root>

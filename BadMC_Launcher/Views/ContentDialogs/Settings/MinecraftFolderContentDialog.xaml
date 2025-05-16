@@ -129,7 +129,7 @@
                   Grid.Row="1"
                   ItemTemplate="{StaticResource MinecraftFolderItemsTemplatePrimary}"
                   ItemsSource="{Binding MinecraftFoldersList}"
-                  SelectedIndex="{Binding MinecraftFoldersListSelectedIndex, Mode=TwoWay}">
+                  SelectedItem="{Binding MinecraftFoldersListSelectedItem, Mode=TwoWay}">
             <Interactivity:Interaction.Behaviors>
                 <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
                     <Interactivity:InvokeCommandAction Command="{Binding SetActiveMinecraftFolderCommand}" />

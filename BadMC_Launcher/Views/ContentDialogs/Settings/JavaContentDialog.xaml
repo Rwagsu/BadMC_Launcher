@@ -19,6 +19,20 @@
         <converters:BoolToObjectConverter x:Key="BoolInvertConverter"
                                           FalseValue="True"
                                           TrueValue="False" />
+
+        <converters:DoubleToVisibilityConverter x:Key="DoubleToVisibilityConverter" GreaterThan="0" />
+
+        <converters:DoubleToObjectConverter x:Key="DoubleToOpacityConverter"
+                                            FalseValue="1"
+                                            GreaterThan="0"
+                                            TrueValue="0" />
+
+        <converters:DoubleToObjectConverter x:Key="DoubleToBoolConverter"
+                                            FalseValue="True"
+                                            GreaterThan="0"
+                                            TrueValue="False" />
+
+
     </ContentDialog.Resources>
 
     <Grid MinWidth="400"
@@ -80,8 +94,8 @@
                     Width="36"
                     Height="36"
                     Padding="0"
-                    IsEnabled="True"
-                    Command="{Binding DownloadJavaCommand}">
+                    Command="{Binding DownloadJavaCommand}"
+                    IsEnabled="True">
                 <FontIcon Glyph="&#xEBD3;" />
             </Button>
 
@@ -104,7 +118,7 @@
                   Grid.Row="1"
                   ItemTemplate="{StaticResource JavaItemsTemplateSecondary}"
                   ItemsSource="{Binding JavasList}"
-                  SelectedIndex="{Binding JavasListSelectedIndex, Mode=TwoWay}">
+                  SelectedItem="{Binding JavasListSelectedItem, Mode=TwoWay}">
             <Interactivity:Interaction.Behaviors>
                 <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
                     <Interactivity:InvokeCommandAction Command="{Binding SetActiveJavaCommand}" />
@@ -117,10 +131,10 @@
                     Grid.Row="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    IsHitTestVisible="{Binding IsJavasListEmpty}"
-                    Opacity="{Binding IsJavasListEmpty, Converter={StaticResource BoolToOpacityConverter}}"
+                    IsHitTestVisible="{Binding JavasList.Count, Mode=OneWay, Converter={StaticResource DoubleToBoolConverter}}"
+                    Opacity="{Binding JavasList.Count, Mode=OneWay, Converter={StaticResource DoubleToOpacityConverter}}"
                     Spacing="8"
-                    Visibility="{Binding IsJavasListEmpty, Converter={StaticResource BoolToVisibilityConverter}}">
+                    Visibility="{Binding JavasList.Count, Mode=OneWay, Converter={StaticResource DoubleToVisibilityConverter}, ConverterParameter=True}">
             <!-- Animation -->
             <StackPanel.OpacityTransition>
                 <ScalarTransition />
@@ -128,6 +142,7 @@
             <FontIcon HorizontalAlignment="Center"
                       FontSize="40"
                       Glyph="&#xE8F6;" />
+            <TextBlock Text="{Binding JavasList.Count, Mode=OneWay}" />
             <TextBlock x:Uid="JavaContentDialog_JavaListEmptyTipsTextBlock"
                        HorizontalAlignment="Center"
                        Style="{ThemeResource BodyStrongTextBlockStyle}" />

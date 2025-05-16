@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace BadMC_Launcher.Extensions;
+namespace BadMC_Launcher.Utilities;
 public class ObservableDataList<T> : ObservableCollection<T> {
     public ObservableDataList(IEnumerable<T> initialData) : base(initialData) {
 

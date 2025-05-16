@@ -9,14 +9,23 @@ using System.Threading.Tasks;
 using BadMC_Launcher.Classes;
 using BadMC_Launcher.Extensions;
 using BadMC_Launcher.Models.Data;
-using BadMC_Launcher.Models.Data.SettingsData;
+using BadMC_Launcher.Models.Data.ConfigsData;
 using MinecraftLaunch.Base.Models.Game;
 
 namespace BadMC_Launcher.Services.Configs;
 public class SingleMinecraftConfigsService : ConfigClass {
     private readonly SingleMinecraftConfigs singleMinecraftConfigInstance = new();
+    private readonly PathService pathService;
+
+    public SingleMinecraftConfigsService(PathService _pathService) {
+        pathService = _pathService;
+
+        JvmArguments.ListChanged += OnListChanged;
+    }
 
     public SingleMinecraftConfigsService() {
+        pathService = App.GetService<PathService>();
+
         JvmArguments.ListChanged += OnListChanged;
     }
 
@@ -181,8 +190,8 @@ public class SingleMinecraftConfigsService : ConfigClass {
 
     public override bool SyncSettingGet() {
         if(TargetMinecraftEntryPath != null
-            && File.Exists(Path.Combine(TargetMinecraftEntryPath, @"BadBCConfigs\MinecraftConfig.json"))
-            && App.GetService<FileService>().TryReadConfig(Path.Combine(TargetMinecraftEntryPath, @$"{AppDataPath.VersionPath}\MinecraftConfigs.json"), SingleMinecraftConfigsServiceContext.Default.SingleMinecraftConfigsService, out var jsonClass) && jsonClass != null) {
+            && File.Exists(Path.Combine(TargetMinecraftEntryPath, Path.Combine(AppDataPath.VersionConfigsPath, "MinecraftConfigs.json")))
+            && pathService.TryReadConfig(Path.Combine(TargetMinecraftEntryPath, Path.Combine(AppDataPath.VersionConfigsPath, "MinecraftConfigs.json")), SingleMinecraftConfigsServiceContext.Default.SingleMinecraftConfigsService, out var jsonClass) && jsonClass != null) {
             singleMinecraftConfigInstance.isFullscreen = jsonClass.IsFullscreen;
             singleMinecraftConfigInstance.isEnableVersionIsolation = jsonClass.IsEnableVersionIsolation;
             singleMinecraftConfigInstance.isAutoMemorySize = jsonClass.IsAutoMemorySize;
@@ -199,7 +208,7 @@ public class SingleMinecraftConfigsService : ConfigClass {
 
     public override bool SyncSettingSet() {
         if (TargetMinecraftEntryPath != null) {
-            return App.GetService<FileService>().WriteConfig(Path.Combine(TargetMinecraftEntryPath, @$"{AppDataPath.VersionPath}\MinecraftConfigs.json"), SingleMinecraftConfigsServiceContext.Default.SingleMinecraftConfigsService, this);
+            return pathService.WriteConfig(Path.Combine(TargetMinecraftEntryPath, Path.Combine(AppDataPath.VersionConfigsPath, "MinecraftConfigs.json")), SingleMinecraftConfigsServiceContext.Default.SingleMinecraftConfigsService, this);
         }
         //TODO: Toast
         return false;

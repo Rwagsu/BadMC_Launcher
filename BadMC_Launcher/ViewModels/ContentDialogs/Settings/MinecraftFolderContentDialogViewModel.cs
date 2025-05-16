@@ -18,7 +18,7 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
 
     public MinecraftFolderContentDialogViewModel() {
         MinecraftFoldersList = minecraftConfigService.MinecraftFolders.ToObservableCollection();
-        MinecraftFoldersListSelectedIndex = MinecraftFoldersList.GetIndex(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
+        MinecraftFoldersListSelectedItem = MinecraftFoldersList.FirstOrDefault(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
 
         OldRenameMinecraftFolderId = string.Empty;
         NewRenameMinecraftFolderId = string.Empty;
@@ -39,7 +39,7 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
     public partial bool IsCanRename { get; set; }
 
     [ObservableProperty]
-    public partial int MinecraftFoldersListSelectedIndex { get; set; }
+    public partial MinecraftFolderViewItem? MinecraftFoldersListSelectedItem { get; set; }
 
     [ObservableProperty]
     public partial string OldRenameMinecraftFolderId { get; set; }
@@ -86,7 +86,7 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
     private void OpenMinecraftFolder() {
         if (string.IsNullOrWhiteSpace(OldRenameMinecraftFolderId)) {
             // Open folder
-            App.GetService<FileService>().TryOpenFolderOrFileFromPath(RenameMinecraftFolderPath);
+            App.GetService<PathService>().TryOpenFolderOrFileFromPath(RenameMinecraftFolderPath);
         }
     }
 
@@ -134,7 +134,7 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
 
     [RelayCommand]
     private void SetActiveMinecraftFolder(SelectionChangedEventArgs args) {
-        var selectedItem = MinecraftFoldersList.ElementAtOrDefault(MinecraftFoldersListSelectedIndex);
+        var selectedItem = MinecraftFoldersListSelectedItem;
         if (args.AddedItems.Any(item => { 
             if (item is MinecraftFolderViewItem entry) { 
                 return entry.MinecraftFolderPath != minecraftConfigService.ActiveMinecraftFolderPath;
@@ -147,7 +147,7 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
 
     [RelayCommand]
     private void ViewFolderInLocal(string parameter) {
-        if (!App.GetService<FileService>().TryOpenFolderOrFileFromPath(parameter)) {
+        if (!App.GetService<PathService>().TryOpenFolderOrFileFromPath(parameter)) {
             // TODO: Toast Tip
         }
     }
@@ -200,14 +200,14 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
         // Update Property
         switch (e.PropertyName) {
             case nameof(MinecraftConfigsService.ActiveMinecraftFolderPath):
-                if (minecraftConfigService.ActiveMinecraftFolderPath != MinecraftFoldersList.ElementAtOrDefault(MinecraftFoldersListSelectedIndex)?.MinecraftFolderPath) {
-                    MinecraftFoldersListSelectedIndex = MinecraftFoldersList.GetIndex(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
+                if (minecraftConfigService.ActiveMinecraftFolderPath != MinecraftFoldersListSelectedItem?.MinecraftFolderPath) {
+                    MinecraftFoldersListSelectedItem = MinecraftFoldersList.FirstOrDefault(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
                 }
                 break;
             case nameof(MinecraftConfigsService.MinecraftFolders):
                 if (!MinecraftFoldersList.SequenceEqual(minecraftConfigService.MinecraftFolders)) {
                     MinecraftFoldersList = minecraftConfigService.MinecraftFolders.ToObservableCollection();
-                    MinecraftFoldersListSelectedIndex = MinecraftFoldersList.GetIndex(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
+                    MinecraftFoldersListSelectedItem = MinecraftFoldersList.FirstOrDefault(item => item.MinecraftFolderPath == minecraftConfigService.ActiveMinecraftFolderPath);
                 }
                 break;
         }

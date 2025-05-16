@@ -78,24 +78,23 @@ public sealed partial class LaunchSettingsPage : Page {
             }
             else if (gameMemoryGb > maxMemoryGb) {
                 return loader.GetString("LaunchSettingsPage_GameMemoryScore1");
-
             }
-            else if (gameMemoryGb <= 0.512) {
+            else if (gameMemoryGb <= 0.5) {
                 return loader.GetString("LaunchSettingsPage_GameMemoryScore2");
             }
-            else if (gameMemoryGb < 2.048) {
+            else if (gameMemoryGb < 2) {
                 return loader.GetString("LaunchSettingsPage_GameMemoryScore3");
 
             }
-            else if (gameMemoryGb < 4.096) {
+            else if (gameMemoryGb < 4) {
                 return loader.GetString("LaunchSettingsPage_GameMemoryScore4");
 
             }
-            else if (gameMemoryGb < 16.384) {
+            else if (gameMemoryGb < 16) {
                 return loader.GetString("LaunchSettingsPage_GameMemoryScore5");
 
             }
-            else if (gameMemoryGb < 32.768) {
+            else if (gameMemoryGb < 32) {
                 return loader.GetString("LaunchSettingsPage_GameMemoryScore6");
 
             }

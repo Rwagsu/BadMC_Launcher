@@ -13,8 +13,9 @@ using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Classes.Comparers;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Configs;
+using BadMC_Launcher.Classes.DataClasses;
 
-namespace BadMC_Launcher.Models.Data.SettingsData;
+namespace BadMC_Launcher.Models.Data.ConfigsData;
 internal static class MinecraftConfigs {
     internal static DistinctiveItemBindingList<Account> minecraftAccounts = new() { PropertyName = nameof(MinecraftConfigsService.MinecraftAccounts) };
 
@@ -32,7 +33,7 @@ internal static class MinecraftConfigs {
 
     internal static bool isFullscreen = false;
 
-    internal static VersionIsolationEnum VersionIsolation = VersionIsolationEnum.ModLoader;
+    internal static string versionIsolationFilterId = App.GetService<LaunchSettingsService>().VersionIsolationFilters[0].Id;
 
     internal static bool isAutoMemorySize = true;
 

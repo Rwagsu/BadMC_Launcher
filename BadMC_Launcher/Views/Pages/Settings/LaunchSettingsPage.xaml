@@ -330,7 +330,7 @@
 
             </controls:SettingsExpander>
 
-            <!-- Independency core setting -->
+            <!-- Version isolation setting -->
             <controls:SettingsCard x:Name="VersionIsolationSettingsCard" x:Uid="LaunchSettingsPage_VersionIsolationSettingsCard">
                 <!-- Icons -->
                 <controls:SettingsCard.HeaderIcon>
@@ -361,6 +361,45 @@
                 </ComboBox>
             </controls:SettingsCard>
 
+            <!-- Full screen setting -->
+            <controls:SettingsExpander x:Uid="LaunchSettingsPage_WindowSettingsExpander">
+                <!-- Icons -->
+                <controls:SettingsExpander.HeaderIcon>
+                    <FontIcon Glyph="&#xE740;" />
+                </controls:SettingsExpander.HeaderIcon>
+
+                <controls:SettingsExpander.Items>
+                    <!-- Window Size setting -->
+                    <controls:SettingsCard x:Uid="LaunchSettingsPage_WindowSizeSettingsCard" IsEnabled="{Binding IsFullscreen, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}">
+                        <!-- Icons -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE61F;" />
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <!-- Content -->
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <NumberBox LargeChange="64"
+                                       Minimum="2"
+                                       PlaceholderText="{Binding DefaultWindowSize.Width}"
+                                       SmallChange="32"
+                                       SpinButtonPlacementMode="Compact"
+                                       ValidationMode="InvalidInputOverwritten"
+                                       Value="{Binding WindowWidth, Mode=TwoWay}" />
+                            <FontIcon FontSize="16" Glyph="&#xE624;" />
+                            <NumberBox LargeChange="64"
+                                       Minimum="2"
+                                       PlaceholderText="{Binding DefaultWindowSize.Height}"
+                                       SmallChange="32"
+                                       SpinButtonPlacementMode="Compact"
+                                       ValidationMode="InvalidInputOverwritten"
+                                       Value="{Binding WindowHeight, Mode=TwoWay}" />
+                        </StackPanel>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+
+                <!-- Content -->
+                <ToggleSwitch IsOn="{Binding IsFullscreen, Mode=Twoway}" />
+            </controls:SettingsExpander>
         </StackPanel>
     </ScrollViewer>
 

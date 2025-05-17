@@ -16,6 +16,20 @@ public class VersionIsolationFilter {
 
     public required Func<MinecraftEntry, bool> IsVersionIsolation;
 
+    public static bool operator ==(VersionIsolationFilter? left, VersionIsolationFilter? right) {
+        if (left is VersionIsolationFilter && right is VersionIsolationFilter) {
+            return left.Equals(right);
+        }
+        return false;
+    }
+
+    public static bool operator !=(VersionIsolationFilter? left, VersionIsolationFilter? right) {
+        if (left is VersionIsolationFilter && right is VersionIsolationFilter) {
+            return !left.Equals(right);
+        }
+        return true;
+    }
+
     public override bool Equals(object? obj) {
         return obj is VersionIsolationFilter filter && Id == filter.Id;
     }

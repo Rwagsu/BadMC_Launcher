@@ -41,7 +41,7 @@ public partial class LaunchPadViewModel : ObservableObject {
                 MinecraftEntrys = new(MinecraftFolderEntrysSelectedItem.GetMinecraftItems().ToList());
 
                 // Set ActiveMinecraftEntry
-                MinecraftEntrysSelectedItem = MinecraftEntrys.FirstOrDefault(item => item.MinecraftId == MinecraftFolderEntrysSelectedItem.ActiveMinecraftEntryId);
+                MinecraftEntrysSelectedItem = MinecraftEntrys.FirstOrDefault(item => item.MinecraftId == MinecraftFolderEntrysSelectedItem?.ActiveMinecraftEntryId);
             }
         }
 
@@ -80,7 +80,7 @@ public partial class LaunchPadViewModel : ObservableObject {
 
     [RelayCommand(CanExecute = nameof(SetIsNotActiveMinecraftEntryEmpty))]
     public void LaunchMinecraftJava() {
-        
+
     }
 
     // Invoke Refresh Command

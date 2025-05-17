@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BadMC_Launcher.Classes.DataClasses;
+using BadMC_Launcher.Classes.UI;
 using MinecraftLaunch.Base.Models.Game;
 
 namespace BadMC_Launcher.Services.Settings;
@@ -18,13 +19,13 @@ public class LaunchSettingsService {
             new VersionIsolationFilter() {
                 Id = "Base_DisabledVersionFilter",
                 ViewName = resourceService.GetString("VersionIsolationFilter_DisabledFilterViewName"),
-                ViewIcon = new FontIconSource() { Glyph = "\uE930" },
+                ViewIcon = new FontIconSource() { Glyph = "\uECCA" },
                 IsVersionIsolation = (entry) => false
             },
             new VersionIsolationFilter() {
                 Id = "Base_EnabledVersionFilter",
                 ViewName = resourceService.GetString("VersionIsolationFilter_EnabledFilterViewName"),
-                ViewIcon = new FontIconSource() { Glyph = "\uECCB" },
+                ViewIcon = new FontIconSource() { Glyph = "\uE930" },
                 IsVersionIsolation = (entry) => true
             },
 
@@ -51,4 +52,6 @@ public class LaunchSettingsService {
         ]);
     }
     public ObservableDataList<VersionIsolationFilter> VersionIsolationFilters { get; } = new ObservableDataList<VersionIsolationFilter>();
+    
+    public Size DefaultWindowSize { get; } = new Size(854, 480);
 }

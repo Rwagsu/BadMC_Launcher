@@ -36,28 +36,24 @@ public partial class MinecraftViewItem : ObservableObject {
     }
 
     public static bool operator ==(MinecraftViewItem? left, MinecraftViewItem? right) {
-        return left is not null && right is not null ? 
-            left.MinecraftId == right.MinecraftId :
-            ReferenceEquals(left, right);
+        if (left is MinecraftViewItem && right is MinecraftViewItem) {
+            return left.Equals(right);
+        }
+        return false;
     }
 
     public static bool operator !=(MinecraftViewItem? left, MinecraftViewItem? right) {
-        return left is not null && right is not null 
-            ? 
-            left.MinecraftId != right.MinecraftId : 
-            !ReferenceEquals(left, right);
+        if (left is MinecraftViewItem && right is MinecraftViewItem) {
+            return !left.Equals(right);
+        }
+        return true;
     }
 
     public override bool Equals(object? obj) {
         if (obj is MinecraftViewItem entryItem) {
-            if (ReferenceEquals(this.MinecraftId, entryItem.MinecraftId)) {
-                return true;
-            }
-            else if (!ReferenceEquals(this.MinecraftId, entryItem.MinecraftId)) {
-                return false;
-            }
+            return ReferenceEquals(this.MinecraftId, entryItem.MinecraftId);
         }
-        return ReferenceEquals(this, obj);
+        return false;
     }
 
     public override int GetHashCode() {

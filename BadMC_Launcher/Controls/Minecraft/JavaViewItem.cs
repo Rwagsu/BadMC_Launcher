@@ -34,39 +34,32 @@ public partial class JavaViewItem : ObservableObject {
     public partial string? JavaIconPath { get; private set; }
 
     public static bool operator ==(JavaViewItem? left, JavaViewItem? right) {
-        var leftDirectoryPath = Path.GetDirectoryName(left?.JavaPath);
-        var rightDirectoryPath = Path.GetDirectoryName(right?.JavaPath);
-
-        return left is not null && right is not null
-            ? leftDirectoryPath == rightDirectoryPath
-            : ReferenceEquals(left, right);
+        if (left is JavaViewItem && right is JavaViewItem) {
+            return left.Equals(right);
+        }
+        return false;
     }
 
     public static bool operator !=(JavaViewItem? left, JavaViewItem? right) {
-        var leftDirectoryPath = Path.GetDirectoryName(left?.JavaPath);
-        var rightDirectoryPath = Path.GetDirectoryName(right?.JavaPath);
-
-        return left is not null && right is not null
-            ? leftDirectoryPath != right.JavaPath
-            : !ReferenceEquals(left, right);
+        if (left is JavaViewItem && right is JavaViewItem) {
+            return !left.Equals(right);
+        }
+        return true;
     }
 
     public override bool Equals(object? obj) {
         if (obj is JavaViewItem viewItem) {
-            if (ReferenceEquals(this.JavaPath, viewItem.JavaPath)) {
-                return true;
-            }
+            var leftDirectoryPath = Path.GetDirectoryName(this.JavaPath);
+            var rightDirectoryPath = Path.GetDirectoryName(viewItem.JavaPath);
 
-            if (!ReferenceEquals(this.JavaPath, viewItem.JavaPath)) {
-                return false;
-            }
+            return ReferenceEquals(this.JavaPath, viewItem.JavaPath);
         }
-        throw new NotImplementedException();
+        return false;
     }
 
     public override int GetHashCode() {
         // HashCode.Combine generates a hash code by combining the hash codes of the provided fields.
         // This ensures that the hash code is unique based on the values of these fields.
-        return HashCode.Combine(JavaPath);
+        return JavaPath.GetHashCode();
     }
 }

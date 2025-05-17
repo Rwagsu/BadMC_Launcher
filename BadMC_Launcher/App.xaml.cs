@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using BadMC_Launcher.Controls;
 using BadMC_Launcher.Controls.MainSearch;
 using BadMC_Launcher.Helpers;
@@ -109,8 +110,6 @@ public partial class App : Application
                     services.AddSingleton<SettingsService>();
                     services.AddSingleton<AppAssetsService>();
                     services.AddSingleton<LaunchSettingsService>();
-
-                    services.AddTransient<SingleMinecraftConfigsService>();
 
                     //Register ContentDialogs
                     services.AddTransient<MinecraftFolderContentDialog>();

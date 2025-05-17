@@ -13,7 +13,7 @@ using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Classes.Comparers;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Configs;
-using BadMC_Launcher.Classes.DataClasses;
+using BadMC_Launcher.Classes.UI;
 
 namespace BadMC_Launcher.Models.Data.ConfigsData;
 internal static class MinecraftConfigs {
@@ -23,15 +23,17 @@ internal static class MinecraftConfigs {
 
     internal static DistinctiveItemBindingList<MinecraftFolderViewItem> minecraftFolders = new() { PropertyName = nameof(MinecraftConfigsService.MinecraftFolders) };
 
-    internal static string? activeJavaPath;
+    internal static bool isAutoJavaEnabled = false;
 
     internal static string? activeMinecraftFolder;
 
     internal static Account? activeMinecraftAccount;
 
-    internal static bool isAutoJavaEnabled = false;
+    internal static string? activeJavaPath;
 
     internal static bool isFullscreen = false;
+
+    internal static Size windowSize = new Size(854, 480);
 
     internal static string versionIsolationFilterId = App.GetService<LaunchSettingsService>().VersionIsolationFilters[0].Id;
 
@@ -42,6 +44,8 @@ internal static class MinecraftConfigs {
     internal static uint minGameMemory = 512;
 
     internal static string? launcherName = App.GetService<ResourceLoader>().GetString("MinecraftConfig_MinecraftTitleNameResource");
+
+    internal static ServerInfo? launcherServer = null;
 
     internal static BindingList<string> jvmArguments = new();
 }

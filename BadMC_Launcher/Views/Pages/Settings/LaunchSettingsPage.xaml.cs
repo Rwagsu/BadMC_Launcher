@@ -76,7 +76,7 @@ public sealed partial class LaunchSettingsPage : Page {
             if (gameMemoryGb <= 0.0) {
                 return loader.GetString("LaunchSettingsPage_GameMemoryScore0");
             }
-            else if (gameMemoryGb > maxMemoryGb) {
+            else if ((usedMemoryGb + gameMemoryGb) > maxMemoryGb) {
                 return loader.GetString("LaunchSettingsPage_GameMemoryScore1");
             }
             else if (gameMemoryGb <= 0.5) {

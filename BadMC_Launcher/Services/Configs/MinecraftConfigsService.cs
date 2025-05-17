@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using BadMC_Launcher.Classes;
+using BadMC_Launcher.Classes.UI;
 using BadMC_Launcher.Controls.Minecraft;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Data.Mappings;
@@ -8,14 +9,18 @@ using BadMC_Launcher.Models.Data.ConfigsData;
 using BadMC_Launcher.Models.Enums;
 using MinecraftLaunch.Base.Models.Authentication;
 using BadMC_Launcher.Classes.DataClasses;
+using MinecraftLaunch.Base.Models.Game;
+using BadMC_Launcher.Services.Settings;
 
 namespace BadMC_Launcher.Services.Configs;
 public class MinecraftConfigsService : ConfigClass {
     private PathService pathService;
+    private LaunchSettingsService launchSettingsService;
     internal bool IsSyncEnabled = false;
 
-    public MinecraftConfigsService(PathService service) {
-        pathService = service;
+    public MinecraftConfigsService(PathService _pathService, LaunchSettingsService _launchSettingsService) {
+        pathService = _pathService;
+        launchSettingsService = _launchSettingsService;
 
         //Triggers an event when a property is changed
         MinecraftConfigs.minecraftAccounts.ListChanged += OnListChanged<Account>;
@@ -26,6 +31,7 @@ public class MinecraftConfigsService : ConfigClass {
 
     public MinecraftConfigsService() {
         pathService = App.GetService<PathService>();
+        launchSettingsService = App.GetService<LaunchSettingsService>();
 
         //Triggers an event when a property is changed
         MinecraftConfigs.minecraftAccounts.ListChanged += OnListChanged<Account>;
@@ -176,6 +182,22 @@ public class MinecraftConfigsService : ConfigClass {
         }
     }
 
+    public Size WindowSize {
+        get => MinecraftConfigs.windowSize;
+        set {
+            if (MinecraftConfigs.windowSize != value) {
+                MinecraftConfigs.windowSize = new Size(value.Width != 0 ? value.Width : launchSettingsService.DefaultWindowSize.Width,
+                    value.Height != 0 ? value.Height : launchSettingsService.DefaultWindowSize.Height);
+
+                // Trigger Event
+                OnPropertyChanged(nameof(WindowSize));
+
+                // Write to Json
+                SyncSettingSet();
+            }
+        }
+    }
+
     public string VersionIsolationFilterId {
         get => MinecraftConfigs.versionIsolationFilterId;
         set {
@@ -268,6 +290,21 @@ public class MinecraftConfigsService : ConfigClass {
         }
     }
 
+    public ServerInfo? LaunchServer {
+        get => MinecraftConfigs.launcherServer;
+        set {
+            if (MinecraftConfigs.launcherServer != value) {
+                MinecraftConfigs.launcherServer = value;
+
+                // Trigger Event
+                OnPropertyChanged(nameof(LaunchServer));
+
+                //Write to Json
+                SyncSettingSet();
+            }
+        }
+    }
+
     public BindingList<string> JvmArguments {
         get => MinecraftConfigs.jvmArguments;
         set {
@@ -321,12 +358,18 @@ public class MinecraftConfigsService : ConfigClass {
             MinecraftConfigs.activeMinecraftFolder = jsonClass.ActiveMinecraftFolderPath;
             //MinecraftConfig.activeMinecraftAccount = jsonClass.ActiveMinecraftAccount;
             MinecraftConfigs.isAutoJavaEnabled = jsonClass.IsAutoJavaEnabled;
+
             MinecraftConfigs.isFullscreen = jsonClass.IsFullscreen;
+            MinecraftConfigs.windowSize = jsonClass.WindowSize;
+
             MinecraftConfigs.versionIsolationFilterId = jsonClass.VersionIsolationFilterId;
+
             MinecraftConfigs.isAutoMemorySize = jsonClass.IsAutoMemorySize;
             MinecraftConfigs.minGameMemory = jsonClass.MinGameMemory;
             MinecraftConfigs.maxGameMemory = jsonClass.MaxGameMemory;
+
             MinecraftConfigs.launcherName = jsonClass.LauncherName;
+            MinecraftConfigs.launcherServer = jsonClass.LaunchServer;
 
             return true;
         }

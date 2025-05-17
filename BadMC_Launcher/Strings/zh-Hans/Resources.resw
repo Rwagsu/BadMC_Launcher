@@ -358,4 +358,16 @@
   <data name="VersionIsolationFilter_EnabledFilterViewName" xml:space="preserve">
     <value>对所有版本启用</value>
   </data>
+  <data name="LaunchSettingsPage_WindowSettingsExpander.Header" xml:space="preserve">
+    <value>启动游戏时全屏</value>
+  </data>
+  <data name="LaunchSettingsPage_WindowSettingsExpander.Description" xml:space="preserve">
+    <value>启动游戏时全屏窗口. (关闭后由窗口大小设置决定窗口大小)</value>
+  </data>
+  <data name="LaunchSettingsPage_WindowSizeSettingsCard.Header" xml:space="preserve">
+    <value>更改游戏初始窗口大小 (宽度 x 高度)</value>
+  </data>
+  <data name="LaunchSettingsPage_WindowSizeSettingsCard.Description" xml:space="preserve">
+    <value>更改游戏在刚启动时窗口大小. (全屏时设置不生效)</value>
+  </data>
 </root>

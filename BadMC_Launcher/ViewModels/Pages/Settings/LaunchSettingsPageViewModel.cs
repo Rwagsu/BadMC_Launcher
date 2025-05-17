@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using BadMC_Launcher.Classes.DataClasses;
+using BadMC_Launcher.Classes.UI;
 using BadMC_Launcher.Controls.Minecraft;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Enums;
@@ -44,6 +45,9 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         VersionIsolationFilters = launchSettingsService.VersionIsolationFilters;
         VersionIsolationFilterSelectedItem = launchSettingsService.VersionIsolationFilters.FirstOrDefault(item => item.Id == minecraftService.VersionIsolationFilterId) ?? VersionIsolationFilters[0];
 
+        WindowWidth = minecraftService.WindowSize.Width;
+        WindowHeight = minecraftService.WindowSize.Height;
+        DefaultWindowSize = launchSettingsService.DefaultWindowSize;
 
         RefreshMemory(cancelLoopToken.Token);
 
@@ -89,6 +93,18 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
 
     [ObservableProperty]
     public partial VersionIsolationFilter? VersionIsolationFilterSelectedItem { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsFullscreen { get; set; }
+
+    [ObservableProperty]
+    public partial uint WindowWidth { get; set; }
+
+    [ObservableProperty]
+    public partial uint WindowHeight { get; set; }
+
+    [ObservableProperty]
+    public partial Size DefaultWindowSize { get; set; }
 
     [RelayCommand]
     private void CancelLoop() {
@@ -145,8 +161,16 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         minecraftService.VersionIsolationFilterId = VersionIsolationFilterSelectedItem?.Id ?? launchSettingsService.VersionIsolationFilters[0].Id;
     }
 
+    partial void OnWindowWidthChanged(uint value) {
+        minecraftService.WindowSize = new Size(value, WindowHeight);
+    }
+
+    partial void OnWindowHeightChanged(uint value) {
+        minecraftService.WindowSize = new Size(WindowWidth, value);
+    }
+
     partial void OnIsAutoGameMemorySizeChanged(bool value) {
-        minecraftService.IsAutoMemorySize = IsAutoGameMemorySize;
+        minecraftService.IsAutoMemorySize = value;
 
         if (value) {
             GameMemoryView = MaxMemoryView.GetAutoGameMemoryMb(UsedMemoryView);
@@ -154,6 +178,10 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         else {
             GameMemoryView = MaxGameMemory;
         }
+    }
+
+    partial void OnIsFullscreenChanged(bool value) {
+        minecraftService.IsFullscreen = value;
     }
 
     private async void GetJavaInfo() {
@@ -213,6 +241,11 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
                     MinecraftFolderPath = minecraftFolder != null ? minecraftFolder.MinecraftFolderPath : sourceService.GetString("Global_NullMinecraftFolderPath");
                 }
                 break;
+            case nameof(MinecraftConfigsService.IsAutoMemorySize):
+                if (minecraftService.IsAutoMemorySize != IsAutoGameMemorySize) {
+                    IsAutoGameMemorySize = minecraftService.IsAutoMemorySize;
+                }
+                break;
             case nameof(MinecraftConfigsService.MinGameMemory):
                 if (minecraftService.MinGameMemory != MinGameMemory) {
                     MinGameMemory = minecraftService.MinGameMemory;
@@ -226,6 +259,17 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
              case nameof(MinecraftConfigsService.VersionIsolationFilterId):
                 if (minecraftService.VersionIsolationFilterId != VersionIsolationFilterSelectedItem?.Id) {
                     VersionIsolationFilterSelectedItem = launchSettingsService.VersionIsolationFilters.FirstOrDefault(item => item.Id == minecraftService.VersionIsolationFilterId) ?? VersionIsolationFilters[0];
+                }
+                break;
+             case nameof(MinecraftConfigsService.IsFullscreen):
+                if (minecraftService.IsFullscreen != IsFullscreen) {
+                    IsFullscreen = minecraftService.IsFullscreen;
+                }
+                break;
+             case nameof(MinecraftConfigsService.WindowSize):
+                if (minecraftService.WindowSize.Width != WindowWidth || minecraftService.WindowSize.Height != WindowHeight) {
+                    WindowWidth = minecraftService.WindowSize.Width;
+                    WindowHeight = minecraftService.WindowSize.Height;
                 }
                 break;
         }

@@ -358,4 +358,16 @@ If something in this setting has been changed in an version-specific customizati
   <data name="VersionIsolationFilter_EnabledFilterViewName" xml:space="preserve">
     <value>Enabled for all versions</value>
   </data>
+  <data name="LaunchSettingsPage_WindowSettingsExpander.Header" xml:space="preserve">
+    <value>Full screen when launching the game</value>
+  </data>
+  <data name="LaunchSettingsPage_WindowSettingsExpander.Description" xml:space="preserve">
+    <value>Full screen window when starting the game . (Window size is determined by the window size setting after closing)</value>
+  </data>
+  <data name="LaunchSettingsPage_WindowSizeSettingsCard.Header" xml:space="preserve">
+    <value>Change the initial window size of the game (Width x Height)</value>
+  </data>
+  <data name="LaunchSettingsPage_WindowSizeSettingsCard.Description" xml:space="preserve">
+    <value>Change the window size when the game is first started. (The setting does not work in full screen)</value>
+  </data>
 </root>

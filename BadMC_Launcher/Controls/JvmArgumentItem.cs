@@ -1,0 +1,45 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BadMC_Launcher.Controls;
+
+public class JvmArgumentItem {
+
+    public required string Argument { get; init; }
+
+    public IconSource ViewIcon { get; init; } = new FontIconSource() { Glyph = "\uE943" };
+
+    public string TipText { get; init; } = string.Empty;
+
+    public override string ToString() {
+        return Argument;
+    }
+
+    public static bool operator ==(JvmArgumentItem? left, JvmArgumentItem? right) {
+        if (left is JvmArgumentItem && right is JvmArgumentItem) {
+            return left.Equals(right);
+        }
+        return false;
+    }
+
+    public static bool operator !=(JvmArgumentItem? left, JvmArgumentItem? right) {
+        if (left is JvmArgumentItem && right is JvmArgumentItem) {
+            return !left.Equals(right);
+        }
+        return true;
+    }
+
+    public override bool Equals(object? obj) {
+        if (obj is JvmArgumentItem item) {
+            return Argument.Equals(item.Argument);
+        }
+        return false;
+    }
+
+    public override int GetHashCode() {
+        return Argument.GetHashCode();
+    }
+}

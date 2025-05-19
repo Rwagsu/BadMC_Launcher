@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BadMC_Launcher.Classes.DataClasses;
 using BadMC_Launcher.Classes.UI;
+using BadMC_Launcher.Controls;
 using MinecraftLaunch.Base.Models.Game;
 
 namespace BadMC_Launcher.Services.Settings;
@@ -14,6 +15,16 @@ public class LaunchSettingsService {
 
     public LaunchSettingsService(ResourceLoader _resourceService) {
         resourceService = _resourceService;
+
+        DefaultLauncherName = resourceService.GetString("LaunchSettingsService_DefaultLauncherNameResource");
+
+        DefaultJvmArgments.AddRange([
+            new JvmArgumentItem() {
+                Argument = "--demo",
+                ViewIcon = new FontIconSource () { Glyph = "\uEC74" },
+                TipText =  resourceService.GetString("DefaultJvmArgments_Demo")
+            },
+        ]);
 
         VersionIsolationFilters.AddRange([
             new VersionIsolationFilter() {
@@ -54,4 +65,8 @@ public class LaunchSettingsService {
     public ObservableDataList<VersionIsolationFilter> VersionIsolationFilters { get; } = new ObservableDataList<VersionIsolationFilter>();
     
     public Size DefaultWindowSize { get; } = new Size(854, 480);
+
+    public string DefaultLauncherName { get; }
+
+    public ObservableDataList<JvmArgumentItem> DefaultJvmArgments { get; } = new ObservableDataList<JvmArgumentItem>();
 }

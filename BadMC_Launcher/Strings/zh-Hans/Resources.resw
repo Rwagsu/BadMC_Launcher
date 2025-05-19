@@ -126,7 +126,7 @@
   <data name="LaunchPad_LaunchButtonTagDefaultResource" xml:space="preserve">
     <value>未选择版本 _( ﾟДﾟ)ﾉ</value>
   </data>
-  <data name="MinecraftConfig_MinecraftTitleNameResource" xml:space="preserve">
+  <data name="LaunchSettingsService_DefaultLauncherNameResource" xml:space="preserve">
     <value>使用 BadMCL（不是 BMCL！！!）启动</value>
   </data>
   <data name="LaunchPad_MinecraftEntryListRefreshMenuFlyoutItem.Text" xml:space="preserve">
@@ -369,5 +369,42 @@
   </data>
   <data name="LaunchSettingsPage_WindowSizeSettingsCard.Description" xml:space="preserve">
     <value>更改游戏在刚启动时窗口大小. (全屏时设置不生效)</value>
+  </data>
+  <data name="LaunchSettingsPage_LauncherNameSettingsCard.Header" xml:space="preserve">
+    <value>自定义游戏信息</value>
+  </data>
+  <data name="LaunchSettingsPage_LauncherNameSettingsCard.Description" xml:space="preserve">
+    <value>这些信息将显示在游戏封面的右下角和 F3 调试信息的左上角.</value>
+  </data>
+  <data name="LaunchSettingsPage_LaunchServerSettingsCard.Header" xml:space="preserve">
+    <value>转到 多人游戏 以管理启动时服务器</value>
+  </data>
+  <data name="LaunchSettingsPage_LaunchServerSettingsCard.Description" xml:space="preserve">
+    <value>我们不支持在设置页面管理启动服务器. 😟</value>
+  </data>
+  <data name="LaunchSettingsPage_AdvancedSettingWarningInfoBar.Title" xml:space="preserve">
+    <value>高级设置警告</value>
+  </data>
+  <data name="LaunchSettingsPage_AdvancedSettingWarningInfoBar.Message" xml:space="preserve">
+    <value>这个设置可以修改很多普通设置无法达到的东西，但我们不建议不了解 JVM参数的人修改这些.
+如果你认为你搞砸了或者游戏因为这些设置无法启动，请清除所有值.</value>
+  </data>
+  <data name="LaunchSettingsPage_AddJvmArgumentTextSettingsExpander.Header" xml:space="preserve">
+    <value>Jvm 虚拟机参数(高级)</value>
+  </data>
+  <data name="LaunchSettingsPage_AddJvmArgumentTextSettingsExpander.Description" xml:space="preserve">
+    <value>使用一些高级参数运行 Minecraft, 输入一个参数后需要应用.</value>
+  </data>
+  <data name="LaunchSettingsPage_JvmJvmArgumentsTokenizingTextBox.PlaceholderText" xml:space="preserve">
+    <value>添加参数(需要使用 + 或 Enter 应用)</value>
+  </data>
+  <data name="DefaultJvmArgments_Demo" xml:space="preserve">
+    <value>以 Demo 模式启动 Minecraft.</value>
+  </data>
+  <data name="LaunchSettingsPage_JvmArgumentsSettingsCard.Header" xml:space="preserve">
+    <value>Jvm 参数表</value>
+  </data>
+  <data name="LaunchSettingsPage_JvmArgumentsSettingsCard.Description" xml:space="preserve">
+    <value>所有活动的自定义参数都在这里，如果无法运行，请删除它们.</value>
   </data>
 </root>

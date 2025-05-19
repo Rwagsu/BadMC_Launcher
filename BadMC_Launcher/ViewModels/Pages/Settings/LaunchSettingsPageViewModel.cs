@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using BadMC_Launcher.Classes.DataClasses;
 using BadMC_Launcher.Classes.UI;
+using BadMC_Launcher.Controls;
 using BadMC_Launcher.Controls.Minecraft;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Enums;
@@ -13,6 +14,8 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using MinecraftLaunch.Base.Models.Game;
 using MinecraftLaunch.Utilities;
 using Serilog;
+using Uno.Extensions;
+using Windows.UI.Popups;
 
 namespace BadMC_Launcher.ViewModels.Pages.Settings;
 
@@ -49,9 +52,17 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         WindowHeight = minecraftService.WindowSize.Height;
         DefaultWindowSize = launchSettingsService.DefaultWindowSize;
 
+        LauncherName = minecraftService.LauncherName;
+        DefaultLauncherName = launchSettingsService.DefaultLauncherName;
+
         RefreshMemory(cancelLoopToken.Token);
 
         GetJavaInfo();
+
+        JvmArgmentText = string.Empty;
+        JvmArgments = new ObservableDataList<JvmArgumentItem>();
+        DefaultJvmArgments = launchSettingsService.DefaultJvmArgments;
+        GetJvmArguments();
     }
 
     // Minecraft folder settings
@@ -94,6 +105,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     [ObservableProperty]
     public partial VersionIsolationFilter? VersionIsolationFilterSelectedItem { get; set; }
 
+    // Window settings
     [ObservableProperty]
     public partial bool IsFullscreen { get; set; }
 
@@ -105,6 +117,23 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
 
     [ObservableProperty]
     public partial Size DefaultWindowSize { get; set; }
+
+    // Launcher name settings
+    [ObservableProperty]
+    public partial string LauncherName { get; set; }
+
+    [ObservableProperty]
+    public partial string DefaultLauncherName { get; set; }
+
+    // Jvm argument settings
+    [ObservableProperty]
+    public partial string JvmArgmentText { get; set; }
+
+    [ObservableProperty]
+    public partial ObservableDataList<JvmArgumentItem> JvmArgments { get; set; }
+
+    [ObservableProperty]
+    public partial ObservableDataList<JvmArgumentItem> DefaultJvmArgments { get; set; }
 
     [RelayCommand]
     private void CancelLoop() {
@@ -159,6 +188,43 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     [RelayCommand]
     private void SetVersionIsolationFilterId() {
         minecraftService.VersionIsolationFilterId = VersionIsolationFilterSelectedItem?.Id ?? launchSettingsService.VersionIsolationFilters[0].Id;
+    }
+
+    [RelayCommand]
+    private void SetLauncherName() {
+        minecraftService.LauncherName = LauncherName;
+    }
+
+    [RelayCommand]
+    private void OpenMultiPlayerPage() {
+        // TODO: 等着吧（恼）
+
+        Debug.WriteLine("草你怎么真点了我还没做完啊Σ(っ °Д °;)っ");
+    }
+
+    [RelayCommand]
+    private void AddJvmArgument() {
+        var item = DefaultJvmArgments.FirstOrDefault(item => item.Argument == JvmArgmentText);
+        if (item != null) {
+            JvmArgments.Add(item);
+            JvmArgmentText = string.Empty;
+        }
+        else {
+            var newItem = new JvmArgumentItem() { Argument = JvmArgmentText };
+            JvmArgments.Add(newItem);
+            JvmArgmentText = string.Empty;
+        }
+    }
+
+    [RelayCommand]
+    private void DeleteJvmArgment(string parameter) {
+        var deleteItem = JvmArgments.FirstOrDefault(item => item.Argument == parameter);
+        if (deleteItem != null) {
+            JvmArgments.Remove(deleteItem);
+            BindingList<string> items = new BindingList<string>();
+            items.AddRange(JvmArgments.Select(item => item.Argument));
+            minecraftService.JvmArguments = items;
+        }
     }
 
     partial void OnWindowWidthChanged(uint value) {
@@ -219,6 +285,18 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         }
     }
 
+    // Get Jvm arguments
+    private void GetJvmArguments() {
+        JvmArgments.Clear();
+        JvmArgments.AddRange(minecraftService.JvmArguments.Select(item => {
+            var defaultAugment = DefaultJvmArgments.FirstOrDefault();
+            if (defaultAugment != null) {
+                return defaultAugment;
+            }
+            return new JvmArgumentItem() { Argument = item };
+        }));
+    }
+
     // Send Message to get value
     private RequestMessage<T> SendGetValueMessage<T>(Enum tokenEnum) {
         return WeakReferenceMessenger.Default.Send(new RequestMessage<T>(), tokenEnum.ToString());
@@ -270,6 +348,16 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
                 if (minecraftService.WindowSize.Width != WindowWidth || minecraftService.WindowSize.Height != WindowHeight) {
                     WindowWidth = minecraftService.WindowSize.Width;
                     WindowHeight = minecraftService.WindowSize.Height;
+                }
+                break;
+             case nameof(MinecraftConfigsService.LauncherName):
+                if (minecraftService.LauncherName != LauncherName) {
+                    LauncherName = minecraftService.LauncherName;
+                }
+                break;
+             case nameof(MinecraftConfigsService.JvmArguments):
+                if (!minecraftService.JvmArguments.SequenceEqual(JvmArgments.Select(item => item.Argument))) {
+                    GetJvmArguments();
                 }
                 break;
         }

@@ -179,14 +179,14 @@ public class SingleMinecraftConfigs : ConfigClass {
         }
     }
 
-    public ServerInfo? LauncherServer {
-        get => singleMinecraftConfigInstance.launcherServer;
+    public ServerInfo? LaunchServer {
+        get => singleMinecraftConfigInstance.launchServer;
         set {
-            if (singleMinecraftConfigInstance.launcherServer != value) {
-                singleMinecraftConfigInstance.launcherServer = value;
+            if (singleMinecraftConfigInstance.launchServer != value) {
+                singleMinecraftConfigInstance.launchServer = value;
 
                 // Trigger Event
-                OnPropertyChanged(nameof(LauncherServer));
+                OnPropertyChanged(nameof(LaunchServer));
 
                 // Write to Json
                 SyncSettingSet();

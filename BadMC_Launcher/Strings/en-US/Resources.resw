@@ -120,7 +120,7 @@
   <data name="ApplicationName" xml:space="preserve">
     <value>BadMC Launcher</value>
   </data>
-  <data name="MinecraftConfig_MinecraftTitleNameResource" xml:space="preserve">
+  <data name="LaunchSettingsService_DefaultLauncherNameResource" xml:space="preserve">
     <value>Launch with BadMCL (NOT BMCL!!!)</value>
   </data>
   <data name="LaunchPad_LaunchButtonTagDefaultResource" xml:space="preserve">
@@ -369,5 +369,36 @@ If something in this setting has been changed in an version-specific customizati
   </data>
   <data name="LaunchSettingsPage_WindowSizeSettingsCard.Description" xml:space="preserve">
     <value>Change the window size when the game is first started. (The setting does not work in full screen)</value>
+  </data>
+  <data name="LaunchSettingsPage_AdvancedSettingWarningInfoBar.Title" xml:space="preserve">
+    <value>Advanced setting warning</value>
+  </data>
+  <data name="LaunchSettingsPage_AddJvmArgumentTextSettingsExpander.Description" xml:space="preserve">
+    <value>Run Minecraft with advanced parameters. Press Enter after typing a parameter to apply.</value>
+  </data>
+  <data name="LaunchSettingsPage_AddJvmArgumentTextSettingsExpander.Header" xml:space="preserve">
+    <value>rameters. Press Enter after typing a parameter to apply</value>
+  </data>
+  <data name="LaunchSettingsPage_JvmJvmArgumentsTokenizingTextBox.PlaceholderText" xml:space="preserve">
+    <value>Add a parameter (Hit Enter to confirm)</value>
+  </data>
+  <data name="LaunchSettingsPage_LauncherNameSettingsCard.Description" xml:space="preserve">
+    <value>This info will show up at the bottom-right of the game’s splash screen and the top-left of the F3 debug menu.</value>
+  </data>
+  <data name="LaunchSettingsPage_LauncherNameSettingsCard.Header" xml:space="preserve">
+    <value>Custom Game Info</value>
+  </data>
+  <data name="LaunchSettingsPage_LaunchServerSettingsCard.Description" xml:space="preserve">
+    <value>We don’t support managing launch servers on the settings page. 😟</value>
+  </data>
+  <data name="LaunchSettingsPage_LaunchServerSettingsCard.Header" xml:space="preserve">
+    <value>Head to Multiplayer to manage servers that launch with the game</value>
+  </data>
+  <data name="LaunchSettingsPage_AdvancedSettingWarningInfoBar.Message" xml:space="preserve">
+    <value>This setting lets you tweak things normal settings can’t reach, but we don’t recommend messing with JVM arguments unless you know what you’re doing. 
+If you think you’ve messed up or the game won’t start because of these settings, just clear all values to reset.</value>
+  </data>
+  <data name="DefaultJvmArgments_Demo" xml:space="preserve">
+    <value>Launch Minecraft in Demo Mode.</value>
   </data>
 </root>

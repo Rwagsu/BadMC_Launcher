@@ -30,7 +30,7 @@ internal class SingleMinecraftConfigsData {
     internal string javaPath;
 
     internal string launcherName;
-    internal ServerInfo? launcherServer;
+    internal ServerInfo? launchServer;
 
     internal BindingList<string> jvmArguments = new();
 
@@ -46,7 +46,7 @@ internal class SingleMinecraftConfigsData {
         minMemorySize = minecraftConfigsService.MinGameMemory;
         javaPath = minecraftConfigsService.ActiveJavaPath ?? string.Empty;
         launcherName = minecraftConfigsService.LauncherName ?? string.Empty;
-        launcherServer = minecraftConfigsService.LaunchServer;
+        launchServer = minecraftConfigsService.LaunchServer;
         jvmArguments.AddRange(minecraftConfigsService.JvmArguments);
     }
 }

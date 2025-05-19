@@ -65,6 +65,7 @@
         <PackageReference Include="CommunityToolkit.WinUI.Controls.RangeSelector" />
         <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" />
         <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" />
+        <PackageReference Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" />
         <PackageReference Include="CommunityToolkit.WinUI.Converters" />
         <PackageReference Include="GEmojiSharp" />
         <PackageReference Include="Hardware.Info" />

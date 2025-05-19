@@ -275,11 +275,16 @@ public class MinecraftConfigsService : ConfigClass {
         }
     }
 
-    public string? LauncherName {
+    public string LauncherName {
         get => MinecraftConfigs.launcherName;
         set {
             if (MinecraftConfigs.launcherName != value) {
-                MinecraftConfigs.launcherName = value;
+                if (string.IsNullOrWhiteSpace(value)) {
+                    MinecraftConfigs.launcherName = launchSettingsService.DefaultLauncherName;
+                }
+                else {
+                    MinecraftConfigs.launcherName = value;
+                }
 
                 // Trigger Event
                 OnPropertyChanged(nameof(LauncherName));

@@ -44,8 +44,8 @@ Global
 		{5DDF52C5-900B-9D9B-8D63-7F70EBA69900} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_SaveFilesImmediatelyUponChange = False
-		RESX_NeutralResourcesLanguage = zh-Hans
 		SolutionGuid = {D48ABA40-866E-4A92-B9F1-24BE0CC05649}
+		RESX_NeutralResourcesLanguage = zh-Hans
+		RESX_SaveFilesImmediatelyUponChange = True
 	EndGlobalSection
 EndGlobal

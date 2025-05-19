@@ -17,6 +17,8 @@ using BadMC_Launcher.Classes.UI;
 
 namespace BadMC_Launcher.Models.Data.ConfigsData;
 internal static class MinecraftConfigs {
+    private static LaunchSettingsService launchSettingsService = App.GetService<LaunchSettingsService>();
+
     internal static DistinctiveItemBindingList<Account> minecraftAccounts = new() { PropertyName = nameof(MinecraftConfigsService.MinecraftAccounts) };
 
     internal static DistinctiveItemBindingList<string> javaPaths = new(new JavaPathListComparer()) { PropertyName = nameof(MinecraftConfigsService.JavaPaths) };
@@ -33,9 +35,9 @@ internal static class MinecraftConfigs {
 
     internal static bool isFullscreen = false;
 
-    internal static Size windowSize = new Size(854, 480);
+    internal static Size windowSize = launchSettingsService.DefaultWindowSize;
 
-    internal static string versionIsolationFilterId = App.GetService<LaunchSettingsService>().VersionIsolationFilters[0].Id;
+    internal static string versionIsolationFilterId = launchSettingsService.VersionIsolationFilters[0].Id;
 
     internal static bool isAutoMemorySize = true;
 
@@ -43,7 +45,7 @@ internal static class MinecraftConfigs {
 
     internal static uint minGameMemory = 512;
 
-    internal static string? launcherName = App.GetService<ResourceLoader>().GetString("MinecraftConfig_MinecraftTitleNameResource");
+    internal static string launcherName = launchSettingsService.DefaultLauncherName;
 
     internal static ServerInfo? launcherServer = null;
 

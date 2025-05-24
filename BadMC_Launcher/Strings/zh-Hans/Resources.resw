@@ -389,22 +389,37 @@
     <value>这个设置可以修改很多普通设置无法达到的东西，但我们不建议不了解 JVM参数的人修改这些.
 如果你认为你搞砸了或者游戏因为这些设置无法启动，请清除所有值.</value>
   </data>
-  <data name="LaunchSettingsPage_AddJvmArgumentTextSettingsExpander.Header" xml:space="preserve">
-    <value>Jvm 虚拟机参数(高级)</value>
-  </data>
-  <data name="LaunchSettingsPage_AddJvmArgumentTextSettingsExpander.Description" xml:space="preserve">
-    <value>使用一些高级参数运行 Minecraft, 输入一个参数后需要应用.</value>
-  </data>
-  <data name="LaunchSettingsPage_JvmJvmArgumentsTokenizingTextBox.PlaceholderText" xml:space="preserve">
+  <data name="JvmArgumentsContentDialog_JvmJvmArgumentsTokenizingTextBox.PlaceholderText" xml:space="preserve">
     <value>添加参数(需要使用 + 或 Enter 应用)</value>
   </data>
   <data name="DefaultJvmArgments_Demo" xml:space="preserve">
     <value>以 Demo 模式启动 Minecraft.</value>
   </data>
   <data name="LaunchSettingsPage_JvmArgumentsSettingsCard.Header" xml:space="preserve">
-    <value>Jvm 参数表</value>
+    <value>Jvm 参数</value>
   </data>
   <data name="LaunchSettingsPage_JvmArgumentsSettingsCard.Description" xml:space="preserve">
     <value>所有活动的自定义参数都在这里，如果无法运行，请删除它们.</value>
+  </data>
+  <data name="JvmArgumentsContentDialog_ViewContentDialog.Title" xml:space="preserve">
+    <value>更改 Jvm 参数(高级)</value>
+  </data>
+  <data name="JvmArgumentsContentDialog_ViewContentDialog.PrimaryButtonText" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="LaunchSettingsPage_OpenJvmArgumentsDialogButton.Text" xml:space="preserve">
+    <value>使用列表编辑</value>
+  </data>
+  <data name="LaunchSettingsPage_FullJvmArgumentsTextSettingsCard.Header" xml:space="preserve">
+    <value>直接更改 Jvm 启动参数</value>
+  </data>
+  <data name="LaunchSettingsPage_FullJvmArgumentsTextSettingsCard.Description" xml:space="preserve">
+    <value>除非需要粘贴整块参数, 否则不推荐.</value>
+  </data>
+  <data name="JvmArgumentsContentDialog_JvmArgmentsEmptyTipsTitleTextBlock.Text" xml:space="preserve">
+    <value>Jvm 参数是空的.</value>
+  </data>
+  <data name="JvmArgumentsContentDialog_JvmArgmentsEmptyTipsMessageTextBlock.Text" xml:space="preserve">
+    <value>但这没准是件好事 🫠</value>
   </data>
 </root>

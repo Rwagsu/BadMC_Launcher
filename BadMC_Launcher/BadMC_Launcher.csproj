@@ -65,6 +65,7 @@
         <PackageReference Include="CommunityToolkit.WinUI.Controls.RangeSelector" />
         <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" />
         <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" />
+        <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" />
         <PackageReference Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" />
         <PackageReference Include="CommunityToolkit.WinUI.Converters" />
         <PackageReference Include="GEmojiSharp" />
@@ -74,8 +75,14 @@
 
         <UnoImage Include="Assets\Icons\MinecraftIcons\*" />
         <UnoImage Include="Assets\Icons\JavaIcons\*" />
+        <None Remove="Views\ContentDialogs\Settings\JvmArgumentsContentDialog.xaml" />
         <UnoImage Include="Assets\Icons\appicon_foreground.png" />
 
         <UnoIcon Include="Assets\Icons\appicon_background.png" ForegroundFile="Assets\Icons\appicon_foreground.png" ForegroundScale="0.6" />
+    </ItemGroup>
+    <ItemGroup>
+      <Page Update="Views\ContentDialogs\Settings\JvmArgumentsContentDialog.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
 </Project>

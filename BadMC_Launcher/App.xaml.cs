@@ -114,6 +114,7 @@ public partial class App : Application
                     //Register ContentDialogs
                     services.AddTransient<MinecraftFolderContentDialog>();
                     services.AddTransient<JavaContentDialog>();
+                    services.AddTransient<JvmArgumentsContentDialog>();
                 })
             );
         MainWindow = builder.Window;

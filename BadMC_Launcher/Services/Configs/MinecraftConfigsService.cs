@@ -321,6 +321,9 @@ public class MinecraftConfigsService : ConfigClass {
 
                 MinecraftConfigs.jvmArguments.RaiseListChangedEvents = true;
 
+                // Trigger Event
+                OnPropertyChanged(nameof(JvmArguments));
+
                 // Write to Json
                 SyncSettingSet();
             }
@@ -346,9 +349,13 @@ public class MinecraftConfigsService : ConfigClass {
                     }
                     break;
             }
-
             // Notify list changed
             OnPropertyChanged(senderList.PropertyName);
+        }
+        else {
+            if (e.PropertyDescriptor != null) {
+                OnPropertyChanged(e.PropertyDescriptor.Name);
+            }
         }
 
         if (!SyncSettingSet()) {

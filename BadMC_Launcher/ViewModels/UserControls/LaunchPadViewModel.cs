@@ -216,8 +216,4 @@ public partial class LaunchPadViewModel : ObservableObject {
     private RequestMessage<T> SendGetValueMessage<T>(Enum tokenEnum) {
         return WeakReferenceMessenger.Default.Send(new RequestMessage<T>(), tokenEnum.ToString());
     }
-
-    partial void OnIsMinecraftEntrysEmptyChanged(bool value) {
-        
-    }
 }

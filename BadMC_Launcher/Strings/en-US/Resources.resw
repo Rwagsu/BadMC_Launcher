@@ -373,13 +373,7 @@ If something in this setting has been changed in an version-specific customizati
   <data name="LaunchSettingsPage_AdvancedSettingWarningInfoBar.Title" xml:space="preserve">
     <value>Advanced setting warning</value>
   </data>
-  <data name="LaunchSettingsPage_AddJvmArgumentTextSettingsExpander.Description" xml:space="preserve">
-    <value>Run Minecraft with advanced parameters. Press Enter after typing a parameter to apply.</value>
-  </data>
-  <data name="LaunchSettingsPage_AddJvmArgumentTextSettingsExpander.Header" xml:space="preserve">
-    <value>rameters. Press Enter after typing a parameter to apply</value>
-  </data>
-  <data name="LaunchSettingsPage_JvmJvmArgumentsTokenizingTextBox.PlaceholderText" xml:space="preserve">
+  <data name="JvmArgumentsContentDialog_JvmJvmArgumentsTokenizingTextBox.PlaceholderText" xml:space="preserve">
     <value>Add a parameter (Hit Enter to confirm)</value>
   </data>
   <data name="LaunchSettingsPage_LauncherNameSettingsCard.Description" xml:space="preserve">
@@ -400,5 +394,32 @@ If you think you’ve messed up or the game won’t start because of these setti
   </data>
   <data name="DefaultJvmArgments_Demo" xml:space="preserve">
     <value>Launch Minecraft in Demo Mode.</value>
+  </data>
+  <data name="LaunchSettingsPage_JvmArgumentsSettingsCard.Header" xml:space="preserve">
+    <value>Jvm parameters</value>
+  </data>
+  <data name="LaunchSettingsPage_JvmArgumentsSettingsCard.Description" xml:space="preserve">
+    <value>The custom parameters for all activities are here, if they cannot be run, please delete them.</value>
+  </data>
+  <data name="JvmArgumentsContentDialog_ViewContentDialog.Title" xml:space="preserve">
+    <value>Change Jvm parameters (advanced)</value>
+  </data>
+  <data name="JvmArgumentsContentDialog_ViewContentDialog.PrimaryButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="LaunchSettingsPage_OpenJvmArgumentsDialogButton.Text" xml:space="preserve">
+    <value>Use list editing</value>
+  </data>
+  <data name="LaunchSettingsPage_FullJvmArgumentsTextSettingsCard.Header" xml:space="preserve">
+    <value>Directly change the Jvm startup parameters</value>
+  </data>
+  <data name="LaunchSettingsPage_FullJvmArgumentsTextSettingsCard.Description" xml:space="preserve">
+    <value>Not recommend unless you need to paste a whole block of parameters.</value>
+  </data>
+  <data name="JvmArgumentsContentDialog_JvmArgmentsEmptyTipsTitleTextBlock.Text" xml:space="preserve">
+    <value>The Jvm parameter is empty.</value>
+  </data>
+  <data name="JvmArgumentsContentDialog_JvmArgmentsEmptyTipsMessageTextBlock.Text" xml:space="preserve">
+    <value>But that might be a good thing 🫠</value>
   </data>
 </root>

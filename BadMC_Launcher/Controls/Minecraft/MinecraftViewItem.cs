@@ -39,21 +39,21 @@ public partial class MinecraftViewItem : ObservableObject {
         if (left is MinecraftViewItem && right is MinecraftViewItem) {
             return left.Equals(right);
         }
-        return false;
+        return ReferenceEquals(left, right);
     }
 
     public static bool operator !=(MinecraftViewItem? left, MinecraftViewItem? right) {
         if (left is MinecraftViewItem && right is MinecraftViewItem) {
             return !left.Equals(right);
         }
-        return true;
+        return ReferenceEquals(left, right);
     }
 
     public override bool Equals(object? obj) {
         if (obj is MinecraftViewItem entryItem) {
             return ReferenceEquals(this.MinecraftId, entryItem.MinecraftId);
         }
-        return false;
+        return ReferenceEquals(this, obj);
     }
 
     public override int GetHashCode() {

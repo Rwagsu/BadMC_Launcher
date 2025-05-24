@@ -16,21 +16,21 @@ public struct Size(uint width, uint height) {
         if (left is Size && right is Size) {
             return left.Equals(right);
         }
-        return false;
+        return object.Equals(left, right);
     }
 
     public static bool operator !=(Size? left, Size? right) {
         if (left is Size && right is Size) {
             return !left.Equals(right);
         }
-        return true;
+        return !object.Equals(left, right);
     }
 
     public override bool Equals(object? obj) {
         if (obj is Size size) {
             return Width == size.Width && Height == size.Height;
         }
-        return false;
+        return object.Equals(this, obj);
     }
 
     public override int GetHashCode() {

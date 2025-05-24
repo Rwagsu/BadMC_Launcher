@@ -46,21 +46,21 @@ public partial class MinecraftFolderViewItem : ObservableObject {
         if (left is MinecraftFolderViewItem && right is MinecraftFolderViewItem) {
             return left.Equals(right);
         }
-        return false;
+        return ReferenceEquals(left, right);
     }
 
     public static bool operator !=(MinecraftFolderViewItem? left, MinecraftFolderViewItem? right) {
         if (left is MinecraftFolderViewItem && right is MinecraftFolderViewItem) {
             return !left.Equals(right);
         }
-        return true;
+        return ReferenceEquals(left, right);
     }
 
     public override bool Equals(object? obj) {
         if (obj is MinecraftFolderViewItem folderEntry) {
             return this.MinecraftFolderPath == folderEntry.MinecraftFolderPath;
         }
-        return false;
+        return ReferenceEquals(this, obj);
     }
 
     partial void OnActiveMinecraftEntryIdChanged(string? value) {

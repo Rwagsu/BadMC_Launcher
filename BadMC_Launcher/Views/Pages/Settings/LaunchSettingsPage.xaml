@@ -443,87 +443,35 @@
                      Severity="Warning" />
 
             <!-- Jvm arguments setting -->
-            <controls:SettingsExpander x:Uid="LaunchSettingsPage_AddJvmArgumentTextSettingsExpander">
+            <controls:SettingsExpander x:Uid="LaunchSettingsPage_JvmArgumentsSettingsCard">
                 <!-- Icons -->
                 <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xEC7A;" />
                 </controls:SettingsExpander.HeaderIcon>
 
                 <controls:SettingsExpander.Items>
-                    <controls:SettingsCard x:Uid="LaunchSettingsPage_JvmArgumentsSettingsCard">
+                    <controls:SettingsCard x:Uid="LaunchSettingsPage_FullJvmArgumentsTextSettingsCard">
                         <!-- Icons -->
                         <controls:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xE967;" />
+                            <FontIcon Glyph="&#xE8AC;" />
                         </controls:SettingsCard.HeaderIcon>
 
                         <!-- Content -->
-                        <ScrollViewer Width="200"
-                                      MaxHeight="600"
-                                      HorizontalScrollBarVisibility="Auto"
-                                      HorizontalScrollMode="Auto"
-                                      IsVerticalScrollChainingEnabled="False">
-                            <ListView ItemsSource="{Binding JvmArgments}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Height="36" ToolTipService.ToolTip="{Binding TipText}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="36" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="36" />
-                                            </Grid.ColumnDefinitions>
-                                            <IconSourceElement Grid.Column="0"
-                                                               Width="24"
-                                                               Height="24"
-                                                               VerticalAlignment="Center"
-                                                               IconSource="{Binding ViewIcon}" />
-                                            <TextBlock Grid.Column="1" Text="{Binding Argument}" />
-                                            <Button Grid.Column="2"
-                                                    Width="34"
-                                                    Height="34"
-                                                    HorizontalAlignment="Right"
-                                                    Command="{Binding DeleteJvmArgmentCommand}"
-                                                    CommandParameter="{Binding JvmArgments}">
-                                                <FontIcon Glyph="&#xE967;" />
-                                            </Button>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </ScrollViewer>
-
-
+                        <TextBox Width="360"
+                                 Text="{Binding FullJvmArgumentsText, Mode=TwoWay}"
+                                 TextWrapping="Wrap" />
                     </controls:SettingsCard>
                 </controls:SettingsExpander.Items>
 
                 <!-- Content -->
-                <AutoSuggestBox x:Uid="LaunchSettingsPage_JvmJvmArgumentsTokenizingTextBox"
-                                MinWidth="200"
-                                ItemsSource="{Binding DefaultJvmArgments, Mode=OneWay}"
-                                Text="{Binding JvmArgmentText, Mode=TwoWay}">
-                    <AutoSuggestBox.QueryIcon>
-                        <FontIcon Glyph="&#xE710;" />
-                    </AutoSuggestBox.QueryIcon>
-
-                    <AutoSuggestBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="6"
-                                        ToolTipService.ToolTip="{Binding TipText}">
-                                <IconSourceElement Width="18"
-                                                   Height="18"
-                                                   VerticalAlignment="Center"
-                                                   IconSource="{Binding ViewIcon}" />
-                                <TextBlock VerticalAlignment="Center" Text="{Binding Argument}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </AutoSuggestBox.ItemTemplate>
-
-                    <Interactivity:Interaction.Behaviors>
-                        <Interactivity:EventTriggerBehavior EventName="QuerySubmitted">
-                            <Interactivity:InvokeCommandAction Command="{Binding AddJvmArgumentCommand}" />
-                        </Interactivity:EventTriggerBehavior>
-                    </Interactivity:Interaction.Behaviors>
-                </AutoSuggestBox>
+                <Button Command="{Binding OpenAddJvmArgumentsDialogCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon VerticalAlignment="Center" Glyph="&#xE8A7;" />
+                        <TextBlock x:Uid="LaunchSettingsPage_OpenJvmArgumentsDialogButton"
+                                   VerticalAlignment="Center"
+                                   HorizontalTextAlignment="Center" />
+                    </StackPanel>
+                </Button>
             </controls:SettingsExpander>
         </StackPanel>
     </ScrollViewer>

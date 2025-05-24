@@ -20,18 +20,21 @@ public class VersionIsolationFilter {
         if (left is VersionIsolationFilter && right is VersionIsolationFilter) {
             return left.Equals(right);
         }
-        return false;
+        return ReferenceEquals(left, right);
     }
 
     public static bool operator !=(VersionIsolationFilter? left, VersionIsolationFilter? right) {
         if (left is VersionIsolationFilter && right is VersionIsolationFilter) {
             return !left.Equals(right);
         }
-        return true;
+        return !ReferenceEquals(left, right);
     }
 
     public override bool Equals(object? obj) {
-        return obj is VersionIsolationFilter filter && Id == filter.Id;
+        if (obj is VersionIsolationFilter filter) {
+            return Id == filter.Id;
+        }
+        return ReferenceEquals(this, obj);
     }
 
     public override int GetHashCode() {

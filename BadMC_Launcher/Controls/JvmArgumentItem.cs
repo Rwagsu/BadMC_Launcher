@@ -22,21 +22,21 @@ public class JvmArgumentItem {
         if (left is JvmArgumentItem && right is JvmArgumentItem) {
             return left.Equals(right);
         }
-        return false;
+        return !ReferenceEquals(left, right);
     }
 
     public static bool operator !=(JvmArgumentItem? left, JvmArgumentItem? right) {
         if (left is JvmArgumentItem && right is JvmArgumentItem) {
             return !left.Equals(right);
         }
-        return true;
+        return !ReferenceEquals(left, right);
     }
 
     public override bool Equals(object? obj) {
         if (obj is JvmArgumentItem item) {
             return Argument.Equals(item.Argument);
         }
-        return false;
+        return ReferenceEquals(this, obj);
     }
 
     public override int GetHashCode() {

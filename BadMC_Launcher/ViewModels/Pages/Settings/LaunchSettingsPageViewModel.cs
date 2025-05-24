@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using BadMC_Launcher.Classes.DataClasses;
 using BadMC_Launcher.Classes.UI;
@@ -55,14 +56,11 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         LauncherName = minecraftService.LauncherName;
         DefaultLauncherName = launchSettingsService.DefaultLauncherName;
 
+        FullJvmArgumentsText = string.Join(" ", minecraftService.JvmArguments);
+
         RefreshMemory(cancelLoopToken.Token);
 
         GetJavaInfo();
-
-        JvmArgmentText = string.Empty;
-        JvmArgments = new ObservableDataList<JvmArgumentItem>();
-        DefaultJvmArgments = launchSettingsService.DefaultJvmArgments;
-        GetJvmArguments();
     }
 
     // Minecraft folder settings
@@ -125,15 +123,11 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     [ObservableProperty]
     public partial string DefaultLauncherName { get; set; }
 
+    [ObservableProperty]
+    public partial string FullJvmArgumentsText { get; set; }
+
     // Jvm argument settings
-    [ObservableProperty]
-    public partial string JvmArgmentText { get; set; }
-
-    [ObservableProperty]
-    public partial ObservableDataList<JvmArgumentItem> JvmArgments { get; set; }
-
-    [ObservableProperty]
-    public partial ObservableDataList<JvmArgumentItem> DefaultJvmArgments { get; set; }
+    
 
     [RelayCommand]
     private void CancelLoop() {
@@ -202,28 +196,22 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         Debug.WriteLine("草你怎么真点了我还没做完啊Σ(っ °Д °;)っ");
     }
 
-    [RelayCommand]
-    private void AddJvmArgument() {
-        var item = DefaultJvmArgments.FirstOrDefault(item => item.Argument == JvmArgmentText);
-        if (item != null) {
-            JvmArgments.Add(item);
-            JvmArgmentText = string.Empty;
-        }
-        else {
-            var newItem = new JvmArgumentItem() { Argument = JvmArgmentText };
-            JvmArgments.Add(newItem);
-            JvmArgmentText = string.Empty;
+    [RelayCommand(FlowExceptionsToTaskScheduler = true)]
+    private async Task OpenAddJvmArgumentsDialog() {
+        if (mainPageXamlRoot != null) {
+            var dialog = App.GetService<JvmArgumentsContentDialog>();
+            dialog.XamlRoot = mainPageXamlRoot;
+
+            await dialog.ShowAsync();
         }
     }
 
-    [RelayCommand]
-    private void DeleteJvmArgment(string parameter) {
-        var deleteItem = JvmArgments.FirstOrDefault(item => item.Argument == parameter);
-        if (deleteItem != null) {
-            JvmArgments.Remove(deleteItem);
-            BindingList<string> items = new BindingList<string>();
-            items.AddRange(JvmArgments.Select(item => item.Argument));
-            minecraftService.JvmArguments = items;
+    partial void OnFullJvmArgumentsTextChanged(string value) {
+        var items = FullJvmArgumentsText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        if (items != null && items.Length > 0) {
+            BindingList<string> strings = new BindingList<string>();
+            strings.AddRange(items);
+            minecraftService.JvmArguments = strings;
         }
     }
 
@@ -285,17 +273,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
         }
     }
 
-    // Get Jvm arguments
-    private void GetJvmArguments() {
-        JvmArgments.Clear();
-        JvmArgments.AddRange(minecraftService.JvmArguments.Select(item => {
-            var defaultAugment = DefaultJvmArgments.FirstOrDefault();
-            if (defaultAugment != null) {
-                return defaultAugment;
-            }
-            return new JvmArgumentItem() { Argument = item };
-        }));
-    }
+    
 
     // Send Message to get value
     private RequestMessage<T> SendGetValueMessage<T>(Enum tokenEnum) {
@@ -356,8 +334,8 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
                 }
                 break;
              case nameof(MinecraftConfigsService.JvmArguments):
-                if (!minecraftService.JvmArguments.SequenceEqual(JvmArgments.Select(item => item.Argument))) {
-                    GetJvmArguments();
+                if (string.Join(" ", minecraftService.JvmArguments) != FullJvmArgumentsText) {
+                    FullJvmArgumentsText = string.Join(" ", minecraftService.JvmArguments);
                 }
                 break;
         }

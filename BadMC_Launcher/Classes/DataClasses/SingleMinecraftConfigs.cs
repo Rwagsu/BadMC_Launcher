@@ -205,6 +205,9 @@ public class SingleMinecraftConfigs : ConfigClass {
 
                 singleMinecraftConfigInstance.jvmArguments.RaiseListChangedEvents = true;
 
+                // Trigger Event
+                OnPropertyChanged(nameof(LaunchServer));
+
                 // Write to Json
                 SyncSettingSet();
             }
@@ -212,6 +215,9 @@ public class SingleMinecraftConfigs : ConfigClass {
     }
 
     private void OnListChanged(object? sender, ListChangedEventArgs e) {
+        if (e.PropertyDescriptor != null) {
+            OnPropertyChanged(e.PropertyDescriptor.Name);
+        }
 
         if (!SyncSettingSet()) {
             //TODO: Dialog

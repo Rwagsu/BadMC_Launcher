@@ -36,9 +36,9 @@
     </ContentDialog.Resources>
 
     <Grid MinWidth="400"
-          MinHeight="350"
+          MinHeight="300"
           MaxWidth="600"
-          MaxHeight="350">
+          MaxHeight="360">
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
             <RowDefinition Height="*" />

@@ -37,14 +37,14 @@ public partial class JavaViewItem : ObservableObject {
         if (left is JavaViewItem && right is JavaViewItem) {
             return left.Equals(right);
         }
-        return false;
+        return ReferenceEquals(left, right);
     }
 
     public static bool operator !=(JavaViewItem? left, JavaViewItem? right) {
         if (left is JavaViewItem && right is JavaViewItem) {
             return !left.Equals(right);
         }
-        return true;
+        return !ReferenceEquals(left, right);
     }
 
     public override bool Equals(object? obj) {
@@ -52,9 +52,9 @@ public partial class JavaViewItem : ObservableObject {
             var leftDirectoryPath = Path.GetDirectoryName(this.JavaPath);
             var rightDirectoryPath = Path.GetDirectoryName(viewItem.JavaPath);
 
-            return ReferenceEquals(this.JavaPath, viewItem.JavaPath);
+            return this.JavaPath.Equals(viewItem.JavaPath);
         }
-        return false;
+        return ReferenceEquals(this, obj);
     }
 
     public override int GetHashCode() {

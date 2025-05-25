@@ -56,7 +56,7 @@
                                     Command="{Binding DataContext.DeleteJvmArgmentCommand, ElementName=JvmArgmentsListView}"
                                     CommandParameter="{Binding}">
 
-                                <FontIcon FontSize="18"
+                                <FontIcon FontSize="16"
                                           Foreground="{ThemeResource SystemFillColorCriticalBrush}"
                                           Glyph="&#xE74D;" />
                             </Button>
@@ -94,7 +94,7 @@
                         ItemsSource="{Binding DefaultJvmArgments, Mode=OneWay}"
                         Text="{Binding JvmArgmentText, Mode=TwoWay}">
             <AutoSuggestBox.QueryIcon>
-                <FontIcon Glyph="&#xE710;" />
+                <FontIcon FontSize="16" Glyph="&#xE710;" />
             </AutoSuggestBox.QueryIcon>
 
             <AutoSuggestBox.ItemTemplate>

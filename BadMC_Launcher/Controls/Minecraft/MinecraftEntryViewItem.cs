@@ -53,7 +53,7 @@ public partial class MinecraftFolderViewItem : ObservableObject {
         if (left is MinecraftFolderViewItem && right is MinecraftFolderViewItem) {
             return !left.Equals(right);
         }
-        return ReferenceEquals(left, right);
+        return !ReferenceEquals(left, right);
     }
 
     public override bool Equals(object? obj) {

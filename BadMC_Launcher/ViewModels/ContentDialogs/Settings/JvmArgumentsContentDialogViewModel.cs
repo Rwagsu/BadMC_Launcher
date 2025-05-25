@@ -21,7 +21,7 @@ public partial class JvmArgumentsContentDialogViewModel : ObservableObject {
         minecraftService.PropertyChanged += MinecraftConfig_PropertyChanged;
 
         JvmArgmentText = string.Empty;
-        JvmArgments = new ObservableCollection<JvmArgumentItem>();
+        JvmArgments = new ObservableDataList<JvmArgumentItem>();
         DefaultJvmArgments = launchSettingsService.DefaultJvmArgments;
 
         JvmArgments.CollectionChanged += OnListChanged;
@@ -34,7 +34,7 @@ public partial class JvmArgumentsContentDialogViewModel : ObservableObject {
     public partial string JvmArgmentText { get; set; }
 
     [ObservableProperty]
-    public partial ObservableCollection<JvmArgumentItem> JvmArgments { get; set; }
+    public partial ObservableDataList<JvmArgumentItem> JvmArgments { get; set; }
 
     [ObservableProperty]
     public partial ObservableDataList<JvmArgumentItem> DefaultJvmArgments { get; set; }
@@ -44,20 +44,22 @@ public partial class JvmArgumentsContentDialogViewModel : ObservableObject {
 
     [RelayCommand]
     private void AddJvmArgument() {
-        var item = DefaultJvmArgments.FirstOrDefault(item => item.Argument == JvmArgmentText);
-        if (item != null) {
-            JvmArgments.Add(item);
-            JvmArgmentText = string.Empty;
-        }
-        else {
-            var newItem = new JvmArgumentItem() { Argument = JvmArgmentText };
-            JvmArgments.Add(newItem);
-            JvmArgmentText = string.Empty;
-        }
+        if (!string.IsNullOrWhiteSpace(JvmArgmentText)) {
+            var item = DefaultJvmArgments.FirstOrDefault(item => item.Argument == JvmArgmentText);
+            if (item != null) {
+                JvmArgments.Add(item);
+                JvmArgmentText = string.Empty;
+            }
+            else {
+                var newItem = new JvmArgumentItem() { Argument = JvmArgmentText };
+                JvmArgments.Add(newItem);
+                JvmArgmentText = string.Empty;
+            }
 
-        // Update setting
-        BindingList<string> items = new BindingList<string>(JvmArgments.Select(item => item.Argument).ToList());
-        minecraftService.JvmArguments = items;
+            // Update setting
+            DistinctiveItemBindingList<string> items = new DistinctiveItemBindingList<string>(JvmArgments.Select(item => item.Argument).ToList());
+            minecraftService.JvmArguments = items;
+        }
     }
 
     [RelayCommand]
@@ -75,7 +77,7 @@ public partial class JvmArgumentsContentDialogViewModel : ObservableObject {
             }
 
             // Update setting
-            BindingList<string> items = new BindingList<string>(JvmArgments.Select(item => item.Argument).ToList());
+            DistinctiveItemBindingList<string> items = new DistinctiveItemBindingList<string>(JvmArgments.Select(item => item.Argument).ToList());
             minecraftService.JvmArguments = items;
         }
     }
@@ -83,10 +85,10 @@ public partial class JvmArgumentsContentDialogViewModel : ObservableObject {
     [RelayCommand]
     private void DeleteJvmArgment(JvmArgumentItem parameter) {
         // Find item
-        var deleteItem = JvmArgments.FirstOrDefault(item => ReferenceEquals(item, parameter));
+        var deleteItem = JvmArgments.FirstOrDefault(item => item == parameter);
         if (deleteItem != null) {
             JvmArgments.Remove(deleteItem);
-            BindingList<string> items = new BindingList<string>(JvmArgments.Select(item => item.Argument).ToList()) ;
+            DistinctiveItemBindingList<string> items = new DistinctiveItemBindingList<string>(JvmArgments.Select(item => item.Argument).ToList()) ;
             minecraftService.JvmArguments = items;
         }
     }

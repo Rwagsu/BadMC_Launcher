@@ -22,7 +22,7 @@ public class JvmArgumentItem {
         if (left is JvmArgumentItem && right is JvmArgumentItem) {
             return left.Equals(right);
         }
-        return !ReferenceEquals(left, right);
+        return ReferenceEquals(left, right);
     }
 
     public static bool operator !=(JvmArgumentItem? left, JvmArgumentItem? right) {

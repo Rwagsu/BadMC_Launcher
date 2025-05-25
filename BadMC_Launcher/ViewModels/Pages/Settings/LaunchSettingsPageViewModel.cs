@@ -123,11 +123,9 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     [ObservableProperty]
     public partial string DefaultLauncherName { get; set; }
 
+    // Jvm argument settings
     [ObservableProperty]
     public partial string FullJvmArgumentsText { get; set; }
-
-    // Jvm argument settings
-    
 
     [RelayCommand]
     private void CancelLoop() {
@@ -209,8 +207,13 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     partial void OnFullJvmArgumentsTextChanged(string value) {
         var items = FullJvmArgumentsText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         if (items != null && items.Length > 0) {
-            BindingList<string> strings = new BindingList<string>();
+            DistinctiveItemBindingList<string> strings = new DistinctiveItemBindingList<string>();
             strings.AddRange(items);
+
+            if (!items.SequenceEqual(strings)) {
+                FullJvmArgumentsText = string.Join(" ", strings);
+            }
+
             minecraftService.JvmArguments = strings;
         }
     }

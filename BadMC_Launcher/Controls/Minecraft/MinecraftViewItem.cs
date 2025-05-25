@@ -46,7 +46,7 @@ public partial class MinecraftViewItem : ObservableObject {
         if (left is MinecraftViewItem && right is MinecraftViewItem) {
             return !left.Equals(right);
         }
-        return ReferenceEquals(left, right);
+        return !ReferenceEquals(left, right);
     }
 
     public override bool Equals(object? obj) {

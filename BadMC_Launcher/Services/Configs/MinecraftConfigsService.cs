@@ -310,7 +310,7 @@ public class MinecraftConfigsService : ConfigClass {
         }
     }
 
-    public BindingList<string> JvmArguments {
+    public DistinctiveItemBindingList<string> JvmArguments {
         get => MinecraftConfigs.jvmArguments;
         set {
             if (!MinecraftConfigs.jvmArguments.SequenceEqual(value)) {

@@ -49,5 +49,5 @@ internal static class MinecraftConfigs {
 
     internal static ServerInfo? launcherServer = null;
 
-    internal static BindingList<string> jvmArguments = new();
+    internal static DistinctiveItemBindingList<string> jvmArguments = new();
 }

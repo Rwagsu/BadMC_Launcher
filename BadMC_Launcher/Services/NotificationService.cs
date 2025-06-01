@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BadMC_Launcher.Controls.NotificationItem;
 using BadMC_Launcher.Interfaces;
 using BadMC_Launcher.Models.Enums;
 using CommunityToolkit.Mvvm.Messaging;
@@ -17,7 +18,10 @@ public class NotificationService {
     public Dictionary<Type, UIElement> NotificationControls { get; } = new Dictionary<Type, UIElement>();
 
     public void ShowNotification(INotificationItem notification) {
-        Notifications.Add(notification);
+        if (notification is not TipNotificationItem) {
+            Notifications.Add(notification);
+
+        }
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<INotificationItem>(notification), MainPageMessengerTokenEnum.ShowNotificationToken.ToString());
     }
 

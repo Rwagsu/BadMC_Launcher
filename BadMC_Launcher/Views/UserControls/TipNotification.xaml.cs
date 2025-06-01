@@ -71,7 +71,7 @@ public sealed partial class TipNotification : UserControl {
 
     public async void DelayedHide() {
         // Wait for 5 seconds before hiding
-        await Task.Delay(5000);
+        await Task.Delay(4000);
 
 #if WINAPPSDK_PACKAGED
         await CloseNotificationAnimation.StartAsync();

@@ -110,6 +110,7 @@ public partial class App : Application
                     services.AddSingleton<SettingsService>();
                     services.AddSingleton<AppAssetsService>();
                     services.AddSingleton<LaunchSettingsService>();
+                    services.AddSingleton<NotificationService>();
 
                     //Register ContentDialogs
                     services.AddTransient<MinecraftFolderContentDialog>();

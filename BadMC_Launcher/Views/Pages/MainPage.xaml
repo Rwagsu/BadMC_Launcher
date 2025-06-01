@@ -7,6 +7,7 @@
       xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:converters="using:CommunityToolkit.WinUI.Converters"
+      xmlns:dataTemplateSelectors="using:BadMC_Launcher.Controls.DataTemplateSelectors"
       xmlns:local="using:BadMC_Launcher"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:skia="http://uno.ui/skia"
@@ -47,7 +48,9 @@
                         VerticalAlignment="Center"
                         Orientation="Horizontal"
                         Spacing="6">
-                <StackPanel Orientation="Horizontal" Spacing="6" x:Name="AppTitleBarButtons">
+                <StackPanel x:Name="AppTitleBarButtons"
+                            Orientation="Horizontal"
+                            Spacing="6">
                     <Button Width="36"
                             Height="36"
                             Style="{StaticResource ButtonTransparentStyle}">
@@ -293,12 +296,16 @@
                                             Width="336"
                                             HorizontalAlignment="Right"
                                             IsOpen="{x:Bind viewModel.IsLaunchPadOpen, Mode=TwoWay}" />
+
+                    <!-- Notification items -->
+                    <StackPanel x:Name="NotificationsStackPanel"
+                                Grid.ColumnSpan="2"
+                                Width="400"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Stretch"
+                                Spacing="8" />
                 </Grid>
             </NavigationView>
         </Grid>
-
-        <!--<Button Grid.Row="1"
-                Click="Button_Click"
-                Content="WAHDYWU" />-->
     </Grid>
 </Page>

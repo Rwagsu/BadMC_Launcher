@@ -48,8 +48,7 @@
                     <ImageBrush ImageSource="{Binding JavaIconPath}" Stretch="UniformToFill">
                         <Interactivity:Interaction.Behaviors>
                             <Interactivity:EventTriggerBehavior EventName="ImageFailed">
-                                <Interactivity:ChangePropertyAction PropertyName="ImageSource"
-                                                                    Value="ms-appx:///Assets/Icons/JavaIcons/openjdk.png" />
+                                <Interactivity:ChangePropertyAction PropertyName="ImageSource" Value="ms-appx:///Assets/Icons/JavaIcons/openjdk.png" />
                             </Interactivity:EventTriggerBehavior>
                         </Interactivity:Interaction.Behaviors>
                     </ImageBrush>

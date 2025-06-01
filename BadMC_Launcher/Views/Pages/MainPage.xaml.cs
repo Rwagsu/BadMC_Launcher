@@ -1,13 +1,20 @@
 using System.Reflection.Metadata;
+using BadMC_Launcher.Controls.NotificationItem;
+using BadMC_Launcher.Interfaces;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.ViewModels.Pages;
+using BadMC_Launcher.Views.UserControls;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
+using Uno.Extensions;
+using Uno.Extensions.Specialized;
 using Windows.System;
+using Windows.UI;
 
 namespace BadMC_Launcher.Views.Pages;
 
@@ -21,6 +28,9 @@ public sealed partial class MainPage : Page {
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<Type>, string>(this, MainPageMessengerTokenEnum.PageNavigateToken.ToString(), MainFrameNavigate);
         WeakReferenceMessenger.Default.Register<RequestMessage<bool>, string>(this, MainPageMessengerTokenEnum.PageCloseToken.ToString(), MainFrameClose);
         WeakReferenceMessenger.Default.Register<RequestMessage<bool>, string>(this, MainPageMessengerTokenEnum.PageGoBackToken.ToString(), MainFrameGoBack);
+
+        //Register Notification Messengers
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<INotificationItem>, string>(this, MainPageMessengerTokenEnum.ShowNotificationToken.ToString(), ShowNotification);
 
         //Register GetXamlRoot Messengers
         WeakReferenceMessenger.Default.Register<RequestMessage<XamlRoot?>, string>(this, MainPageMessengerTokenEnum.XamlRootToken.ToString(), (r, m) => m.Reply(this.XamlRoot));
@@ -56,5 +66,43 @@ public sealed partial class MainPage : Page {
             message.Reply(true);
         }
         message.Reply(false);
+    }
+
+    private void ShowNotification(object recipient, ValueChangedMessage<INotificationItem> message) {
+        if (message.Value is ToastMessageNotificationItem toastMessage) {
+            var toastControl = new ToastMessageNotification() { NotificationItem = toastMessage };
+            toastControl.NotificationHided += (s, e) => {
+                if (s is UIElement element) {
+                    NotificationsStackPanel.Children.Remove(element);
+                }
+            };
+            NotificationsStackPanel.Children.Add(toastControl);
+        }
+        else if (message.Value is TipNotificationItem tipMessage) {
+            var tipControl = new TipNotification() { NotificationItem = tipMessage };
+            tipControl.NotificationHided += (s, e) => {
+                if (s is UIElement element) {
+                    NotificationsStackPanel.Children.Remove(element);
+                }
+            };
+            NotificationsStackPanel.Children.Add(tipControl);
+        }
+        else if (message.Value is ProgressBarNotificationItem progressBarMessage) {
+            var progressBarControl = new ProgressBarMessageNotification() { NotificationItem = progressBarMessage };
+            progressBarControl.NotificationHided += (s, e) => {
+                if (s is UIElement element) {
+                    NotificationsStackPanel.Children.Remove(element);
+                }
+            };
+            NotificationsStackPanel.Children.Add(progressBarControl);
+        }
+        else {
+            var control = App.GetService<NotificationService>().GetNotificationControl(message.Value);
+            if (control == null) {
+                // TODO
+                return;
+            }
+            NotificationsStackPanel.Children.Add(control);
+        }
     }
 }

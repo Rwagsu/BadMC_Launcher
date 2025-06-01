@@ -76,13 +76,28 @@
         <UnoImage Include="Assets\Icons\MinecraftIcons\*" />
         <UnoImage Include="Assets\Icons\JavaIcons\*" />
         <None Remove="Views\ContentDialogs\Settings\JvmArgumentsContentDialog.xaml" />
+        <None Remove="Views\UserControls\ToastMessageNotification.xaml" />
         <UnoImage Include="Assets\Icons\appicon_foreground.png" />
 
         <UnoIcon Include="Assets\Icons\appicon_background.png" ForegroundFile="Assets\Icons\appicon_foreground.png" ForegroundScale="0.6" />
     </ItemGroup>
     <ItemGroup>
+      <Page Update="Views\UserControls\ProgressBarMessageNotification.xaml">
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Views\UserControls\TipNotification.xaml">
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Views\UserControls\ToastMessageNotification.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+    </ItemGroup>
+    <ItemGroup>
       <Page Update="Views\ContentDialogs\Settings\JvmArgumentsContentDialog.xaml">
         <Generator>MSBuild:Compile</Generator>
       </Page>
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'net9.0-windows10.0.26100'">
+      <PackageReference Include="CommunityToolkit.Labs.WinUI.Controls.MarkdownTextBlock" />
     </ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using BadMC_Launcher.Controls;
 using BadMC_Launcher.Controls.MainSearch;
 using BadMC_Launcher.Interfaces;
@@ -12,6 +13,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media.Animation;
 using Uno.Extensions;
 
 namespace BadMC_Launcher.ViewModels.Pages;

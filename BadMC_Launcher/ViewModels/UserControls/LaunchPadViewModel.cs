@@ -21,6 +21,7 @@ using Newtonsoft.Json.Linq;
 using Uno.Extensions.Specialized;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Configs;
+using BadMC_Launcher.Controls.NotificationItem;
 
 namespace BadMC_Launcher.ViewModels.UserControls;
 public partial class LaunchPadViewModel : ObservableObject {
@@ -80,7 +81,11 @@ public partial class LaunchPadViewModel : ObservableObject {
 
     [RelayCommand(CanExecute = nameof(SetIsNotActiveMinecraftEntryEmpty))]
     public void LaunchMinecraftJava() {
-
+        App.GetService<NotificationService>().ShowNotification(new ToastMessageNotificationItem() {
+            Title = "Tip of the Day",
+            Message = "This is a tip to help you use the app better.",
+            NotificationIcon = new FontIconSource() { Glyph = "\uE713" },
+        });
     }
 
     // Invoke Refresh Command

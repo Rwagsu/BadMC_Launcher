@@ -10,6 +10,7 @@ public enum MainPageMessengerTokenEnum {
     PageNavigateToken,
     PageCloseToken,
     PageGoBackToken,
+    ShowNotificationToken,
 
     //GetValue Token
     XamlRootToken

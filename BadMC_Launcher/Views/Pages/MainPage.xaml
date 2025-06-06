@@ -7,7 +7,6 @@
       xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:converters="using:CommunityToolkit.WinUI.Converters"
-      xmlns:dataTemplateSelectors="using:BadMC_Launcher.Controls.DataTemplateSelectors"
       xmlns:local="using:BadMC_Launcher"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:skia="http://uno.ui/skia"
@@ -79,7 +78,7 @@
               VerticalAlignment="Stretch">
             <!-- SideBar -->
             <NavigationView x:Name="MainSideBar"
-                            x:Uid="MainPage_MainSideBarNavigationView"
+                            x:Uid="/ViewResources/MainPage_MainSideBarNavigationView"
                             Margin="-1"
                             FooterMenuItemsSource="{Binding MainSideBarFooterItems}"
                             IsBackEnabled="{x:Bind MainFrame.CanGoBack}"
@@ -97,12 +96,12 @@
                 <NavigationView.AutoSuggestBox>
                     <!-- Search Box -->
                     <AutoSuggestBox x:Name="SearchAutoSuggestBox"
-                                    x:Uid="MainPage_SearchResource"
+                                    x:Uid="/ViewResources/MainPage_SearchResource"
                                     ItemTemplate="{StaticResource MainMenuSearchItemTemplate}"
                                     ItemsSource="{Binding SearchItems, Mode=TwoWay}"
                                     Text="{Binding SearchText, Mode=TwoWay}">
                         <AutoSuggestBox.QueryIcon>
-                            <FontIcon Glyph="&#xE71C;" />
+                            <FontIcon FontSize="16" Glyph="&#xE71C;" />
                         </AutoSuggestBox.QueryIcon>
 
                         <Interactivity:Interaction.Behaviors>
@@ -127,10 +126,10 @@
                             <Flyout>
                                 <StackPanel Spacing="16">
                                     <!-- Tags Head -->
-                                    <StackPanel x:Uid="Global_BetaTipResource"
+                                    <StackPanel x:Uid="/ViewResources/Global_BetaTipResource"
                                                 Orientation="Horizontal"
                                                 Spacing="8">
-                                        <TextBlock x:Uid="MainPage_SearchFilterTagsResource" FontWeight="Bold" />
+                                        <TextBlock x:Uid="/ViewResources/MainPage_SearchFilterTagsResource" FontWeight="Bold" />
                                         <Border Background="{ThemeResource SystemFillColorCautionBackgroundBrush}" CornerRadius="4">
                                             <TextBlock Margin="8,0"
                                                        FontWeight="Bold"

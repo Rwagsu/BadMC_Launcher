@@ -43,7 +43,6 @@ public static class MinecraftFolderViewItemExtension {
                 }
 
                 if (image == null) {
-                    //TODO: Dialog Ex
                     image = new(new Uri($@"ms-appx:///Assets/Icons/MinecraftIcons/{MinecraftEntryImageEnum.Unknown.ToString().ToLower()}.png"));
                 }
 

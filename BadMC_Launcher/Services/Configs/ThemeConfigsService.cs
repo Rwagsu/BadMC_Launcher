@@ -7,9 +7,11 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using BadMC_Launcher.Classes;
+using BadMC_Launcher.Controls.NotificationItem;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Data.ConfigsData;
 using BadMC_Launcher.Models.Enums;
+using BadMC_Launcher.Views.UserControls;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -17,14 +19,21 @@ using Microsoft.UI.Xaml.Media.Imaging;
 namespace BadMC_Launcher.Services.Configs;
 public class ThemeConfigsService : ConfigClass {
     private readonly PathService pathService;
+    private readonly ResourceLoader resourceLoader;
+    private readonly NotificationService notificationService;
+
     internal bool isSyncEnabled = false;
 
-    public ThemeConfigsService(PathService _pathService) {
+    public ThemeConfigsService(PathService _pathService, ResourceLoader _resourceLoader, NotificationService _notificationService) {
         pathService = _pathService;
+        resourceLoader = _resourceLoader;
+        notificationService = _notificationService;
     }
 
     public ThemeConfigsService() {
         pathService = App.GetService<PathService>();
+        resourceLoader = App.GetService<ResourceLoader>();
+        notificationService = App.GetService<NotificationService>();
     }
 
     public BackgroundTypeEnum BackgroundType {
@@ -121,13 +130,20 @@ public class ThemeConfigsService : ConfigClass {
             }
             switch (backgroundType) {
                 case BackgroundTypeEnum.StaticImage:
-                    if (string.IsNullOrWhiteSpace(ThemeConfigs.imageBackgroundName)) {
-                        //TODO :Dialog EXCEPTION
+                    var path = Path.Combine(AppDataPath.pathsList["AssetsPath"], "Wallpapers", ThemeConfigs.imageBackgroundName);
+                    if (!pathService.CheckPath(path)) {
+                        notificationService.ShowNotification(new ToastMessageNotificationItem(MessageSeverityEnum.Error,
+                            resourceLoader.GetString("ToastNotification_BackgroundErrorTitle"),
+                            $"{resourceLoader.GetString("ToastNotification_BackgroundErrorMessage")} {path}"));
                         return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1)); ;
                     }
-                    return SetBrush(new BitmapImage(new Uri(Path.Combine(AppDataPath.pathsList["AssetsPath"], "Wallpapers", ThemeConfigs.imageBackgroundName))));
+                    return SetBrush(new BitmapImage(new Uri(path)));
                 case BackgroundTypeEnum.BingWallpaper:
-                    return SetBrush(new BitmapImage(new Uri(await GetBingWallpaperUrl())));
+                    var bingWallpaperPath = await GetBingWallpaperUrl();
+                    if (string.IsNullOrEmpty(bingWallpaperPath)) {
+                        return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1));
+                    }
+                    return SetBrush(new BitmapImage(new Uri(bingWallpaperPath)));
                 case BackgroundTypeEnum.Acrylic:
                     //TODO: Only MacOS
                     return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1));
@@ -172,32 +188,43 @@ public class ThemeConfigsService : ConfigClass {
         throw new InvalidOperationException("Unsupported type for SetBrushAsync");
     }
 
-    public static async Task<string> GetBingWallpaperUrl() {
+    public async Task<string> GetBingWallpaperUrl() {
         try {
             var jsonText = await App.GetService<HttpClient>().GetStringAsync("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN");
             using JsonDocument doc = JsonDocument.Parse(jsonText);
-            var status = doc.RootElement.TryGetProperty("images", out var imagesjsonElement);
-            status = imagesjsonElement[0].TryGetProperty("url", out var urljsonElement);
+            var status = doc.RootElement.TryGetProperty("images", out var imagesJsonElement);
+            status = imagesJsonElement[0].TryGetProperty("url", out var urlJsonElement);
             if (status == true) {
-                // TODO: Toast Exception
-                return "https://cn.bing.com" + urljsonElement.GetString() ?? throw new Exception("Can't get Bing wallpapers.");
+                var url = urlJsonElement.GetString();
+                if (url != null) {
+                    return "https://cn.bing.com" + url;
+                }
             }
+            notificationService.ShowNotification(new ToastMessageNotificationItem(
+                MessageSeverityEnum.Error,
+                resourceLoader.GetString("ToastNotification_BingWallpaperErrorTitle"),
+                resourceLoader.GetString("ToastNotification_BingWallpaperJsonErrorMessage")));
         }
         catch (Exception ex) {
             switch (ex) {
                 case HttpRequestException:
-                case TaskCanceledException:
-                    //TODO: Toast Exception
+                    notificationService.ShowNotification(new ToastMessageNotificationItem(
+                        MessageSeverityEnum.Error,
+                        resourceLoader.GetString("ToastNotification_BingWallpaperErrorTitle"),
+                        resourceLoader.GetString("ToastNotification_BingWallpaperGetErrorMessage")));
                     break;
                 case JsonException:
-                    //TODO: Toast Exception
+                    notificationService.ShowNotification(new ToastMessageNotificationItem(
+                        MessageSeverityEnum.Error,
+                        resourceLoader.GetString("ToastNotification_BingWallpaperErrorTitle"),
+                        resourceLoader.GetString("ToastNotification_BingWallpaperJsonErrorMessage")
+                    ));
                     break;
                 default:
                     throw;
             }
         }
-        //TODO: Toast Exception
-        throw new Exception("Can't get Bing wallpapers.");
+        return string.Empty;
     }
 }
 

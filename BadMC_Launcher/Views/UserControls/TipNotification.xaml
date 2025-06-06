@@ -12,17 +12,17 @@
         <!-- Open animation -->
         <animations:AnimationSet x:Name="OpenNotificationAnimation">
             <animations:TranslationAnimation EasingMode="EaseOut"
-                                         EasingType="Quintic"
-                                         To="-430,0,0"
-                                         Duration="0:0:0.4" />
+                                             EasingType="Quintic"
+                                             To="-430,0,0"
+                                             Duration="0:0:0.4" />
         </animations:AnimationSet>
 
         <!-- Close animation -->
         <animations:AnimationSet x:Name="CloseNotificationAnimation">
             <animations:TranslationAnimation EasingMode="EaseIn"
-                                         EasingType="Quartic"
-                                         To="0"
-                                         Duration="0:0:0.3" />
+                                             EasingType="Quartic"
+                                             To="0"
+                                             Duration="0:0:0.3" />
         </animations:AnimationSet>
     </animations:Explicit.Animations>
 
@@ -33,12 +33,13 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="42" />
         </Grid.ColumnDefinitions>
+
         <Grid Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="42" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+
             <!-- Icon -->
             <IconSourceElement Grid.Column="0"
                                Width="36"
@@ -47,25 +48,30 @@
                                VerticalAlignment="Center"
                                Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
                                IconSource="{x:Bind NotificationItem.NotificationIcon, Mode=OneWay}" />
+            <StackPanel Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Orientation="{x:Bind IsStringWhiteSpaceOrEmptyToOrientation(NotificationItem.Message), Mode=OneWay}"
+                        Spacing="8">
+                <!-- Title -->
+                <TextBlock Grid.Column="1"
+                           MaxWidth="160"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                           Style="{ThemeResource BodyStrongTextBlockStyle}"
+                           Text="{x:Bind NotificationItem.Title, Mode=OneWay}"
+                           TextWrapping="Wrap" />
 
-            <!-- Title -->
-            <TextBlock Grid.Column="1"
-                       MaxWidth="160"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Center"
-                       Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}"
-                       Text="{x:Bind NotificationItem.Title, Mode=OneWay}"
-                       TextWrapping="Wrap" />
-
-            <!-- Message -->
-            <TextBlock Grid.Column="2"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Center"
-                       Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                       Text="{x:Bind NotificationItem.Message, Mode=OneWay}"
-                       TextWrapping="Wrap" />
-
+                <!-- Message -->
+                <TextBlock Grid.Column="2"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                           Text="{x:Bind NotificationItem.Message, Mode=OneWay}"
+                           TextWrapping="Wrap"
+                           Visibility="{x:Bind IsStringWhiteSpaceOrEmptyToVisibility(NotificationItem.Message), Mode=OneWay}" />
+            </StackPanel>
         </Grid>
 
         <!-- Close Button -->

@@ -19,7 +19,7 @@ internal static class MainSideBarData {
     internal static DistinctiveItemBindingList<MainSideBarItem> mainSideBarFooterItems = new() {
         // Initialize the footer items
         new MainSideBarItem() {
-            ItemName = App.GetService<ResourceLoader>().GetString("MainPage_SettingsNameResource"),
+            ItemName = App.GetService<ResourceLoader>().GetString("SideBar_SettingsNameResource"),
             ItemIcon = new AnimatedIcon() {
                 Source = new AnimatedSettingsVisualSource(),
                 FallbackIconSource = new FontIconSource() { Glyph = "\uE713" },
@@ -31,7 +31,7 @@ internal static class MainSideBarData {
     internal static DistinctiveItemBindingList<IMainMenuSharchFilterItem> mainMenuSharchFilterItems = new() {
         // Initialize the search filter items
         new MainMenuSearchMinecraftEntryFilter() {
-            ItemName = App.GetService<ResourceLoader>().GetString("MainPage_SearchFilterMinecraftEntryNameResource"),
+            ItemName = App.GetService<ResourceLoader>().GetString("SideBarSearchFilter_MinecraftEntryNameResource"),
             IconGlyph = "\uE7FC"
         }
     };

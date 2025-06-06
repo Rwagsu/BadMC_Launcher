@@ -11,11 +11,14 @@ using MinecraftLaunch.Base.Models.Authentication;
 using BadMC_Launcher.Classes.DataClasses;
 using MinecraftLaunch.Base.Models.Game;
 using BadMC_Launcher.Services.Settings;
+using BadMC_Launcher.Controls.NotificationItem;
+using BadMC_Launcher.Services.Configs;
 
 namespace BadMC_Launcher.Services.Configs;
 public class MinecraftConfigsService : ConfigClass {
     private PathService pathService;
     private LaunchSettingsService launchSettingsService;
+
     internal bool IsSyncEnabled = false;
 
     public MinecraftConfigsService(PathService _pathService, LaunchSettingsService _launchSettingsService) {
@@ -58,7 +61,6 @@ public class MinecraftConfigsService : ConfigClass {
             foreach (var item in MinecraftConfigs.javaPaths.ToList()) {
                 if (!Path.Exists(item)) {
                     MinecraftConfigs.javaPaths.Remove(item);
-                    // TODO: Tip Toast
                 }
             }
             
@@ -80,7 +82,6 @@ public class MinecraftConfigsService : ConfigClass {
             foreach (var item in MinecraftConfigs.minecraftFolders.ToList()) {
                 if (!Path.Exists(item.MinecraftFolderPath)) {
                     MinecraftConfigs.minecraftFolders.Remove(item);
-                    // TODO: Tip Toast
                 }
             }
 
@@ -103,7 +104,6 @@ public class MinecraftConfigsService : ConfigClass {
             // Check folder is existing
             if (!Path.Exists(value)) {
                 MinecraftConfigs.activeJavaPath = string.Empty;
-                // TODO: Tip Toast
             }
             else {
                 MinecraftConfigs.activeJavaPath = value;
@@ -123,7 +123,6 @@ public class MinecraftConfigsService : ConfigClass {
             // Check folder is existing
             if (!Path.Exists(value)) {
                 MinecraftConfigs.activeMinecraftFolder = string.Empty;
-                // TODO: Tip Toast
             }
             else {
                 MinecraftConfigs.activeMinecraftFolder = value;
@@ -235,7 +234,7 @@ public class MinecraftConfigsService : ConfigClass {
                 // Check max game memory
                 AppParameters.SystemInfo.RefreshMemoryStatus();
                 if (value == 0 || value > AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToMb() || value <= MinecraftConfigs.minGameMemory) {
-                    // TODO: Toast Tips
+
                     OnPropertyChanged(nameof(MaxGameMemory));
                     return;
                 }
@@ -257,21 +256,18 @@ public class MinecraftConfigsService : ConfigClass {
             if (MinecraftConfigs.minGameMemory != value) {
                 // Check min game memory
                 AppParameters.SystemInfo.RefreshMemoryStatus();
-                if (value == 0 || value > AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToMb() || value >= MinecraftConfigs.maxGameMemory) {
-                    // TODO: Toast Tips
                     OnPropertyChanged(nameof(MinGameMemory));
                     return;
-                }
-
-                MinecraftConfigs.minGameMemory = value;
-
-                // Trigger Event
-                OnPropertyChanged(nameof(MinGameMemory));
-
-                //Write to Json
-                SyncSettingSet();
-
             }
+
+            MinecraftConfigs.minGameMemory = value;
+
+            // Trigger Event
+            OnPropertyChanged(nameof(MinGameMemory));
+
+            //Write to Json
+            SyncSettingSet();
+
         }
     }
 
@@ -358,9 +354,7 @@ public class MinecraftConfigsService : ConfigClass {
             }
         }
 
-        if (!SyncSettingSet()) {
-            //TODO: Dialog
-        }
+        SyncSettingSet();
     }
 
     public override bool SyncSettingGet() {

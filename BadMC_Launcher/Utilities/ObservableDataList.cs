@@ -13,17 +13,27 @@ public class ObservableDataList<T> : ObservableCollection<T> {
     public ObservableDataList(IEnumerable<T> initialData) : base(initialData) {
 
     }
+
     public ObservableDataList() {
 
     }
+
+    public event EventHandler? OnAddedItemDuplication;
+
     protected override void InsertItem(int index, T item) {
         if (!Contains(item)) {
             base.InsertItem(index, item);
+        }
+        else {
+            OnAddedItemDuplication?.Invoke(this, new EventArgs());
         }
     }
     protected override void SetItem(int index, T item) {
         if (!Contains(item)) {
             base.SetItem(index, item);
+        }
+        else {
+            OnAddedItemDuplication?.Invoke(this, new EventArgs());
         }
     }
 

@@ -30,7 +30,8 @@ public class NotificationService {
         notification.InvokeHideExecuteAction();
     }
 
-    public UIElement? GetNotificationControl(INotificationItem notification) {
-        return NotificationControls.FirstOrDefault(item => item.Key == notification.GetType()).Value;
+    public UIElement? GetNotificationControl(INotificationItem notification, Func<INotificationItem, UIElement, UIElement> setControlFunc) {
+        var control = NotificationControls.FirstOrDefault(item => item.Key == notification.GetType()).Value;
+        return setControlFunc(notification, control);
     }
 }

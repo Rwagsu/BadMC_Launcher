@@ -6,50 +6,58 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 namespace BadMC_Launcher.Controls.NotificationItem;
 
 public partial class TipNotificationItem : ObservableObject, INotificationItem {
-    public TipNotificationItem() {
+    public TipNotificationItem(MessageSeverityEnum notificationSeverity,
+        string title,
+        string message = "",
+        IconSource? notificationIcon = null,
+        Brush? notificationColor = null) {
         // Default constructor
-        Title = string.Empty;
-        Message = string.Empty;
+        Title = title;
+        Message = message;
 
         // Default severity
-        NotificationSeverity = MessageSeverityEnum.Info;
+        NotificationSeverity = notificationSeverity;
 
         // Default values
-        switch (NotificationSeverity) {
-            case MessageSeverityEnum.Info:
-                // Info icon
-                NotificationIcon = new FontIconSource { Glyph = "\uF167" };
-                break;
-            case MessageSeverityEnum.Important:
-                // Important icon
-                NotificationIcon = new FontIconSource { Glyph = "\uE917" };
-                break;
-            case MessageSeverityEnum.Success:
-                // Success icon
-                NotificationIcon = new FontIconSource { Glyph = "\uEC61" };
-                break;
-            case MessageSeverityEnum.Warning:
-                // Warning icon
-                NotificationIcon = new FontIconSource { Glyph = "\uF167" };
-                break;
-            case MessageSeverityEnum.Error:
-                // Error icon
-                NotificationIcon = new FontIconSource { Glyph = "\uEB90" };
-                break;
-            default:
-                // Default icon
-                NotificationIcon = new FontIconSource() { Glyph = "\uF167" };
-                break;
+        if (notificationIcon != null) {
+            NotificationIcon = notificationIcon;
+        }
+        else {
+            NotificationIcon = NotificationSeverity switch {
+                MessageSeverityEnum.Info =>
+                    // Info icon
+                    new FontIconSource { Glyph = "\uF167" },
+                MessageSeverityEnum.Important =>
+                    // Important icon
+                    new FontIconSource { Glyph = "\uE917" },
+                MessageSeverityEnum.Success =>
+                    // Success icon
+                    new FontIconSource { Glyph = "\uEC61" },
+                MessageSeverityEnum.Warning =>
+                    // Warning icon
+                    new FontIconSource { Glyph = "\uF167" },
+                MessageSeverityEnum.Error =>
+                    // Error icon
+                    new FontIconSource { Glyph = "\uEB90" },
+                _ =>
+                    // Default icon
+                    new FontIconSource() { Glyph = "\uF167" }
+            };
         }
 
-        NotificationColor = NotificationSeverity switch {
-            MessageSeverityEnum.Info => (Brush)Application.Current.Resources["SystemFillColorAttentionBrush"],
-            MessageSeverityEnum.Important => (Brush)Application.Current.Resources["TextFillColorPrimaryBrush"],
-            MessageSeverityEnum.Success => (Brush)Application.Current.Resources["SystemFillColorSuccessBrush"],
-            MessageSeverityEnum.Warning => (Brush)Application.Current.Resources["SystemFillColorCautionBrush"],
-            MessageSeverityEnum.Error => (Brush)Application.Current.Resources["SystemFillColorCriticalBrush"],
-            _ => (Brush)Application.Current.Resources["SystemFillColorAttentionBrush"],
-        };
+        if (notificationColor != null) {
+            NotificationColor = notificationColor;
+        }
+        else {
+            NotificationColor = NotificationSeverity switch {
+                MessageSeverityEnum.Info => (Brush)Application.Current.Resources["SystemFillColorAttentionBrush"],
+                MessageSeverityEnum.Important => (Brush)Application.Current.Resources["TextFillColorPrimaryBrush"],
+                MessageSeverityEnum.Success => (Brush)Application.Current.Resources["SystemFillColorSuccessBrush"],
+                MessageSeverityEnum.Warning => (Brush)Application.Current.Resources["SystemFillColorCautionBrush"],
+                MessageSeverityEnum.Error => (Brush)Application.Current.Resources["SystemFillColorCriticalBrush"],
+                _ => (Brush)Application.Current.Resources["SystemFillColorAttentionBrush"],
+            };
+        }
     }
 
     public event Action? HideExecuteAction;

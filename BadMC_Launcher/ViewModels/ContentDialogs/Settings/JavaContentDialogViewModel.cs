@@ -8,6 +8,8 @@ using Windows.Storage.Pickers;
 using Uno.Extensions.Specialized;
 using WinRT.Interop;
 using BadMC_Launcher.Services.Configs;
+using BadMC_Launcher.Controls.NotificationItem;
+using BadMC_Launcher.Models.Enums;
 
 namespace BadMC_Launcher.ViewModels.ContentDialogs.Settings;
 
@@ -56,29 +58,52 @@ public partial class JavaContentDialogViewModel : ObservableObject {
 
         // Show file picker dialog
         var file = await filePicker.PickSingleFileAsync();
+        var status = false;
+
+        var isItemDuplication = false;
+
+        if (string.IsNullOrWhiteSpace(file.DisplayName)) {
+            return;
+        }
 
         switch (file) {
             case { DisplayName: "java" }:
+                isItemDuplication = minecraftConfigService.JavaPaths.Contains(file.Path);
                 minecraftConfigService.JavaPaths.Add(file.Path);
+                status = true;
                 break;
-            case { DisplayName: "javaw" }: {
+            case { DisplayName: "javaw" }: 
                 var javaFolder = Directory.GetParent(file.Path);
 
                 if (javaFolder != null) {
                     if (OperatingSystem.IsWindows()) {
+                        isItemDuplication = minecraftConfigService.JavaPaths.Contains(@$"{javaFolder.FullName}\java{file.FileType}");
                         minecraftConfigService.JavaPaths.Add(@$"{javaFolder.FullName}\java{file.FileType}");
-                        return;
+                        status = true;
+                        break;
                     }
 
+                    isItemDuplication = minecraftConfigService.JavaPaths.Contains($"{javaFolder.FullName}/java{file.FileType}");
                     minecraftConfigService.JavaPaths.Add($"{javaFolder.FullName}/java{file.FileType}");
-                    return;
+                    status = true;
                 }
-
                 break;
-            }
         }
 
-        // TODO: Show tip toast
+        if (!status) {
+            // Show error toast if the selected file is not a valid Java executable
+            App.GetService<NotificationService>().ShowNotification(new TipNotificationItem(
+                MessageSeverityEnum.Error,
+                App.GetService<ResourceLoader>().GetString("TipNotification_JavaNameErrorTitle"),
+                App.GetService<ResourceLoader>().GetString("TipNotification_JavaNameErrorMessage")));
+        }
+        else if (isItemDuplication) {
+            // Show duplication toast
+            App.GetService<NotificationService>().ShowNotification(new TipNotificationItem(
+                MessageSeverityEnum.Warning,
+                App.GetService<ResourceLoader>().GetString("TipNotification_JavaDuplicationTitle")));
+        }
+
     }
 
     [RelayCommand]

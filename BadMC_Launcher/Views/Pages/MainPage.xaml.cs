@@ -31,6 +31,7 @@ public sealed partial class MainPage : Page {
 
         //Register Notification Messengers
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<INotificationItem>, string>(this, MainPageMessengerTokenEnum.ShowNotificationToken.ToString(), ShowNotification);
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<(INotificationItem, Func<INotificationItem, UIElement, UIElement>)>, string>(this, MainPageMessengerTokenEnum.ShowNotificationToken.ToString(), ShowNotification);
 
         //Register GetXamlRoot Messengers
         WeakReferenceMessenger.Default.Register<RequestMessage<XamlRoot?>, string>(this, MainPageMessengerTokenEnum.XamlRootToken.ToString(), (r, m) => m.Reply(this.XamlRoot));
@@ -97,12 +98,22 @@ public sealed partial class MainPage : Page {
             NotificationsStackPanel.Children.Add(progressBarControl);
         }
         else {
-            var control = App.GetService<NotificationService>().GetNotificationControl(message.Value);
-            if (control == null) {
-                // TODO
-                return;
-            }
-            NotificationsStackPanel.Children.Add(control);
+                App.GetService<NotificationService>().ShowNotification(new ToastMessageNotificationItem(
+                    MessageSeverityEnum.Error,
+                    App.GetService<ResourceLoader>().GetString("ToastNotification_NotificationNotFoundTitle"),
+                    $"{message.Value.GetType().FullName ?? message.Value.GetType().ToString()} + {App.GetService<ResourceLoader>().GetString("ToastNotification_NotificationNotFoundMessage")}"));
         }
+    }
+
+    private void ShowNotification(object recipient, ValueChangedMessage<(INotificationItem, Func<INotificationItem, UIElement, UIElement>)> message) {
+        var control = App.GetService<NotificationService>().GetNotificationControl(message.Value.Item1, message.Value.Item2);
+        if (control == null) {
+            App.GetService<NotificationService>().ShowNotification(new ToastMessageNotificationItem(
+                MessageSeverityEnum.Error,
+                App.GetService<ResourceLoader>().GetString("ToastNotification_NotificationNotFoundTitle"),
+                $"{message.Value.GetType().FullName ?? message.Value.GetType().ToString()} + {App.GetService<ResourceLoader>().GetString("ToastNotification_NotificationNotFoundMessage")}"));
+            return;
+        }
+        NotificationsStackPanel.Children.Add(control);
     }
 }

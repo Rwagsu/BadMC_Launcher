@@ -10,7 +10,7 @@
 
     <Grid>
         <NavigationView x:Name="SideBar"
-                        x:Uid="SettingsDashboardPage_SideBar"
+                        x:Uid="/ViewResources/SettingsDashboardPage_SideBar"
                         FooterMenuItemsSource="{Binding FootSideBarItems}"
                         Header="{Binding SideBarSelectedItem.PageHead}"
                         IsSettingsVisible="False"

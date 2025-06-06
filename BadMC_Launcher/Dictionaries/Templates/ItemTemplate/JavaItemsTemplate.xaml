@@ -100,7 +100,7 @@
                 <Button.Flyout>
                     <MenuFlyout>
                         <!-- View local folder MenuFlyoutItem -->
-                        <MenuFlyoutItem x:Uid="JavaContentDialog_LocalViewMenuFlyoutItem"
+                        <MenuFlyoutItem x:Uid="/ViewResources/JavaContentDialog_LocalViewMenuFlyoutItem"
                                         Command="{Binding DataContext.LocalViewJavaCommand, ElementName=JavaEntryListView}"
                                         CommandParameter="{Binding JavaPath}">
                             <MenuFlyoutItem.Icon>
@@ -111,7 +111,7 @@
                         <MenuFlyoutSeparator />
 
                         <!-- Delete item MenuFlyoutItem -->
-                        <MenuFlyoutItem x:Uid="JavaContentDialog_DeleteJavaMenuFlyoutItem"
+                        <MenuFlyoutItem x:Uid="/ViewResources/JavaContentDialog_DeleteJavaMenuFlyoutItem"
                                         Command="{Binding DataContext.DeleteJavaCommand, ElementName=JavaEntryListView}"
                                         CommandParameter="{Binding JavaPath}"
                                         Foreground="{ThemeResource SystemFillColorCriticalBrush}">

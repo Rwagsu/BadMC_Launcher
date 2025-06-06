@@ -23,13 +23,13 @@
     <ScrollViewer>
         <StackPanel Margin="18,12" Spacing="8">
             <!-- Tips -->
-            <InfoBar x:Uid="LaunchSettingsPage_TipsInfoBar"
+            <InfoBar x:Uid="/ViewResources/LaunchSettingsPage_TipsInfoBar"
                      IsClosable="False"
                      IsOpen="True"
                      Severity="Informational" />
 
             <!-- Minecraft folder setting -->
-            <controls:SettingsCard x:Name="MinecraftFolderSettingsCard" x:Uid="LaunchSettingsPage_MinecraftFolderSettingsCard">
+            <controls:SettingsCard x:Name="MinecraftFolderSettingsCard" x:Uid="/ViewResources/LaunchSettingsPage_MinecraftFolderSettingsCard">
                 <!-- Icons -->
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xE8F7;" />
@@ -57,7 +57,7 @@
             </controls:SettingsCard>
 
             <!-- Java path setting -->
-            <controls:SettingsCard x:Name="JavaSettingsCard" x:Uid="LaunchSettingsPage_JavaPathSettingsCard">
+            <controls:SettingsCard x:Name="JavaSettingsCard" x:Uid="/ViewResources/LaunchSettingsPage_JavaPathSettingsCard">
                 <!-- Icons -->
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xF133;" />
@@ -83,7 +83,7 @@
             </controls:SettingsCard>
 
             <!-- Game memory size setting -->
-            <controls:SettingsExpander x:Uid="LaunchSettingsPage_GameMemorySizeSettingsExpander">
+            <controls:SettingsExpander x:Uid="/ViewResources/LaunchSettingsPage_GameMemorySizeSettingsExpander">
                 <!-- Icons -->
                 <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xE9D9;" />
@@ -104,7 +104,7 @@
                                         Orientation="Horizontal"
                                         Spacing="6">
                                 <!-- Max memory view -->
-                                <TextBlock x:Uid="LaunchSettingsPage_MemoryViewSettingsCard"
+                                <TextBlock x:Uid="/ViewResources/LaunchSettingsPage_MemoryViewSettingsCard"
                                            VerticalAlignment="Center"
                                            Style="{ThemeResource BodyStrongTextBlockStyle}" />
                                 <Border VerticalAlignment="Center"
@@ -136,7 +136,7 @@
                                             Orientation="Horizontal"
                                             Spacing="6">
                                     <!-- Used memory view -->
-                                    <TextBlock x:Uid="LaunchSettingsPage_UsedMemoryViewTextBlock"
+                                    <TextBlock x:Uid="/ViewResources/LaunchSettingsPage_UsedMemoryViewTextBlock"
                                                VerticalAlignment="Center"
                                                Style="{ThemeResource BodyStrongTextBlockStyle}" />
                                     <Border VerticalAlignment="Center"
@@ -158,7 +158,7 @@
                                 <StackPanel HorizontalAlignment="Right"
                                             Orientation="Horizontal"
                                             Spacing="8">
-                                    <TextBlock x:Uid="LaunchSettingsPage_GameMemoryViewTextBlock"
+                                    <TextBlock x:Uid="/ViewResources/LaunchSettingsPage_GameMemoryViewTextBlock"
                                                VerticalAlignment="Center"
                                                Style="{ThemeResource BodyStrongTextBlockStyle}" />
                                     <Border VerticalAlignment="Center"
@@ -199,7 +199,7 @@
 
                     <!-- Game memory setting -->
                     <controls:SettingsCard x:Name="MemorySettingCard"
-                                           x:Uid="LaunchSettingsPage_SetGameMemorySettingsCard"
+                                           x:Uid="/ViewResources/LaunchSettingsPage_SetGameMemorySettingsCard"
                                            IsEnabled="{Binding IsAutoGameMemorySize, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}">
                         <!-- Icons -->
                         <controls:SettingsCard.HeaderIcon>
@@ -238,7 +238,7 @@
                                     <StackPanel Orientation="Horizontal" Spacing="8">
                                         <!-- Min game memory NumberBox -->
                                         <NumberBox x:Name="MinGameMemoryNumberBox"
-                                                   x:Uid="LaunchSettingsPage_SetGameMinMemoryNumberBox"
+                                                   x:Uid="/ViewResources/LaunchSettingsPage_SetGameMinMemoryNumberBox"
                                                    Grid.Row="0"
                                                    MinWidth="70"
                                                    IsEnabled="{Binding IsAutoGameMemorySize, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}"
@@ -293,7 +293,7 @@
 
                                         <!-- Max game memory NumberBox -->
                                         <NumberBox x:Name="MaxGameMemoryNumberBox"
-                                                   x:Uid="LaunchSettingsPage_SetMaxGameMemoryNumberBox"
+                                                   x:Uid="/ViewResources/LaunchSettingsPage_SetMaxGameMemoryNumberBox"
                                                    Grid.Row="0"
                                                    MinWidth="70"
                                                    IsEnabled="{Binding IsAutoGameMemorySize, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}"
@@ -326,12 +326,12 @@
                 </controls:SettingsExpander.Items>
 
                 <!-- Content -->
-                <ToggleSwitch x:Uid="LaunchSettingsPage_MemorySizeIsAutoToggleSwitch" IsOn="{Binding IsAutoGameMemorySize, Mode=Twoway}" />
+                <ToggleSwitch x:Uid="/ViewResources/LaunchSettingsPage_MemorySizeIsAutoToggleSwitch" IsOn="{Binding IsAutoGameMemorySize, Mode=Twoway}" />
 
             </controls:SettingsExpander>
 
             <!-- Version isolation setting -->
-            <controls:SettingsCard x:Uid="LaunchSettingsPage_VersionIsolationSettingsCard">
+            <controls:SettingsCard x:Uid="/ViewResources/LaunchSettingsPage_VersionIsolationSettingsCard">
                 <!-- Icons -->
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xE8B4;" />
@@ -364,7 +364,7 @@
             </controls:SettingsCard>
 
             <!-- Full screen setting -->
-            <controls:SettingsExpander x:Uid="LaunchSettingsPage_WindowSettingsExpander">
+            <controls:SettingsExpander x:Uid="/ViewResources/LaunchSettingsPage_WindowSettingsExpander">
                 <!-- Icons -->
                 <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xE740;" />
@@ -372,7 +372,7 @@
 
                 <controls:SettingsExpander.Items>
                     <!-- Window Size setting -->
-                    <controls:SettingsCard x:Uid="LaunchSettingsPage_WindowSizeSettingsCard" IsEnabled="{Binding IsFullscreen, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}">
+                    <controls:SettingsCard x:Uid="/ViewResources/LaunchSettingsPage_WindowSizeSettingsCard" IsEnabled="{Binding IsFullscreen, Mode=OneWay, Converter={StaticResource BoolInvertConverter}}">
                         <!-- Icons -->
                         <controls:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE61F;" />
@@ -404,7 +404,7 @@
             </controls:SettingsExpander>
 
             <!-- Launcher name setting -->
-            <controls:SettingsCard x:Uid="LaunchSettingsPage_LauncherNameSettingsCard">
+            <controls:SettingsCard x:Uid="/ViewResources/LaunchSettingsPage_LauncherNameSettingsCard">
                 <!-- Icons -->
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xE8AC;" />
@@ -424,7 +424,7 @@
             </controls:SettingsCard>
 
             <!-- Launcher name setting -->
-            <controls:SettingsCard x:Uid="LaunchSettingsPage_LaunchServerSettingsCard"
+            <controls:SettingsCard x:Uid="/ViewResources/LaunchSettingsPage_LaunchServerSettingsCard"
                                    Command="{Binding OpenMultiPlayerPageCommand}"
                                    IsClickEnabled="True">
                 <!-- Icons -->
@@ -437,20 +437,20 @@
             </controls:SettingsCard>
 
             <!-- Advanced setting warning -->
-            <InfoBar x:Uid="LaunchSettingsPage_AdvancedSettingWarningInfoBar"
+            <InfoBar x:Uid="/ViewResources/LaunchSettingsPage_AdvancedSettingWarningInfoBar"
                      IsClosable="False"
                      IsOpen="True"
                      Severity="Warning" />
 
             <!-- Jvm arguments setting -->
-            <controls:SettingsExpander x:Uid="LaunchSettingsPage_JvmArgumentsSettingsCard">
+            <controls:SettingsExpander x:Uid="/ViewResources/LaunchSettingsPage_JvmArgumentsSettingsCard">
                 <!-- Icons -->
                 <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xEC7A;" />
                 </controls:SettingsExpander.HeaderIcon>
 
                 <controls:SettingsExpander.Items>
-                    <controls:SettingsCard x:Uid="LaunchSettingsPage_FullJvmArgumentsTextSettingsCard">
+                    <controls:SettingsCard x:Uid="/ViewResources/LaunchSettingsPage_FullJvmArgumentsTextSettingsCard">
                         <!-- Icons -->
                         <controls:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE8AC;" />
@@ -467,7 +467,7 @@
                 <Button Command="{Binding OpenAddJvmArgumentsDialogCommand}">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <FontIcon VerticalAlignment="Center" Glyph="&#xE8A7;" />
-                        <TextBlock x:Uid="LaunchSettingsPage_OpenJvmArgumentsDialogButton"
+                        <TextBlock x:Uid="/ViewResources/LaunchSettingsPage_OpenJvmArgumentsDialogButton"
                                    VerticalAlignment="Center"
                                    HorizontalTextAlignment="Center" />
                     </StackPanel>

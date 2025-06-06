@@ -7,28 +7,57 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 namespace BadMC_Launcher.Controls.NotificationItem;
 
 public partial class ProgressBarNotificationItem : ObservableObject, INotificationItem {
-    public ProgressBarNotificationItem() {
+    public ProgressBarNotificationItem(ProgressBarStateEnum notificationState,
+        string title,
+        int progressValue,
+        string message = "",
+        string progressTitle = "",
+        string progressString = "",
+        string progressStatus = "",
+        IconSource? notificationIcon = null,
+        Brush? notificationColor = null) {
         // Default constructor
-        Title = string.Empty;
-        Message = string.Empty;
-        ProgressTitle = string.Empty;
-        ProgressString = string.Empty;
-        ProgressValue = 0;
-        ProgressStatus = string.Empty;
+        Title = title;
+        Message = message;
+        ProgressTitle = progressTitle;
+        ProgressString = progressString;
+        ProgressValue = progressValue;
+        ProgressStatus = progressStatus;
 
         // Default severity
-        NotificationState = ProgressBarStateEnum.Running;
+        NotificationState = notificationState;
 
         // Default values
-        NotificationIcon = new FontIconSource { Glyph = "\uF167" };
+        if (notificationIcon != null) {
+            NotificationIcon = notificationIcon;
+        }
+        else {
+            NotificationIcon = new FontIconSource { Glyph = "\uF167" };
+            NotificationIcon = NotificationState switch {
+                ProgressBarStateEnum.Error =>
+                    // Info icon
+                    new FontIconSource { Glyph = "\uEB90" },
+                ProgressBarStateEnum.Pause =>
+                    // Info icon
+                    new FontIconSource { Glyph = "\uF8AE" },
+                _ =>
+                    // Default icon
+                    new FontIconSource() { Glyph = "\uF167" }
+            };
+        }
 
         // Default color
-        NotificationColor = NotificationState switch {
-            ProgressBarStateEnum.Running => (Brush)Application.Current.Resources["SystemFillColorAttentionBrush"],
-            ProgressBarStateEnum.Pause => (Brush)Application.Current.Resources["SystemFillColorCautionBrush"],
-            ProgressBarStateEnum.Error => (Brush)Application.Current.Resources["SystemFillColorCriticalBrush"],
-            _ => (Brush)Application.Current.Resources["SystemFillColorAttentionBrush"],
-        };
+        if (notificationColor != null) {
+            NotificationColor = notificationColor;
+        }
+        else {
+            NotificationColor = NotificationState switch {
+                ProgressBarStateEnum.Running => (Brush)Application.Current.Resources["SystemFillColorAttentionBrush"],
+                ProgressBarStateEnum.Pause => (Brush)Application.Current.Resources["SystemFillColorCautionBrush"],
+                ProgressBarStateEnum.Error => (Brush)Application.Current.Resources["SystemFillColorCriticalBrush"],
+                _ => (Brush)Application.Current.Resources["SystemFillColorAttentionBrush"],
+            };
+        }
     }
 
     public event Action? HideExecuteAction;
@@ -84,7 +113,7 @@ public partial class ProgressBarNotificationItem : ObservableObject, INotificati
 
     async partial void OnProgressValueChanged(int value) {
         if (value >= 100) {
-            await Task.Delay(5000);
+            await Task.Delay(7000);
             HideExecuteAction?.Invoke();
         }
     }

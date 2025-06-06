@@ -6,7 +6,7 @@
                xmlns:converters="using:CommunityToolkit.WinUI.Converters"
                xmlns:local="using:BadMC_Launcher.Views.ContentDialogs.Settings"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               x:Uid="JvmArgumentsContentDialog_ViewContentDialog"
+               x:Uid="/ViewResources/JvmArgumentsContentDialog_ViewContentDialog"
                PrimaryButtonStyle="{StaticResource AccentButtonStyle}"
                Style="{ThemeResource DefaultContentDialogStyle}">
     <ContentDialog.Resources>
@@ -80,14 +80,14 @@
             <FontIcon HorizontalAlignment="Center"
                       FontSize="40"
                       Glyph="&#xE8F6;" />
-            <TextBlock x:Uid="JvmArgumentsContentDialog_JvmArgmentsEmptyTipsTitleTextBlock"
+            <TextBlock x:Uid="/ViewResources/JvmArgumentsContentDialog_JvmArgmentsEmptyTipsTitleTextBlock"
                        HorizontalAlignment="Center"
                        Style="{ThemeResource BodyStrongTextBlockStyle}" />
-            <TextBlock x:Uid="JvmArgumentsContentDialog_JvmArgmentsEmptyTipsMessageTextBlock" HorizontalAlignment="Center" />
+            <TextBlock x:Uid="/ViewResources/JvmArgumentsContentDialog_JvmArgmentsEmptyTipsMessageTextBlock" HorizontalAlignment="Center" />
         </StackPanel>
 
         <AutoSuggestBox x:Name="AddJvmArgumentsAutoSuggestBox"
-                        x:Uid="JvmArgumentsContentDialog_JvmJvmArgumentsTokenizingTextBox"
+                        x:Uid="/ViewResources/JvmArgumentsContentDialog_JvmJvmArgumentsTokenizingTextBox"
                         Grid.Row="1"
                         Height="32"
                         MinWidth="200"

@@ -84,7 +84,7 @@ public sealed partial class ToastMessageNotification : UserControl {
 
     public async void DelayedHide() {
         // Wait for 5 seconds before hiding
-        await Task.Delay(5000);
+        await Task.Delay(7000);
         if (NotificationItem?.PrimaryActionButton != null || NotificationItem?.SecondaryActionButton != null) {
             // If there are buttons, do not auto-hide
             return;
@@ -96,4 +96,6 @@ public sealed partial class ToastMessageNotification : UserControl {
 
         NotificationHided?.Invoke(this, new EventArgs());
     }
+
+    private Visibility IsStringWhiteSpaceOrEmpty(string? parameter) => string.IsNullOrWhiteSpace(parameter) ? Visibility.Collapsed : Visibility.Visible;
 }

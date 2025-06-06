@@ -12,17 +12,17 @@
         <!-- Open animation -->
         <animations:AnimationSet x:Name="OpenNotificationAnimation">
             <animations:TranslationAnimation EasingMode="EaseOut"
-                                         EasingType="Quintic"
-                                         To="-430,0,0"
-                                         Duration="0:0:0.4" />
+                                             EasingType="Quintic"
+                                             To="-430,0,0"
+                                             Duration="0:0:0.4" />
         </animations:AnimationSet>
 
         <!-- Close animation -->
         <animations:AnimationSet x:Name="CloseNotificationAnimation">
             <animations:TranslationAnimation EasingMode="EaseIn"
-                                         EasingType="Quartic"
-                                         To="0"
-                                         Duration="0:0:0.3" />
+                                             EasingType="Quartic"
+                                             To="0"
+                                             Duration="0:0:0.3" />
         </animations:AnimationSet>
     </animations:Explicit.Animations>
 
@@ -30,13 +30,14 @@
                 Background="{ThemeResource ControlFillColorInputActiveBrush}"
                 CornerRadius="8"
                 Spacing="12">
-        <!-- Title -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="42" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="42" />
             </Grid.ColumnDefinitions>
+
+            <!-- Icon -->
             <IconSourceElement Grid.Column="0"
                                Width="36"
                                Height="36"
@@ -45,15 +46,19 @@
                                Foreground="{x:Bind NotificationItem.NotificationColor, Mode=OneWay}"
                                IconSource="{x:Bind NotificationItem.NotificationIcon, Mode=OneWay}" />
 
+            <!-- Title -->
             <TextBlock Grid.Column="1"
                        Height="36"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
+                       FontWeight="Bold"
                        Foreground="{x:Bind NotificationItem.NotificationColor, Mode=OneWay}"
+                       IsTextSelectionEnabled="True"
                        Style="{ThemeResource SubtitleTextBlockStyle}"
                        Text="{x:Bind NotificationItem.Title, Mode=OneWay}"
                        TextWrapping="Wrap" />
 
+            <!-- Close button -->
             <Button Grid.Column="2"
                     Width="32"
                     Height="32"
@@ -66,9 +71,10 @@
         </Grid>
 
         <!-- Description -->
-        <Grid>
+        <Grid Visibility="{x:Bind IsStringWhiteSpaceOrEmpty(NotificationItem.Message), Mode=OneWay}">
             <TextBlock HorizontalAlignment="Stretch"
                        VerticalAlignment="Stretch"
+                       IsTextSelectionEnabled="True"
                        Text="{x:Bind NotificationItem.Message, Mode=OneWay}"
                        TextWrapping="Wrap" />
         </Grid>
@@ -82,8 +88,10 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        Foreground="{x:Bind NotificationItem.NotificationColor, Mode=OneWay}"
+                       IsTextSelectionEnabled="True"
                        Style="{ThemeResource BodyStrongTextBlockStyle}"
-                       Text="{x:Bind NotificationItem.ProgressTitle, Mode=OneWay}" />
+                       Text="{x:Bind NotificationItem.ProgressTitle, Mode=OneWay}"
+                       Visibility="{x:Bind IsStringWhiteSpaceOrEmpty(NotificationItem.ProgressTitle), Mode=OneWay}" />
             <ProgressBar Grid.Row="1"
                          HorizontalAlignment="Stretch"
                          HorizontalContentAlignment="Stretch"
@@ -93,10 +101,14 @@
                          Value="{x:Bind NotificationItem.ProgressValue, Mode=OneWay}" />
             <TextBlock Grid.Row="2"
                        HorizontalAlignment="Left"
-                       Text="{x:Bind NotificationItem.ProgressStatus, Mode=OneWay}" />
+                       IsTextSelectionEnabled="True"
+                       Text="{x:Bind NotificationItem.ProgressStatus, Mode=OneWay}"
+                       Visibility="{x:Bind IsStringWhiteSpaceOrEmpty(NotificationItem.ProgressStatus), Mode=OneWay}" />
             <TextBlock Grid.Row="2"
                        HorizontalAlignment="Right"
-                       Text="{x:Bind NotificationItem.ProgressString, Mode=OneWay}" />
+                       IsTextSelectionEnabled="True"
+                       Text="{x:Bind NotificationItem.ProgressString, Mode=OneWay}"
+                       Visibility="{x:Bind IsStringWhiteSpaceOrEmpty(NotificationItem.ProgressString), Mode=OneWay}" />
         </Grid>
 
         <!-- Buttons -->

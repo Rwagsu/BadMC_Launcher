@@ -30,13 +30,14 @@
                 Background="{ThemeResource ControlFillColorInputActiveBrush}"
                 CornerRadius="8"
                 Spacing="12">
-        <!-- Title -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="42" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="42" />
             </Grid.ColumnDefinitions>
+
+            <!-- Icon -->
             <IconSourceElement Grid.Column="0"
                                Width="36"
                                Height="36"
@@ -45,22 +46,26 @@
                                Foreground="{x:Bind NotificationItem.NotificationColor, Mode=OneWay}"
                                IconSource="{x:Bind NotificationItem.NotificationIcon, Mode=OneWay}" />
 
+            <!-- Title -->
             <TextBlock Grid.Column="1"
                        Height="36"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
+                       FontWeight="Bold"
                        Foreground="{x:Bind NotificationItem.NotificationColor, Mode=OneWay}"
                        Style="{ThemeResource SubtitleTextBlockStyle}"
                        Text="{x:Bind NotificationItem.Title, Mode=OneWay}"
                        TextWrapping="Wrap" />
 
+            <!-- Close button -->
             <Button Grid.Column="2"
                     Width="32"
                     Height="32"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Click="OnCloseButtonClick"
-                    Style="{StaticResource ButtonTransparentStyle}">
+                    Style="{StaticResource ButtonTransparentStyle}"
+                    Visibility="{x:Bind IsStringWhiteSpaceOrEmpty(NotificationItem.Message), Mode=OneWay}">
                 <FontIcon FontSize="18" Glyph="&#xE711;" />
             </Button>
         </Grid>
@@ -69,6 +74,7 @@
         <Grid>
             <TextBlock HorizontalAlignment="Stretch"
                        VerticalAlignment="Stretch"
+                       IsTextSelectionEnabled="True"
                        Text="{x:Bind NotificationItem.Message, Mode=OneWay}"
                        TextWrapping="Wrap" />
         </Grid>

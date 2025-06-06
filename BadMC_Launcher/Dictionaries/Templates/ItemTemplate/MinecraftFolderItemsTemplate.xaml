@@ -79,7 +79,7 @@
                 <Button.Flyout>
                     <MenuFlyout>
                         <!-- View local folder MenuFlyoutItem -->
-                        <MenuFlyoutItem x:Uid="MinecraftFolderContentDialog_LocalViewMenuFlyoutItem"
+                        <MenuFlyoutItem x:Uid="/ViewResources/MinecraftFolderContentDialog_LocalViewMenuFlyoutItem"
                                         Command="{Binding DataContext.ViewFolderInLocalCommand, ElementName=MinecraftFolderEntryListView}"
                                         CommandParameter="{Binding MinecraftFolderPath}">
                             <MenuFlyoutItem.Icon>
@@ -88,7 +88,7 @@
                         </MenuFlyoutItem>
 
                         <!-- Rename item MenuFlyoutItem -->
-                        <MenuFlyoutItem x:Uid="MinecraftFolderContentDialog_RenameMinecraftFolderMenuFlyoutItem"
+                        <MenuFlyoutItem x:Uid="/ViewResources/MinecraftFolderContentDialog_RenameMinecraftFolderMenuFlyoutItem"
                                         Command="{Binding DataContext.RenameItemCommand, ElementName=MinecraftFolderEntryListView}"
                                         CommandParameter="{Binding MinecraftFolderPath}">
                             <MenuFlyoutItem.Icon>
@@ -99,7 +99,7 @@
                         <MenuFlyoutSeparator />
 
                         <!-- Delete item MenuFlyoutItem -->
-                        <MenuFlyoutItem x:Uid="MinecraftFolderContentDialog_DeleteMinecraftFolderMenuFlyoutItem"
+                        <MenuFlyoutItem x:Uid="/ViewResources/MinecraftFolderContentDialog_DeleteMinecraftFolderMenuFlyoutItem"
                                         Command="{Binding DataContext.DeleteItemCommand, ElementName=MinecraftFolderEntryListView}"
                                         CommandParameter="{Binding MinecraftFolderPath}"
                                         Foreground="{ThemeResource SystemFillColorCriticalBrush}">

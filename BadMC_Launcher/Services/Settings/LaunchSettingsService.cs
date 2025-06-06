@@ -16,7 +16,7 @@ public class LaunchSettingsService {
     public LaunchSettingsService(ResourceLoader _resourceService) {
         resourceService = _resourceService;
 
-        DefaultLauncherName = resourceService.GetString("LaunchSettingsService_DefaultLauncherNameResource");
+        DefaultLauncherName = resourceService.GetString("Global_DefaultLauncherNameResource");
 
         DefaultJvmArgments.AddRange([
             new JvmArgumentItem() {

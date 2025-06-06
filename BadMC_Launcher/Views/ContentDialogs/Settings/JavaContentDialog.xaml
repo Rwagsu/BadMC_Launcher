@@ -7,7 +7,7 @@
                xmlns:local="using:BadMC_Launcher.Views.ContentDialogs.Settings"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:userControls="using:BadMC_Launcher.Views.UserControls"
-               x:Uid="JavaContentDialog_ViewContentDialog"
+               x:Uid="/ViewResources/JavaContentDialog_ViewContentDialog"
                CloseButtonStyle="{StaticResource AccentButtonStyle}"
                Style="{ThemeResource DefaultContentDialogStyle}">
     <ContentDialog.Resources>
@@ -59,13 +59,13 @@
                             Orientation="Horizontal"
                             Spacing="8">
                     <FontIcon Glyph="&#xE8F4;" />
-                    <TextBlock x:Uid="JavaContentDialog_AddJavaButton" />
+                    <TextBlock x:Uid="/ViewResources/JavaContentDialog_AddJavaButton" />
                 </StackPanel>
             </Button>
 
             <!-- Search Java Button -->
             <Button x:Name="SearchJavaButton"
-                    x:Uid="JavaContentDialog_SearchJavaButton"
+                    x:Uid="/ViewResources/JavaContentDialog_SearchJavaButton"
                     Width="36"
                     Height="36"
                     Padding="0"
@@ -90,7 +90,7 @@
 
             <!-- TODO: 催更催更催更！ -->
             <!-- Download Java Button -->
-            <Button x:Uid="JavaContentDialog_DownloadJavaButton"
+            <Button x:Uid="/ViewResources/JavaContentDialog_DownloadJavaButton"
                     Width="36"
                     Height="36"
                     Padding="0"
@@ -108,7 +108,7 @@
                             Orientation="Horizontal"
                             Spacing="8">
                     <FontIcon Glyph="&#xE945;" />
-                    <TextBlock x:Uid="JavaContentDialog_AutoJavaButton" />
+                    <TextBlock x:Uid="/ViewResources/JavaContentDialog_AutoJavaButton" />
                 </StackPanel>
             </ToggleButton>
         </StackPanel>
@@ -143,15 +143,15 @@
                       FontSize="40"
                       Glyph="&#xE8F6;" />
             <TextBlock Text="{Binding JavasList.Count, Mode=OneWay}" />
-            <TextBlock x:Uid="JavaContentDialog_JavaListEmptyTipsTextBlock"
+            <TextBlock x:Uid="/ViewResources/JavaContentDialog_JavaListEmptyTipsTextBlock"
                        HorizontalAlignment="Center"
                        Style="{ThemeResource BodyStrongTextBlockStyle}" />
-            <HyperlinkButton x:Uid="JavaContentDialog_JavaListEmptyTipsHyperLinkButton"
+            <HyperlinkButton x:Uid="/ViewResources/JavaContentDialog_JavaListEmptyTipsHyperLinkButton"
                              HorizontalAlignment="Center"
                              Command="{Binding SearchJavasCommand}" />
         </StackPanel>
 
-        <userControls:LoadingAnimation x:Uid="JavaContentDialog_JavaListLoadingTipsLoadingAnimation"
+        <userControls:LoadingAnimation x:Uid="/ViewResources/JavaContentDialog_JavaListLoadingTipsLoadingAnimation"
                                        Grid.Row="1"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"

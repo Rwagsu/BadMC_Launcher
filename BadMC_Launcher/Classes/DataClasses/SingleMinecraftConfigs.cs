@@ -219,9 +219,7 @@ public class SingleMinecraftConfigs : ConfigClass {
             OnPropertyChanged(e.PropertyDescriptor.Name);
         }
 
-        if (!SyncSettingSet()) {
-            //TODO: Dialog
-        }
+        SyncSettingSet();
     }
 
     public override bool SyncSettingGet() {
@@ -239,7 +237,6 @@ public class SingleMinecraftConfigs : ConfigClass {
             singleMinecraftConfigInstance.jvmArguments = jsonClass.JvmArguments;
             return true;
         }
-        //TODO: Toast
         return false;
     }
 
@@ -247,7 +244,6 @@ public class SingleMinecraftConfigs : ConfigClass {
         if (TargetMinecraftEntryPath != null) {
             return pathService.WriteConfig(Path.Combine(TargetMinecraftEntryPath, Path.Combine(AppDataPath.VersionConfigsPath, "MinecraftConfigs.json")), SingleMinecraftConfigsContext.Default.SingleMinecraftConfigs, this);
         }
-        //TODO: Toast
         return false;
     }
 }

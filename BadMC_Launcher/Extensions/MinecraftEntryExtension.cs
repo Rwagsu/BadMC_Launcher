@@ -61,8 +61,7 @@ public static class MinecraftEntryExtension {
                 return minecraftEntryImage;
             }
         }
-        //TODO: 正式版别忘了改.png
-        throw new NotImplementedException("欸等一下Σ(っ °Д °;)っ我们还没支持这个类型呢你怎么就给（*#……*！&@%！*……@");
+        return MinecraftEntryImageEnum.Unknown;
     }
 
     public static ObservableDataList<MetadataItem> GetMinecraftEntryTags(this MinecraftEntry minecraftEntry) {

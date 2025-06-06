@@ -96,7 +96,7 @@
                             <StackPanel Grid.Column="1"
                                         Margin="8,0,30,0"
                                         Spacing="2">
-                                <TextBlock x:Uid="LaunchPad_LaunchButtonNameResource"
+                                <TextBlock x:Uid="/ViewResources/LaunchPad_LaunchButtonNameResource"
                                            FontSize="22"
                                            FontWeight="Bold" />
                                 <TextBlock x:Name="GameOntologyIdTextBlock"
@@ -155,7 +155,7 @@
                                         </Grid.ColumnDefinitions>
                                         <!-- Select the .minecraft folder path -->
                                         <ComboBox x:Name="MinecraftFolderComboBox"
-                                                  x:Uid="LaunchPad_MinecraftFolderComboBox"
+                                                  x:Uid="/ViewResources/LaunchPad_MinecraftFolderComboBox"
                                                   Grid.Column="0"
                                                   Height="36"
                                                   Margin="8,0,8,0"
@@ -179,7 +179,7 @@
                                             <Button.Flyout>
                                                 <MenuFlyout>
                                                     <!-- Refresh list MenuFlyoutItem -->
-                                                    <MenuFlyoutItem x:Uid="LaunchPad_MinecraftEntrysRefreshMenuFlyoutItem" Command="{Binding InvokeRefreshMinecraftEntrysCommand}">
+                                                    <MenuFlyoutItem x:Uid="/ViewResources/LaunchPad_MinecraftEntrysRefreshMenuFlyoutItem" Command="{Binding InvokeRefreshMinecraftEntrysCommand}">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="&#xE72C;" />
                                                         </MenuFlyoutItem.Icon>
@@ -188,14 +188,14 @@
                                                     <MenuFlyoutSeparator />
 
                                                     <!-- Manage MinecraftFOlder MenuFlyoutItem -->
-                                                    <MenuFlyoutItem x:Uid="LaunchPad_MinecraftEntryssManagerMenuFlyoutItem" Command="{Binding OpenMinecraftFoldersManagerCommand}">
+                                                    <MenuFlyoutItem x:Uid="/ViewResources/LaunchPad_MinecraftEntryssManagerMenuFlyoutItem" Command="{Binding OpenMinecraftFoldersManagerCommand}">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="&#xE8B7;" />
                                                         </MenuFlyoutItem.Icon>
                                                     </MenuFlyoutItem>
 
                                                     <!-- View local folder MenuFlyoutItem -->
-                                                    <MenuFlyoutItem x:Uid="LaunchPad_ViewLocalMinecraftFolderMenuFlyoutItem" Command="{Binding ViewLoaclMinecraftFolderCommand}">
+                                                    <MenuFlyoutItem x:Uid="/ViewResources/LaunchPad_ViewLocalMinecraftFolderMenuFlyoutItem" Command="{Binding ViewLoaclMinecraftFolderCommand}">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="&#xE838;" />
                                                         </MenuFlyoutItem.Icon>
@@ -236,14 +236,14 @@
                                         <FontIcon HorizontalAlignment="Center"
                                                   FontSize="40"
                                                   Glyph="&#xE8F6;" />
-                                        <TextBlock x:Uid="LaunchPad_MinecraftEmptyListTipsTextBlock"
+                                        <TextBlock x:Uid="/ViewResources/LaunchPad_MinecraftEmptyListTipsTextBlock"
                                                    MaxWidth="350"
                                                    HorizontalAlignment="Center"
                                                    HorizontalTextAlignment="Center"
                                                    Style="{ThemeResource BodyStrongTextBlockStyle}"
                                                    TextWrapping="Wrap" />
                                         <HyperlinkButton HorizontalAlignment="Center" Command="{Binding OpenMinecraftFoldersManagerCommand}">
-                                            <TextBlock x:Uid="LaunchPad_MinecraftEmptyListTipsHyperLinkButton"
+                                            <TextBlock x:Uid="/ViewResources/LaunchPad_MinecraftEmptyListTipsHyperLinkButton"
                                                        MaxWidth="350"
                                                        HorizontalTextAlignment="Center"
                                                        TextWrapping="Wrap" />

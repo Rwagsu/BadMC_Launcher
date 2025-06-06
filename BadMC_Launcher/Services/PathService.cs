@@ -8,17 +8,23 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
+using BadMC_Launcher.Controls.NotificationItem;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Data.ConfigsData;
 using BadMC_Launcher.Models.Data.Mappings;
+using BadMC_Launcher.Models.Enums;
 using CommunityToolkit.Mvvm.Collections;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.VisualBasic.FileIO;
 using MinecraftLaunch.Extensions;
 using Uno.UI.Helpers;
 
 namespace BadMC_Launcher.Services;
 
 public class PathService {
+    private readonly NotificationService notificationService;
+    private readonly ResourceLoader resourceLoader;
     private readonly bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     private readonly HashSet<string> windowsPathReservedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
@@ -26,6 +32,11 @@ public class PathService {
         "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
         "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
     };
+
+    public PathService(NotificationService _notificationService, ResourceLoader _resourceLoader) {
+        notificationService = _notificationService;
+        resourceLoader = _resourceLoader;
+    }
 
     /// <summary>
     /// Check if the file path is valid.
@@ -62,7 +73,7 @@ public class PathService {
             return true;
         }
         catch (Exception ex) {
-            ShowErrorToast(ex);
+            ShowErrorToast(ex, path);
         }
         return false;
     }
@@ -113,11 +124,13 @@ public class PathService {
                             TryReadConfig(filePath, jsonTypeInfo, out _, propertyNameMapping, propertyValueTypeMapping);
                         }
                         else {
-                            //TODO: Dialog
+                            if (!ShowErrorToast(ex, filePath)) {
+                                throw;
+                            }
                         }
                         break;
                     default:
-                        if (!ShowErrorToast(ex)) {
+                        if (!ShowErrorToast(ex, filePath)) {
                             throw;
                         }
                         break;
@@ -148,7 +161,7 @@ public class PathService {
 
             }
             catch (Exception ex) {
-                ShowErrorToast(ex);
+                ShowErrorToast(ex, filePath);
             }
         }
         returnValue = default;
@@ -172,8 +185,8 @@ public class PathService {
                 return true;
             }
             catch (Exception ex) {
-                if (!ShowErrorToast(ex)) {
-                    // TODO: Dialog
+                if (!ShowErrorToast(ex, filePath)) {
+                    throw;
                 }
             }
         }
@@ -214,7 +227,7 @@ public class PathService {
             }
         }
         catch(Exception ex) {
-            ShowErrorToast(ex);
+            ShowErrorToast(ex, filePath);
         }
         return false;
     }
@@ -238,14 +251,19 @@ public class PathService {
         catch (Exception ex) {
             switch (ex) {
                 case Win32Exception:
-                    //TODO: Toast
+                    notificationService.ShowNotification(new ToastMessageNotificationItem(
+                    MessageSeverityEnum.Error,
+                    resourceLoader.GetString("ToastNotification_Win32ErrorTitle"),
+                    $"{path}\n\n{ex.Message}"));
                     break;
                 case FileNotFoundException:
-                    //TODO: Toast
+                    notificationService.ShowNotification(new ToastMessageNotificationItem(
+                    MessageSeverityEnum.Error,
+                    resourceLoader.GetString("ToastNotification_FileNotFoundErrorTitle"),
+                    $"{path}\n\n{ex.Message}"));
                     break;
                 default:
-                    //TODO: Toast
-                    break;
+                    throw;
             }
         }
         return false;
@@ -301,35 +319,54 @@ public class PathService {
         catch(Exception ex) {
             ShowErrorToast(ex);
         }
-
-        // Toast Tip
-        if (DeleteItems.Any()) {
-            // TODO: Toast
-        }
         return isModified;
     }
-    private bool ShowErrorToast(Exception ex) {
+    private bool ShowErrorToast(Exception ex, string filePath = "") {
         switch (ex) {
+            case JsonException:
+                notificationService.ShowNotification(new ToastMessageNotificationItem(
+                    MessageSeverityEnum.Error,
+                    resourceLoader.GetString("ToastNotification_ReadJsonErrorTitle"),
+                    $"{resourceLoader.GetString("ToastNotification_JsonErrorMessage")}\n{filePath}\n\n{ex.Message}") {
+                    PrimaryActionButton = string.IsNullOrWhiteSpace(filePath) ? new Button() {
+                        Content = resourceLoader.GetString("ToastNotification_JsonErrorOpenJson_ButtonText"),
+                        Command = new RelayCommand(() => TryOpenFolderOrFileFromPath(filePath))
+                    } : null,
+                    SecondaryActionButton = string.IsNullOrWhiteSpace(filePath) ? new Button() {
+                        Content = resourceLoader.GetString("ToastNotification_JsonErrorDeleteJson_ButtonText"),
+                        Command = new RelayCommand(() => {
+                            if (File.Exists(filePath)) {
+                                try {
+                                    FileSystem.DeleteFile(filePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                                }
+                                catch (Exception ex) {
+                                    ShowErrorToast(ex, filePath);
+                                }
+                            }
+                        })
+                    } : null
+                });
+                break;
             case SecurityException:
-                //TODO
-                break;
-            case ArgumentException:
-                //TODO
-                break;
             case UnauthorizedAccessException:
-                //TODO
+                notificationService.ShowNotification(new ToastMessageNotificationItem(
+                    MessageSeverityEnum.Error,
+                    resourceLoader.GetString("ToastNotification_UnauthorizedAccessErrorTitle"),
+                    $"{resourceLoader.GetString("ToastNotification_UnauthorizedAccessErrorMessage")}\n{filePath}\n\n{ex.Message}"));
                 break;
             case PathTooLongException:
-                //TODO
+                notificationService.ShowNotification(new ToastMessageNotificationItem(
+                   MessageSeverityEnum.Error,
+                   resourceLoader.GetString("ToastNotification_PathTooLongErrorTitle"),
+                   $"{resourceLoader.GetString("ToastNotification_PathTooLongErrorMessage")}\n{filePath}\n\n{ex.Message}"));
                 break;
             case IOException:
-                //TODO
-                break;
-            case NotSupportedException:
-                //TODO
+                notificationService.ShowNotification(new ToastMessageNotificationItem(
+                   MessageSeverityEnum.Error,
+                   resourceLoader.GetString("ToastNotification_IOErrorTitle"),
+                   $"{resourceLoader.GetString("ToastNotification_IOErrorMessage")}\n{filePath}\n\n{ex.Message}"));
                 break;
             default:
-                //TODO
                 return false;
         }
         return true;

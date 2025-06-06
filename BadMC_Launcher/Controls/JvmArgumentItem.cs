@@ -12,7 +12,7 @@ public class JvmArgumentItem {
 
     public IconSource ViewIcon { get; init; } = new FontIconSource() { Glyph = "\uE943" };
 
-    public string TipText { get; init; } = string.Empty;
+    public string TipText { get; init; } = App.GetService<ResourceLoader>().GetString("DefaultJvmArgments_Unknown");
 
     public override string ToString() {
         return Argument;

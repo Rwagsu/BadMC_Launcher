@@ -25,7 +25,8 @@ using BadMC_Launcher.Controls.NotificationItem;
 
 namespace BadMC_Launcher.ViewModels.UserControls;
 public partial class LaunchPadViewModel : ObservableObject {
-    MinecraftConfigsService minecraftService = App.GetService<MinecraftConfigsService>();
+    private readonly MinecraftConfigsService minecraftService = App.GetService<MinecraftConfigsService>();
+    private ResourceLoader resourceLoader = App.GetService<ResourceLoader>();
 
     public LaunchPadViewModel() {
         MinecraftFolderEntrys = minecraftService.MinecraftFolders.ToObservableCollection();
@@ -45,8 +46,7 @@ public partial class LaunchPadViewModel : ObservableObject {
                 MinecraftEntrysSelectedItem = MinecraftEntrys.FirstOrDefault(item => item.MinecraftId == MinecraftFolderEntrysSelectedItem?.ActiveMinecraftEntryId);
             }
         }
-
-        LaunchButtonMinecraftId = MinecraftEntrysSelectedItem?.MinecraftId ?? App.GetService<ResourceLoader>().GetString("LaunchPad_LaunchButtonTagDefaultResource");
+        LaunchButtonMinecraftId = MinecraftEntrysSelectedItem?.MinecraftId ?? resourceLoader.GetString("LaunchPad_LaunchButtonTagDefaultResource");
         LaunchButtonMinecraftIcon = MinecraftEntrysSelectedItem?.MinecraftImage ?? new() { UriSource = new(@"ms-appx:///Assets/Icons/MinecraftIcons/drowned.png") };
 
         minecraftService.PropertyChanged += MinecraftConfig_PropertyChanged;
@@ -81,11 +81,11 @@ public partial class LaunchPadViewModel : ObservableObject {
 
     [RelayCommand(CanExecute = nameof(SetIsNotActiveMinecraftEntryEmpty))]
     public void LaunchMinecraftJava() {
-        App.GetService<NotificationService>().ShowNotification(new ToastMessageNotificationItem() {
-            Title = "Tip of the Day",
-            Message = "This is a tip to help you use the app better.",
-            NotificationIcon = new FontIconSource() { Glyph = "\uE713" },
-        });
+        App.GetService<NotificationService>().ShowNotification(new ToastMessageNotificationItem(
+            MessageSeverityEnum.Important,
+            "Tip of the Day",
+            "This is a tip to help you use the app better.",
+            new FontIconSource() { Glyph = "\uE713" }));
     }
 
     // Invoke Refresh Command
@@ -151,7 +151,7 @@ public partial class LaunchPadViewModel : ObservableObject {
                 minecraftFolderEntry.ActiveMinecraftEntryId = value?.MinecraftId;
             }
         }
-        LaunchButtonMinecraftId = MinecraftEntrysSelectedItem?.MinecraftId ?? App.GetService<ResourceLoader>().GetString("LaunchPad_LaunchButtonTagDefaultResource");
+        LaunchButtonMinecraftId = MinecraftEntrysSelectedItem?.MinecraftId ?? resourceLoader.GetString("LaunchPad_LaunchButtonTagDefaultResource"); ;
         LaunchButtonMinecraftIcon = MinecraftEntrysSelectedItem?.MinecraftImage ?? new() { UriSource = new(@"ms-appx:///Assets/Icons/MinecraftIcons/drowned.png")};
     }
 

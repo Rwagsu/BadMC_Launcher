@@ -14,10 +14,16 @@ internal static class SettingsData {
     internal static DistinctiveItemBindingList<SettingsSideBarItem> settingsSideBarItems = new() {
         // Initialize the sidebar items
         new SettingsSideBarItem() {
-            ItemName = App.GetService<ResourceLoader>().GetString("LaunchSettingsPage_SettingsPageName"),
+            ItemName = App.GetService<ResourceLoader>().GetString("SettingsSideBarItems_LaunchSettingsPageName"),
             ItemIcon = new FontIcon() { Glyph = "\uE7FC" },
             NavigatePage = typeof(LaunchSettingsPage),
-            PageHead = App.GetService<ResourceLoader>().GetString("LaunchSettingsPage_SettingsPageName"),
+            PageHead = App.GetService<ResourceLoader>().GetString("SettingsSideBarItems_LaunchSettingsPageName"),
+        },
+        new SettingsSideBarItem() {
+            ItemName = App.GetService<ResourceLoader>().GetString("SettingsSideBarItems_ThemeSettingsPageName"),
+            ItemIcon = new FontIcon() { Glyph = "\uE790" },
+            NavigatePage = typeof(ThemeSettingsPage),
+            PageHead = App.GetService<ResourceLoader>().GetString("SettingsSideBarItems_ThemeSettingsPageName"),
         }
     };
 

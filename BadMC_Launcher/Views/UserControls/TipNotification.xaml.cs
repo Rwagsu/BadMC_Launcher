@@ -71,7 +71,7 @@ public sealed partial class TipNotification : UserControl {
 
     public async void DelayedHide() {
         // Wait for 5 seconds before hiding
-        await Task.Delay(4000);
+        await Task.Delay(6000);
 
 #if WINAPPSDK_PACKAGED
         await CloseNotificationAnimation.StartAsync();
@@ -79,4 +79,13 @@ public sealed partial class TipNotification : UserControl {
 
         NotificationHided?.Invoke(this, new EventArgs());
     }
+
+    private Visibility IsStringWhiteSpaceOrEmptyToVisibility(string? parameter) {
+        return string.IsNullOrWhiteSpace(parameter) ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    private Orientation IsStringWhiteSpaceOrEmptyToOrientation(string? parameter) {
+        return string.IsNullOrWhiteSpace(parameter) ? Orientation.Horizontal : Orientation.Vertical;
+    }
 }
+

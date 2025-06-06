@@ -75,4 +75,6 @@ public sealed partial class ProgressBarMessageNotification : UserControl {
             _ => false
         };
     }
+
+    private Visibility IsStringWhiteSpaceOrEmpty(string? parameter) => string.IsNullOrWhiteSpace(parameter) ? Visibility.Collapsed : Visibility.Visible;
 }

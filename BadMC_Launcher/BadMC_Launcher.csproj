@@ -76,6 +76,7 @@
         <UnoImage Include="Assets\Icons\MinecraftIcons\*" />
         <UnoImage Include="Assets\Icons\JavaIcons\*" />
         <None Remove="Views\ContentDialogs\Settings\JvmArgumentsContentDialog.xaml" />
+        <None Remove="Views\Pages\Settings\ThemeSettingsPage.xaml" />
         <None Remove="Views\UserControls\ToastMessageNotification.xaml" />
         <UnoImage Include="Assets\Icons\appicon_foreground.png" />
 
@@ -99,5 +100,13 @@
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFramework)' == 'net9.0-windows10.0.26100'">
       <PackageReference Include="CommunityToolkit.Labs.WinUI.Controls.MarkdownTextBlock" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Strings\zh-Hans\Views\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Page Update="Views\Pages\Settings\ThemeSettingsPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
 </Project>

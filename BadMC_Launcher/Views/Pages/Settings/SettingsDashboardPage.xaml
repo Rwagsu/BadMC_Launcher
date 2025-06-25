@@ -6,6 +6,7 @@
       xmlns:local="using:BadMC_Launcher.Views.Pages.Settings"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       CornerRadius="8"
+      Unloaded="Page_Unloaded"
       mc:Ignorable="d">
 
     <Grid>
@@ -29,7 +30,7 @@
                 <!-- SideBarFrame Event -->
                 <Interactivity:Interaction.Behaviors>
                     <Interactivity:EventTriggerBehavior EventName="Loaded">
-                        <Interactivity:InvokeCommandAction Command="{Binding SetInitSelectedItemCommand}" CommandParameter="{Binding ElementName=SideBarFrame}" />
+                        <Interactivity:InvokeCommandAction Command="{Binding SetInitSelectedItemCommand}" />
                     </Interactivity:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
             </Frame>
@@ -37,7 +38,7 @@
             <!-- SideBar Event -->
             <Interactivity:Interaction.Behaviors>
                 <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
-                    <Interactivity:InvokeCommandAction Command="{Binding NavigateToPageCommand}" CommandParameter="{Binding ElementName=SideBarFrame}" />
+                    <Interactivity:InvokeCommandAction Command="{Binding NavigateToPageCommand}" />
                 </Interactivity:EventTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
         </NavigationView>

@@ -10,6 +10,7 @@ using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages;
 using BadMC_Launcher.Views.Pages.Settings;
 using BadMC_Launcher.Views.UserControls;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.UI;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Input;
@@ -17,6 +18,7 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls.AnimatedVisuals;
 using Serilog;
+using Uno.Extensions.Toolkit;
 using Uno.Resizetizer;
 using Windows.Foundation;
 using Windows.Graphics;
@@ -43,7 +45,9 @@ public partial class App : Application {
 
     public static new App Current => (App)Application.Current;
 
-    public DispatcherQueue AppDispatcher;
+    public IThemeService? AppThemeService { get; private set; }
+
+    public DispatcherQueue AppDispatcher { get; private set; }
 
     internal Window? MainWindow { get; private set; }
     internal IHost? Host { get; private set; }
@@ -96,8 +100,7 @@ public partial class App : Application {
                             retainedFileCountLimit: 10
                         );
                 })
-                .ConfigureServices((context, services) =>
-                {
+                .ConfigureServices((context, services) => {
                     //Register third-party class
                     services.AddSingleton<HttpClient>();
                     services.AddSingleton<ResourceLoader>();
@@ -120,6 +123,7 @@ public partial class App : Application {
                     services.AddTransient<JavaContentDialog>();
                     services.AddTransient<JvmArgumentsContentDialog>();
                 })
+                .UseToolkit()
             );
         MainWindow = builder.Window;
 
@@ -132,18 +136,6 @@ public partial class App : Application {
 
         // Get Configs
         GetSettings();
-
-        //Set MainWindow Configs
-        MainWindow.AppWindow.Title = GetService<ThemeConfigsService>().WindowName;
-        MainWindow.AppWindow.Resize(AppParameters.WindowSize);
-        MainWindow.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-
-        // TODO: 不等了拖拽三大金刚自己写(恼)
-#if WINAPPSDK_PACKAGED
-        MainWindow.AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
-        MainWindow.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-        MainWindow.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-#endif
 
         // Do not repeat app initialization when the Window already has content,
         // just ensure that the window is active
@@ -162,7 +154,22 @@ public partial class App : Application {
             rootFrame.Navigate(typeof(MainPage), args.Arguments);
         }
 
+        // Get ThemeService
+        AppThemeService = MainWindow.GetThemeService();
+
+        GetService<ThemeConfigsService>();
+
+        //Set MainWindow Configs
+        MainWindow.AppWindow.Title = GetService<ThemeConfigsService>().WindowName;
+        MainWindow.AppWindow.Resize(AppParameters.WindowSize);
+        MainWindow.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
+
 #if WINAPPSDK_PACKAGED
+        // TODO: 不等了拖拽三大金刚自己写(恼)
+        MainWindow.AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
+        MainWindow.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
+        MainWindow.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+
         // Set TitleBar area
         var nonClientInputSrc = InputNonClientPointerSource.GetForWindowId(MainWindow.AppWindow.Id);
         var buttonsNonClientArea = UIHelper.FindElementByName(MainWindow.Content, "AppTitleBarButtons") as FrameworkElement;
@@ -186,19 +193,24 @@ public partial class App : Application {
 
         // Ensure the current window is active
         MainWindow.Activate();
+
+        
+    }
+
+    private void OnAppThemeChanged(object? sender, AppTheme e) {
+        throw new NotImplementedException();
     }
 
     //Get Service
     public static T GetService<T>() {
         var services = Current.Host?.Services;
-        if (services == null) {
-            throw new InvalidOperationException("Service not found.");
+        if (services != null) {
+            var service = services.GetService<T>();
+            if (service != null) {
+                return service;
+            }
         }
 
-        var service = services.GetService<T>();
-        if (service != null) {
-            return service;
-        }
         throw new InvalidOperationException("Service not found.");
     }
 

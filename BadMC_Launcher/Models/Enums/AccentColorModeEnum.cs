@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BadMC_Launcher.Models.Enums;
-public enum ThemeTypeEnum {
-    Light,
-    Dark
+public enum AccentColorModeEnum {
+    System,
+    Custom,
+    ImageMonet,
+    ColorMonet
 }

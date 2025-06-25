@@ -25,7 +25,11 @@ public sealed partial class MinecraftFolderContentDialog : ContentDialog {
         DataContext = new MinecraftFolderContentDialogViewModel();
 
         //Register Messenger
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<string>, string>(this, MinecraftFolderContentDialogMessengerTokenEnum.ShowRenameFlyoutToken.ToString(), (r, m) => FlyoutBase.ShowAttachedFlyout(AddMinecraftFolderButton));
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<string>, string>(this, MinecraftFolderContentDialogMessengerTokenEnum.HideRenameFlyoutToken.ToString(), (r, m) => RenameFlyout.Hide());
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<string>, string>(this, MessengerTokenEnum.MinecraftFolderContentDialog_ShowRenameFlyoutToken.ToString(), (r, m) => FlyoutBase.ShowAttachedFlyout(AddMinecraftFolderButton));
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<string>, string>(this, MessengerTokenEnum.MinecraftFolderContentDialog_HideRenameFlyoutToken.ToString(), (r, m) => RenameFlyout.Hide());
+    }
+
+    private void Page_Unloaded(object sender, RoutedEventArgs e) {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 }

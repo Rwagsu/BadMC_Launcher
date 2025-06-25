@@ -23,18 +23,17 @@ public sealed partial class MainPage : Page {
     public MainPage() {
         this.InitializeComponent();
         DataContext = new MainPageViewModel();
-
         //Register NavigationToPage Messengers
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<Type>, string>(this, MainPageMessengerTokenEnum.PageNavigateToken.ToString(), MainFrameNavigate);
-        WeakReferenceMessenger.Default.Register<RequestMessage<bool>, string>(this, MainPageMessengerTokenEnum.PageCloseToken.ToString(), MainFrameClose);
-        WeakReferenceMessenger.Default.Register<RequestMessage<bool>, string>(this, MainPageMessengerTokenEnum.PageGoBackToken.ToString(), MainFrameGoBack);
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<Type>, string>(this, MessengerTokenEnum.MainPage_PageNavigateToken.ToString(), MainFrameNavigate);
+        WeakReferenceMessenger.Default.Register<RequestMessage<bool>, string>(this, MessengerTokenEnum.MainPage_PageCloseToken.ToString(), MainFrameClose);
+        WeakReferenceMessenger.Default.Register<RequestMessage<bool>, string>(this, MessengerTokenEnum.MainPage_PageGoBackToken.ToString(), MainFrameGoBack);
 
         //Register Notification Messengers
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<INotificationItem>, string>(this, MainPageMessengerTokenEnum.ShowNotificationToken.ToString(), ShowNotification);
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<(INotificationItem, Func<INotificationItem, UIElement, UIElement>)>, string>(this, MainPageMessengerTokenEnum.ShowNotificationToken.ToString(), ShowNotification);
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<INotificationItem>, string>(this, MessengerTokenEnum.MainPage_ShowNotificationToken.ToString(), ShowNotification);
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<(INotificationItem, Func<INotificationItem, UIElement, UIElement>)>, string>(this, MessengerTokenEnum.MainPage_ShowNotificationToken.ToString(), ShowNotification);
 
-        //Register GetXamlRoot Messengers
-        WeakReferenceMessenger.Default.Register<RequestMessage<XamlRoot?>, string>(this, MainPageMessengerTokenEnum.XamlRootToken.ToString(), (r, m) => m.Reply(this.XamlRoot));
+        //Register GetValue Messengers
+        WeakReferenceMessenger.Default.Register<RequestMessage<XamlRoot?>, string>(this, MessengerTokenEnum.MainPage_XamlRootToken.ToString(), (r, m) => m.Reply(this.XamlRoot));
     }
 
     private void MainFrameNavigate(object recipient, ValueChangedMessage<Type> message) {

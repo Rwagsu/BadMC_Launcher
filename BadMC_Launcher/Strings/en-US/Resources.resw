@@ -127,7 +127,7 @@
     <value>No version selected _( ﾟДﾟ)ﾉ</value>
   </data>
   <data name="SideBar_SettingsNameResource" xml:space="preserve">
-    <value>设置</value>
+    <value>Settings</value>
   </data>
   <data name="SideBarSearchFilter_MinecraftEntryNameResource" xml:space="preserve">
     <value>Minecraft versions</value>
@@ -266,5 +266,8 @@ Some settings aren't synced and won't be saved. You might need to manually edit 
     <value>Can't access the file - the system denied access.
 It might be set to read-only, or we don't have permission.
 There's an issue with the file at this path:</value>
+  </data>
+  <data name="TipNotification_MinecraftFolderDuplicationTitle" xml:space="preserve">
+    <value>You've already added this Minecraft folder.</value>
   </data>
 </root>

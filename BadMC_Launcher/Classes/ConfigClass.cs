@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Uno.Extensions.Toolkit;
 
 namespace BadMC_Launcher.Classes;
 public abstract class ConfigClass {

@@ -347,4 +347,25 @@ If something in this setting has been changed in an version-specific customizati
   <data name="SettingsDashboardPage_SideBar.PaneTitle" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="ThemeSettingsPage_AccentColorSettingsExpander.Header" xml:space="preserve">
+    <value>Application accent colors</value>
+  </data>
+  <data name="ThemeSettingsPage_ColorThemes_Dark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="ThemeSettingsPage_ColorThemes_Light.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ThemeSettingsPage_ColorThemes_System.Content" xml:space="preserve">
+    <value>Follow system</value>
+  </data>
+  <data name="ThemeSettingsPage_ColorThemeSettingsCard.Description" xml:space="preserve">
+    <value>Set the color of the application display. (It is recommended to restart the application after making changes to prevent any possible color anomalies.)</value>
+  </data>
+  <data name="ThemeSettingsPage_ColorThemeSettingsCard.Header" xml:space="preserve">
+    <value>Color theme</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorSettingsExpander.Description" xml:space="preserve">
+    <value>Sets the control's accent color.</value>
+  </data>
 </root>

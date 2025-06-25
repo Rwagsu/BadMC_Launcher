@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using BadMC_Launcher.Interfaces;
 using BadMC_Launcher.Models.Enums;
 using CommunityToolkit.Mvvm.Input;
@@ -62,6 +63,8 @@ public partial class ProgressBarNotificationItem : ObservableObject, INotificati
 
     public event Action? HideExecuteAction;
 
+    public event PropertyChangedEventHandler? ProgressValueChanged;
+
     // Notification title
     [ObservableProperty]
     public partial string Title { get; set; }
@@ -111,10 +114,7 @@ public partial class ProgressBarNotificationItem : ObservableObject, INotificati
         App.GetService<NotificationService>().CloseNotification(this);
     }
 
-    async partial void OnProgressValueChanged(int value) {
-        if (value >= 100) {
-            await Task.Delay(7000);
-            HideExecuteAction?.Invoke();
-        }
+    partial void OnProgressValueChanged(int value) {
+        ProgressValueChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ProgressValue)));
     }
 }

@@ -5,21 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BadMC_Launcher.Models.Enums;
-public enum MainPageMessengerTokenEnum {
+public enum MessengerTokenEnum {
+    #region MainPag
     //Func Token
-    PageNavigateToken,
-    PageCloseToken,
-    PageGoBackToken,
-    ShowNotificationToken,
-
+    MainPage_PageNavigateToken,
+    MainPage_PageCloseToken,
+    MainPage_PageGoBackToken,
+    MainPage_ShowNotificationToken,
+    
     //GetValue Token
-    XamlRootToken
-}
+    MainPage_XamlRootToken,
+    #endregion
 
-public enum MinecraftFolderContentDialogMessengerTokenEnum {
+    #region MinecraftFolderContentDialog
     //Func Token
-    HideRenameFlyoutToken,
-    ShowRenameFlyoutToken
+    MinecraftFolderContentDialog_HideRenameFlyoutToken,
+    MinecraftFolderContentDialog_ShowRenameFlyoutToken,
+    #endregion
+
+    #region SettingsDashboardPage
+    //Func Token
+    SettingsDashboardPage_PageNavigateToken
+    #endregion
 }
 
 

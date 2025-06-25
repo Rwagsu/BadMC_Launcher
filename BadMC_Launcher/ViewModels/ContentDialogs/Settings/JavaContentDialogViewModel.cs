@@ -124,8 +124,6 @@ public partial class JavaContentDialogViewModel : ObservableObject {
                 return;
             }
         }
-
-        //TODO: Show tip toast
     }
 
     [RelayCommand]
@@ -158,11 +156,8 @@ public partial class JavaContentDialogViewModel : ObservableObject {
             // Remove Java path
             JavasList.Remove(deleteItem);
             minecraftConfigService.JavaPaths.Remove(deleteItem.JavaPath);
-            // TODO: Toast Tips
             return;
         }
-        
-        // TODO: Toast Tips
     }
 
     [RelayCommand]

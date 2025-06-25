@@ -104,7 +104,7 @@ public partial class LaunchPadViewModel : ObservableObject {
 
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]
     private async Task OpenMinecraftFoldersManager() {
-        var mainPageXamlRoot = SendGetValueMessage<XamlRoot?>(MainPageMessengerTokenEnum.XamlRootToken).Response;
+        var mainPageXamlRoot = SendGetValueMessage<XamlRoot?>(MessengerTokenEnum.MainPage_XamlRootToken).Response;
 
         if (mainPageXamlRoot != null) {
 

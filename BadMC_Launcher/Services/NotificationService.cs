@@ -22,7 +22,7 @@ public class NotificationService {
             Notifications.Add(notification);
 
         }
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<INotificationItem>(notification), MainPageMessengerTokenEnum.ShowNotificationToken.ToString());
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<INotificationItem>(notification), MessengerTokenEnum.MainPage_ShowNotificationToken.ToString());
     }
 
     public void CloseNotification(INotificationItem notification) {

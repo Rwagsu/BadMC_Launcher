@@ -18,7 +18,7 @@ using BadMC_Launcher.Interfaces;
 namespace BadMC_Launcher.Services.ViewServices;
 public class MainSideBarService {
     public void NavigateToPage<T>() where T : Page {
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<Type>(typeof(T)), MainPageMessengerTokenEnum.PageNavigateToken.ToString());
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<Type>(typeof(T)), MessengerTokenEnum.MainPage_PageNavigateToken.ToString());
     }
 
     public void Register(MainSideBarItem mainSideBarItem, bool isFooter = false) {

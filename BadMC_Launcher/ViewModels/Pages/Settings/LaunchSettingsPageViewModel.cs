@@ -31,7 +31,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     private JavaEntry? java;
    
     public LaunchSettingsPageViewModel() {
-        mainPageXamlRoot = SendGetValueMessage<XamlRoot?>(MainPageMessengerTokenEnum.XamlRootToken).Response;
+        mainPageXamlRoot = SendGetValueMessage<XamlRoot?>(MessengerTokenEnum.MainPage_XamlRootToken).Response;
         minecraftFolder = minecraftService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == minecraftService.ActiveMinecraftFolderPath);
 
         minecraftService.PropertyChanged += MinecraftConfig_PropertyChanged;

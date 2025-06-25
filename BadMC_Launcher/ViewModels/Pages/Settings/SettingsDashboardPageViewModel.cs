@@ -2,6 +2,9 @@ using BadMC_Launcher.Models.Data.ViewData;
 using BadMC_Launcher.Controls;
 using CommunityToolkit.Mvvm.Input;
 using BadMC_Launcher.Extensions;
+using CommunityToolkit.Mvvm.Messaging;
+using BadMC_Launcher.Models.Enums;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace BadMC_Launcher.ViewModels.Pages.Settings;
 
@@ -27,9 +30,9 @@ public partial class SettingsDashboardPageViewModel : ObservableObject {
     }
 
     [RelayCommand]
-    private void NavigateToPage(Frame parameter) {
-        if (SideBarSelectedItem != null) {
-            parameter.Navigate(SideBarSelectedItem.NavigatePage);
+    private void NavigateToPage(NavigationViewSelectionChangedEventArgs args) {
+        if (args.SelectedItem is SettingsSideBarItem item) {
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<Type>(item.NavigatePage), MessengerTokenEnum.SettingsDashboardPage_PageNavigateToken.ToString());
         }
     }
 }

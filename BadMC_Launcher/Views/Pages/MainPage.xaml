@@ -77,6 +77,11 @@
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch">
             <!-- SideBar -->
+            <Border Width="48"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource AccentControlElevationBorderBrush}" />
             <NavigationView x:Name="MainSideBar"
                             x:Uid="/ViewResources/MainPage_MainSideBarNavigationView"
                             Margin="-1"
@@ -86,11 +91,10 @@
                             MenuItemsSource="{Binding MainSideBarItems}"
                             PaneDisplayMode="LeftCompact"
                             SelectedItem="{Binding MainSideBarSelectedItem, Mode=TwoWay}">
-
                 <!-- SideBar Styles -->
                 <NavigationView.Resources>
-                    <StaticResource x:Key="NavigationViewExpandedPaneBackground" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
                     <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent" />
+                    <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
                 </NavigationView.Resources>
 
                 <NavigationView.AutoSuggestBox>

@@ -21,10 +21,13 @@ public class ThemeConfigsService : ConfigClass {
     private readonly PathService pathService;
     private readonly ResourceLoader resourceLoader;
     private readonly NotificationService notificationService;
+    private IThemeService? AppThemeService => App.Current.AppThemeService;
 
     internal bool isSyncEnabled = false;
 
-    public ThemeConfigsService(PathService _pathService, ResourceLoader _resourceLoader, NotificationService _notificationService) {
+    public ThemeConfigsService(PathService _pathService, 
+        ResourceLoader _resourceLoader, 
+        NotificationService _notificationService) {
         pathService = _pathService;
         resourceLoader = _resourceLoader;
         notificationService = _notificationService;
@@ -36,6 +39,7 @@ public class ThemeConfigsService : ConfigClass {
         notificationService = App.GetService<NotificationService>();
     }
 
+    // Background
     public BackgroundTypeEnum BackgroundType {
         get => ThemeConfigs.backgroundType;
         set {
@@ -44,21 +48,6 @@ public class ThemeConfigsService : ConfigClass {
 
                 // Trigger Event
                 OnPropertyChanged(nameof(BackgroundType));
-
-                // Sync Setting
-                SyncSettingSet();
-            }
-        }
-    }
-
-    public ThemeTypeEnum ThemeType { 
-        get => ThemeConfigs.themeType;
-        set {
-            if (ThemeConfigs.themeType != value) {
-                ThemeConfigs.themeType = value;
-
-                // Trigger Event
-                OnPropertyChanged(nameof(ThemeType));
 
                 // Sync Setting
                 SyncSettingSet();
@@ -96,14 +85,14 @@ public class ThemeConfigsService : ConfigClass {
         }
     }
 
-    public string SolidColorBackgroundCode {
-        get => ThemeConfigs.solidColorBackgroundCode;
+    public string SolidColorBackgroundHex {
+        get => ThemeConfigs.solidColorBackgroundHex;
         set {
-            if (ThemeConfigs.solidColorBackgroundCode != value) {
-                ThemeConfigs.solidColorBackgroundCode = value;
+            if (ThemeConfigs.solidColorBackgroundHex != value) {
+                ThemeConfigs.solidColorBackgroundHex = value;
 
                 // Trigger Event
-                OnPropertyChanged(nameof(SolidColorBackgroundCode));
+                OnPropertyChanged(nameof(SolidColorBackgroundHex));
 
                 // Sync Setting
                 SyncSettingSet();
@@ -111,6 +100,60 @@ public class ThemeConfigsService : ConfigClass {
         }
     }
 
+    // Theme
+    public AppTheme ThemeType { 
+        get => ThemeConfigs.themeType;
+        set {
+            if (ThemeConfigs.themeType != value) {
+                ThemeConfigs.themeType = value;
+
+                SetAppTheme(ThemeType);
+
+                // Trigger Event
+                OnPropertyChanged(nameof(ThemeType));
+
+                // Sync Setting
+                SyncSettingSet();
+            }
+        }
+    }
+
+    // Accent Color
+    public AccentColorModeEnum AccentMode {
+        get => ThemeConfigs.accentMode;
+        set {
+            if (ThemeConfigs.accentMode != value) {
+                ThemeConfigs.accentMode = value;
+
+                SetAccentColor();
+
+                // Trigger Event
+                OnPropertyChanged(nameof(AccentMode));          
+
+                // Sync Setting
+                SyncSettingSet();
+            }
+        }
+    }
+
+    public string AccentColorHex {
+        get => ThemeConfigs.accentColorHex;
+        set {
+            if (ThemeConfigs.accentColorHex != value) {
+                ThemeConfigs.accentColorHex = value;
+
+                SetAccentColor();
+
+                // Trigger Event
+                OnPropertyChanged(nameof(AccentColorHex));          
+
+                // Sync Setting
+                SyncSettingSet();
+            }
+        }
+    }
+
+    // Window Name
     public string WindowName {
         get => ThemeConfigs.windowName;
         set {
@@ -121,6 +164,24 @@ public class ThemeConfigsService : ConfigClass {
                 OnPropertyChanged(nameof(WindowName));
             }
         }
+    }
+
+    public async void SetAppTheme(AppTheme theme) {
+        if (AppThemeService != null && AppThemeService.Theme != ThemeType) {
+            await AppThemeService.SetThemeAsync(ThemeType);
+        }
+    }
+
+    private void SetAccentColor() {
+        // TODO
+    }
+
+    private void GetMonetColorsFromBackground() {
+        // TODO
+    }
+
+    private void UseMonet() {
+        // TODO
     }
 
     public async Task<Brush> SetBackground(BackgroundTypeEnum backgroundType) {
@@ -148,7 +209,7 @@ public class ThemeConfigsService : ConfigClass {
                     //TODO: Only MacOS
                     return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1));
                 default:
-                    var color = ColorTranslator.FromHtml(ThemeConfigs.solidColorBackgroundCode);
+                    var color = ColorTranslator.FromHtml(ThemeConfigs.solidColorBackgroundHex);
                     return SetBrush(Windows.UI.Color.FromArgb(color.A, color.R, color.G, color.B));
             }
         }
@@ -161,7 +222,7 @@ public class ThemeConfigsService : ConfigClass {
             ThemeConfigs.themeType = jsonClass.ThemeType;
             ThemeConfigs.imageBackgroundName = jsonClass.ImageBackgroundName;
             ThemeConfigs.backgroundStretch = jsonClass.BackgroundStretch;
-            ThemeConfigs.solidColorBackgroundCode = jsonClass.SolidColorBackgroundCode;
+            ThemeConfigs.solidColorBackgroundHex = jsonClass.SolidColorBackgroundHex;
             ThemeConfigs.windowName = jsonClass.WindowName;
             return true;
         }

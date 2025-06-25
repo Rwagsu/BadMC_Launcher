@@ -7,7 +7,8 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                x:Uid="/ViewResources/MinecraftFolderContentDialog_ViewContentDialog"
                CloseButtonStyle="{StaticResource AccentButtonStyle}"
-               Style="{ThemeResource DefaultContentDialogStyle}">
+               Style="{ThemeResource DefaultContentDialogStyle}"
+               Unloaded="Page_Unloaded">
     <ContentDialog.Resources>
         <converters:BoolToObjectConverter x:Key="BoolToOpacityConverter"
                                           FalseValue="0"

@@ -61,7 +61,9 @@
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.WinUI.Animations" />
         <PackageReference Include="CommunityToolkit.WinUI.Behaviors" />
+        <PackageReference Include="CommunityToolkit.WinUI.Controls.ColorPicker" />
         <PackageReference Include="CommunityToolkit.WinUI.Controls.MetadataControl" />
+        <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" />
         <PackageReference Include="CommunityToolkit.WinUI.Controls.RangeSelector" />
         <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" />
         <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" />

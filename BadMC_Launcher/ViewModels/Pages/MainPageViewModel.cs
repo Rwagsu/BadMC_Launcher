@@ -104,11 +104,11 @@ public partial class MainPageViewModel : ObservableObject {
             var navigateItem = list.FirstOrDefault(item => item.ItemName == args.InvokedItem.ToString());
 
             if (navigateItem != null && navigateItem != MainSideBarSelectedItem) {
-                SendInvokeFuncMessage(navigateItem.NavigatePage, MainPageMessengerTokenEnum.PageNavigateToken);
+                SendInvokeFuncMessage(navigateItem.NavigatePage, MessengerTokenEnum.MainPage_PageNavigateToken);
                 return;
             }
         }
-        SendInvokeFuncMessage<bool>(MainPageMessengerTokenEnum.PageCloseToken);
+        SendInvokeFuncMessage<bool>(MessengerTokenEnum.MainPage_PageCloseToken);
     }
 
     [RelayCommand]
@@ -120,12 +120,12 @@ public partial class MainPageViewModel : ObservableObject {
 
     [RelayCommand]
     private void PageGoBack() {
-        SendInvokeFuncMessage<bool>(MainPageMessengerTokenEnum.PageGoBackToken);
+        SendInvokeFuncMessage<bool>(MessengerTokenEnum.MainPage_PageGoBackToken);
     }
 
     [RelayCommand]
     private void ClosePage() {
-        SendInvokeFuncMessage<bool>(MainPageMessengerTokenEnum.PageCloseToken);
+        SendInvokeFuncMessage<bool>(MessengerTokenEnum.MainPage_PageCloseToken);
     }
 
     [RelayCommand]

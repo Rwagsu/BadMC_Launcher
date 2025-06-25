@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.ViewModels.Pages.Settings;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -27,5 +28,15 @@ public sealed partial class SettingsDashboardPage : Page {
     public SettingsDashboardPage() {
         this.InitializeComponent();
         DataContext = new SettingsDashboardPageViewModel();
+
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<Type>, string>(this, MessengerTokenEnum.SettingsDashboardPage_PageNavigateToken.ToString(), NavigateToPage);
+    }
+
+    private void NavigateToPage(object recipient, ValueChangedMessage<Type> message) {
+        SideBarFrame.Navigate(message.Value);
+    }
+
+    private void Page_Unloaded(object sender, RoutedEventArgs e) {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 }

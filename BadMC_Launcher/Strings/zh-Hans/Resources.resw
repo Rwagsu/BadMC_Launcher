@@ -267,4 +267,25 @@
   <data name="SettingsSideBarItems_ThemeSettingsPageName" xml:space="preserve">
     <value>外观</value>
   </data>
+  <data name="TipNotification_MinecraftFolderDuplicationTitle" xml:space="preserve">
+    <value>你已经添加过这个 Minecraft 文件夹了.</value>
+  </data>
+  <data name="ThemeSettingsPage_SettingsAccentColor_SettingsCardHeader" xml:space="preserve">
+    <value>这只是一只非常可爱的小怪物 ヽ(*・ω・)ﾉ </value>
+  </data>
+  <data name="ThemeSettingsPage_SettingsAccentColor_SettingsCardDescription" xml:space="preserve">
+    <value>啊对了, 你在找什么? (´･ω･`)?</value>
+  </data>
+  <data name="ThemeSettingsPage_SolidColorAccentColor_SettingsCardHeader" xml:space="preserve">
+    <value>手动设置强调色</value>
+  </data>
+  <data name="ThemeSettingsPage_SolidColorAccentColor_SettingsCardDescription" xml:space="preserve">
+    <value>通过纯色设置应用的强调色.</value>
+  </data>
+  <data name="ThemeSettingsPage_ImageMonetAccentColor_SettingsCardHeader" xml:space="preserve">
+    <value>从图片背景中选择</value>
+  </data>
+  <data name="ThemeSettingsPage_ImageMonetAccentColor_SettingsCardDescription" xml:space="preserve">
+    <value>使用 Monet 从背景中选择颜色并更改整个主题系统, 该设置仅在设置了图片背景的情况下生效.</value>
+  </data>
 </root>

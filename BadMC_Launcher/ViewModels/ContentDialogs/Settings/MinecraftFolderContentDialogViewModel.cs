@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using BadMC_Launcher.Controls.Minecraft;
+using BadMC_Launcher.Controls.NotificationItem;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Configs;
 using BadMC_Launcher.Services.Settings;
@@ -66,7 +67,9 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
 
         if (folder != null) {
             if (minecraftConfigService.MinecraftFolders.Any(item => item.MinecraftFolderPath == folder.Path)) {
-                // TODO: Show tip toast
+                App.GetService<NotificationService>().ShowNotification(new TipNotificationItem(
+                    MessageSeverityEnum.Warning,
+                    App.GetService<ResourceLoader>().GetString("TipNotification_MinecraftFolderDuplicationTitle")));
                 return;
             }
 
@@ -78,7 +81,7 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
             // Set new folder name
             OldRenameMinecraftFolderId = item.MinecraftFolderId;
             RenameMinecraftFolderPath = folder.Path;
-            SendInvokeFuncMessage(string.Empty, MinecraftFolderContentDialogMessengerTokenEnum.ShowRenameFlyoutToken);
+            SendInvokeFuncMessage(string.Empty, MessengerTokenEnum.MinecraftFolderContentDialog_ShowRenameFlyoutToken);
         }
     }
 
@@ -147,9 +150,7 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
 
     [RelayCommand]
     private void ViewFolderInLocal(string parameter) {
-        if (!App.GetService<PathService>().TryOpenFolderOrFileFromPath(parameter)) {
-            // TODO: Toast Tip
-        }
+        App.GetService<PathService>().TryOpenFolderOrFileFromPath(parameter);
     }
 
     [RelayCommand]
@@ -157,7 +158,7 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
         var folderEntryPath = MinecraftFoldersList.FirstOrDefault(item => item.MinecraftFolderPath == parameter)?.MinecraftFolderId;
 
         if (folderEntryPath != null) {
-            SendInvokeFuncMessage(string.Empty, MinecraftFolderContentDialogMessengerTokenEnum.ShowRenameFlyoutToken);
+            SendInvokeFuncMessage(string.Empty, MessengerTokenEnum.MinecraftFolderContentDialog_ShowRenameFlyoutToken);
             // Set new folder name
             OldRenameMinecraftFolderId = folderEntryPath;
             RenameMinecraftFolderPath = parameter;
@@ -168,16 +169,14 @@ public partial class MinecraftFolderContentDialogViewModel : ObservableObject {
     private void DeleteItem(string parameter) {
         var deleteItem = minecraftConfigService.MinecraftFolders.FirstOrDefault(item => item.MinecraftFolderPath == parameter);
         if (deleteItem != null && minecraftConfigService.MinecraftFolders.Remove(deleteItem)) {
-            // TODO: Toast Tip
             return;
         }
-        // TODO: Toast Tip(ERROR)
     }
 
 
 
     [RelayCommand]
-    private void HideRenameFlyout() => SendInvokeFuncMessage(string.Empty, MinecraftFolderContentDialogMessengerTokenEnum.HideRenameFlyoutToken);
+    private void HideRenameFlyout() => SendInvokeFuncMessage(string.Empty, MessengerTokenEnum.MinecraftFolderContentDialog_HideRenameFlyoutToken);
 
     private ValueChangedMessage<T> SendInvokeFuncMessage<T>(T value, Enum tokenEnum) {
         return WeakReferenceMessenger.Default.Send(new ValueChangedMessage<T>(value), tokenEnum.ToString());

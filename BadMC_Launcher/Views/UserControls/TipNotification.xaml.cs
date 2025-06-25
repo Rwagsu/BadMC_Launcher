@@ -1,11 +1,15 @@
 using System.Numerics;
+using System.Threading;
 using BadMC_Launcher.Controls.NotificationItem;
+using Serilog;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace BadMC_Launcher.Views.UserControls;
 
 public sealed partial class TipNotification : UserControl {
+    private readonly CancellationTokenSource cancellationToken = new CancellationTokenSource();
+
     // Register property
     public static readonly DependencyProperty NotificationItemProperty = DependencyProperty.Register(
          nameof(NotificationItem),
@@ -31,27 +35,37 @@ public sealed partial class TipNotification : UserControl {
 #if WINAPPSDK_PACKAGED
     // WinAppSDK use async
     private async void OnControlLoaded(object sender, RoutedEventArgs e) {
-#else
-    // Non-WinAppSDK use sync
-    private void OnControlLoaded(object sender, RoutedEventArgs e) {
-#endif
-
         if (NotificationItem != null) {
-#if WINAPPSDK_PACKAGED
             NotificationItem.HideExecuteAction += async () => {
                 await CloseNotificationAnimation.StartAsync();
+                if (cancellationToken.Token.CanBeCanceled) {
+                    cancellationToken.Cancel();
+                }
                 NotificationHided?.Invoke(this, new EventArgs());
             };
-#endif
 
-#if WINAPPSDK_PACKAGED
             await OpenNotificationAnimation.StartAsync();
-#else
-                Translation = new Vector3(-430, 0, 0);
-#endif
+
             IsHitTestVisible = true;
         }
     }
+#else
+    // Non-WinAppSDK use sync
+    private void OnControlLoaded(object sender, RoutedEventArgs e) {
+        if (NotificationItem != null) {
+            NotificationItem.HideExecuteAction += () => {
+                if (cancellationToken.Token.CanBeCanceled) {
+                    cancellationToken.Cancel();
+                }
+                NotificationHided?.Invoke(this, new EventArgs());
+            };
+
+            Translation = new Vector3(-430, 0, 0);
+
+            IsHitTestVisible = true;
+        }
+    }
+#endif
 
 #if WINAPPSDK_PACKAGED
     // WinAppSDK use async
@@ -60,24 +74,31 @@ public sealed partial class TipNotification : UserControl {
     // Non-WinAppSDK use sync
     private void OnCloseButtonClick(object sender, RoutedEventArgs e) {
 #endif
-        //IsHitTestVisible = false;
+        IsHitTestVisible = false;
 #if WINAPPSDK_PACKAGED
         await CloseNotificationAnimation.StartAsync();
 #endif
+        if (cancellationToken.Token.CanBeCanceled) {
+            cancellationToken.Cancel();
+        }
 
         NotificationHided?.Invoke(this, new EventArgs());
     }
 
 
     public async void DelayedHide() {
-        // Wait for 5 seconds before hiding
-        await Task.Delay(6000);
-
+        // Wait for 6 seconds before hiding
+        try {
+            await Task.Delay(6000, cancellationToken.Token);
+        }
+        catch (TaskCanceledException ex) {
+            Log.Information($"Tip-Notification DelayHide method is Exited: {ex.Source}");
+        }
 #if WINAPPSDK_PACKAGED
         await CloseNotificationAnimation.StartAsync();
 #endif
 
-        NotificationHided?.Invoke(this, new EventArgs());
+            NotificationHided?.Invoke(this, new EventArgs());
     }
 
     private Visibility IsStringWhiteSpaceOrEmptyToVisibility(string? parameter) {

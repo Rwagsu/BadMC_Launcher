@@ -347,4 +347,55 @@
   <data name="SettingsDashboardPage_SideBar.PaneTitle" xml:space="preserve">
     <value>设置</value>
   </data>
+  <data name="ThemeSettingsPage_ColorThemeSettingsCard.Header" xml:space="preserve">
+    <value>颜色主题</value>
+  </data>
+  <data name="ThemeSettingsPage_ColorThemeSettingsCard.Description" xml:space="preserve">
+    <value>设置应用显示的颜色. (建议在修改后重启应用以防止任何可能的颜色异常.)</value>
+  </data>
+  <data name="ThemeSettingsPage_ColorThemes_System.Content" xml:space="preserve">
+    <value>跟随系统</value>
+  </data>
+  <data name="ThemeSettingsPage_ColorThemes_Light.Content" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="ThemeSettingsPage_ColorThemes_Dark.Content" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorSettingsExpander.Header" xml:space="preserve">
+    <value>应用强调色</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorSettingsExpander.Description" xml:space="preserve">
+    <value>设置控件的强调色.</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorMode_SettingsCard.Header" xml:space="preserve">
+    <value>设置主题色</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorMode_SettingsCard.Description" xml:space="preserve">
+    <value>设置应用的主题色和强调色.</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorThemes_System.Text" xml:space="preserve">
+    <value>跟随系统</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorThemes_Custom.Text" xml:space="preserve">
+    <value>自定义颜色</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorThemes_ImageMonet.Text" xml:space="preserve">
+    <value>使用 Monet (从图片获取)</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorThemes_ColorMonet.Text" xml:space="preserve">
+    <value>使用 Monet (从颜色获取)</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorThemes_Custom.ToolTipService.ToolTip" xml:space="preserve">
+    <value>使用自定义颜色当作你的强调色.</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorThemes_SystemTips.ToolTipService.ToolTip" xml:space="preserve">
+    <value>强调色跟随系统. (有些系统可能不生效.)</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorThemes_ImageMonetTips.ToolTipService.ToolTip" xml:space="preserve">
+    <value>使用 Monet 从背景图片中选取一个合适的颜色当作强调色并将其应用到你的主题中. (该设置要求你必须设置背景图像.)</value>
+  </data>
+  <data name="ThemeSettingsPage_AccentColorThemes_ColorMonetTips.ToolTipService.ToolTip" xml:space="preserve">
+    <value>使用 Monet 从一个颜色中计算出所有合适的颜色当作强调色并将其应用到你的主题中.</value>
+  </data>
 </root>

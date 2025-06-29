@@ -46,7 +46,7 @@
                                 Margin="0,8"
                                 Spacing="8">
                         <!-- Title TextBlock -->
-                        <TextBlock x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRenameTextBlock" Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                        <TextBlock x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRename_TextBlock" Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
                         <StackPanel Spacing="4">
                             <!-- Rename TextBox -->
@@ -56,7 +56,7 @@
 
                             <!-- Rename error tip TextBlock -->
                             <TextBlock x:Name="RenameErrorTextBlock"
-                                       x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRenameErrorTextBlock"
+                                       x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRenameError_TextBlock"
                                        Foreground="{ThemeResource SystemFillColorCriticalBrush}"
                                        Visibility="Collapsed" />
 
@@ -89,9 +89,9 @@
                         </StackPanel>
 
                         <!-- Rename Path TextBlock -->
-                        <TextBlock x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRenamePathTextBlock" Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                        <TextBlock x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRenamePath_TextBlock" Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
-                        <HyperlinkButton x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRenamePathHyperLinkButton"
+                        <HyperlinkButton x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRenamePath_HyperLinkButton"
                                          Command="{Binding OpenMinecraftFolderCommand}"
                                          Content="{Binding RenameMinecraftFolderPath}" />
 
@@ -100,7 +100,7 @@
                                     Spacing="8">
                             <!-- Apply Rename -->
                             <Button x:Name="ApplyRenameButton"
-                                    x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRenameApplyButton"
+                                    x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRenameApply_Button"
                                     Command="{Binding ApplyRenameCommand}"
                                     Style="{StaticResource AccentButtonStyle}">
                                 <Interactivity:Interaction.Behaviors>
@@ -111,7 +111,7 @@
                             </Button>
 
                             <!-- Cancel Rename -->
-                            <Button x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRenameCancelButton" Command="{Binding HideRenameFlyoutCommand}" />
+                            <Button x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderRenameCancel_Button" Command="{Binding HideRenameFlyoutCommand}" />
                         </StackPanel>
                     </StackPanel>
                 </Flyout>
@@ -120,7 +120,7 @@
                         Orientation="Horizontal"
                         Spacing="8">
                 <FontIcon Glyph="&#xE8F4;" />
-                <TextBlock x:Uid="/ViewResources/MinecraftFolderContentDialog_AddMinecraftFolderButton" />
+                <TextBlock x:Uid="/ViewResources/MinecraftFolderContentDialog_AddMinecraftFolder_Button" />
             </StackPanel>
         </Button>
 
@@ -153,10 +153,10 @@
             <FontIcon HorizontalAlignment="Center"
                       FontSize="40"
                       Glyph="&#xE8F6;" />
-            <TextBlock x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderListEmptyTipsTextBlock"
+            <TextBlock x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderListEmptyTips_TextBlock"
                        HorizontalAlignment="Center"
                        Style="{ThemeResource BodyStrongTextBlockStyle}" />
-            <HyperlinkButton x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderListEmptyTipsHyperLinkButton"
+            <HyperlinkButton x:Uid="/ViewResources/MinecraftFolderContentDialog_MinecraftFolderListEmptyTips_HyperLinkButton"
                              HorizontalAlignment="Center"
                              Command="{Binding AddMinecraftFolderCommand}" />
         </StackPanel>

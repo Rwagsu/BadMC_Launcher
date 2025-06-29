@@ -1,13 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Configs;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.Helpers;
+using Windows.Globalization;
+using Windows.UI;
 
 namespace BadMC_Launcher.ViewModels.Pages.Settings;
 public partial class ThemeSettingsPageViewModel : ObservableObject {
@@ -15,12 +19,34 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
     
     public ThemeSettingsPageViewModel() {
         ThemeType = themeService.ThemeType;
-        AccentColorHex = themeService.AccentColorHex;
+        AccentColorMode = themeService.AccentMode;
+
         ViewAccentColorHex = "Resource \"AccentFillColorDefaultBrush\" Error";
-        ImageMonetColors = new ObservableCollection<Brush>();
-        ColorMonetColorHex = string.Empty;
+
+        // TODO: 改颜色
+        ImageMonetColors = new ObservableCollection<SolidColorBrush>();
+        ImageMonetColors.Add(new SolidColorBrush("#0077FF".ToColor()));
+        ImageMonetColors.Add(new SolidColorBrush("#FF0000".ToColor()));
+        ImageMonetColors.Add(new SolidColorBrush("#CDFCDF".ToColor()));
+        ImageMonetColors.Add(new SolidColorBrush("#CDF555".ToColor()));
+        ImageMonetColors.Add(new SolidColorBrush("#ABCDF5".ToColor()));
+        ImageMonetColors.Add(new SolidColorBrush("#00AAFF".ToColor()));
+        SelectedImageMonetColor = new SolidColorBrush("#0077FF".ToColor());
+
+        AccentColorHex = themeService.AccentColorHex;
+        MonetColorHex = themeService.MonetAccentColorHex;
+        BackgroundType = themeService.BackgroundType;
+        BackgroundNames = new ObservableCollection<string>();
+        BackgroundName = themeService.ImageBackgroundName;
+        BackgroundStretch = themeService.BackgroundStretch;
+        SolidColorBackgroundHex = themeService.SolidColorBackgroundHex;
+        WindowName = themeService.WindowName;
+        Languages = AppParameters.Languages;
+        Language = themeService.Language;
 
         GetAccentColorHex();
+
+        themeService.PropertyChanged += OnThemeConfigChanged;
     }
 
     // Theme
@@ -40,16 +66,41 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
     // Image Monet Colors
     // TODO: 类型可能搞错了(
     [ObservableProperty]
-    public partial ObservableCollection<Brush> ImageMonetColors { get; set; }
+    public partial ObservableCollection<SolidColorBrush> ImageMonetColors { get; set; }
 
     // TODO: 类型可能又搞错了(
     [ObservableProperty]
-    public partial Brush? SelectedImageMonetColor { get; set; }
+    public partial SolidColorBrush? SelectedImageMonetColor { get; set; }
 
     // Color Monet Colors
     // TODO: 类型还是可能搞错了(
     [ObservableProperty]
-    public partial string ColorMonetColorHex { get; set; }
+    public partial string MonetColorHex { get; set; }
+
+    // Background
+    [ObservableProperty]
+    public partial BackgroundTypeEnum BackgroundType { get; set; }
+
+    [ObservableProperty]
+    public partial ObservableCollection<string> BackgroundNames { get; set; }
+
+    [ObservableProperty]
+    public partial string BackgroundName { get; set; }
+
+    [ObservableProperty]
+    public partial Stretch BackgroundStretch { get; set; }
+
+    [ObservableProperty]
+    public partial string SolidColorBackgroundHex { get; set; }
+
+    [ObservableProperty]
+    public partial string WindowName { get; set; }
+
+    [ObservableProperty]
+    public partial HashSet<string> Languages { get; set; }
+
+    [ObservableProperty]
+    public partial string Language { get; set; }
 
     [RelayCommand]
     private void SetThemeType() {
@@ -66,6 +117,11 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
         // TODO: 万恶的Monet
     }
 
+    [RelayCommand]
+    private void SetMonetColorHex() {
+        themeService.MonetAccentColorHex = MonetColorHex;
+    }
+
     partial void OnAccentColorModeChanged(AccentColorModeEnum value) {
         themeService.AccentMode = value;
     }
@@ -74,6 +130,58 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
         var resource = Application.Current.Resources["AccentFillColorDefaultBrush"];
         if (resource is SolidColorBrush brush) {
             ViewAccentColorHex = brush.Color.ToHex();
+        }
+    }
+
+    private void OnThemeConfigChanged(object? sender, PropertyChangedEventArgs args) {
+        // Update Property
+        switch (args.PropertyName) {
+            // Background
+            case nameof(ThemeConfigsService.BackgroundType):
+                if (themeService.BackgroundType != BackgroundType) {
+                    BackgroundType = themeService.BackgroundType;
+                    // TODO: Update Monet Colors
+                }
+                break;
+            case nameof(ThemeConfigsService.ImageBackgroundName):
+                if (themeService.ImageBackgroundName != BackgroundName && !string.IsNullOrWhiteSpace(themeService.ImageBackgroundName)) {
+                    BackgroundName = themeService.ImageBackgroundName;
+                }
+                break;
+            case nameof(ThemeConfigsService.BackgroundStretch):
+                if (themeService.BackgroundStretch != BackgroundStretch) {
+                    BackgroundStretch = themeService.BackgroundStretch;
+                }
+                break;
+            case nameof(ThemeConfigsService.SolidColorBackgroundHex):
+                if (themeService.SolidColorBackgroundHex != SolidColorBackgroundHex) {
+                    SolidColorBackgroundHex = themeService.SolidColorBackgroundHex;
+                }
+                break;
+
+            // Theme
+            case nameof(ThemeConfigsService.ThemeType):
+                if (themeService.ThemeType != ThemeType) {
+                    ThemeType = themeService.ThemeType;
+                }
+                break;
+
+            // Accent Color
+            case nameof(ThemeConfigsService.AccentMode):
+                if (themeService.AccentMode != AccentColorMode) {
+                    AccentColorMode = themeService.AccentMode;
+                }
+                break;
+            case nameof(ThemeConfigsService.AccentColorHex):
+                if (themeService.AccentColorHex != AccentColorHex) {
+                    AccentColorHex = themeService.AccentColorHex;
+                }
+                break;
+            case nameof(ThemeConfigsService.MonetAccentColorHex):
+                if (themeService.MonetAccentColorHex != MonetColorHex) {
+                    MonetColorHex = themeService.MonetAccentColorHex;
+                }
+                break;
         }
     }
 }

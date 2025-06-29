@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace BadMC_Launcher.Models.Enums;
 public enum BackgroundTypeEnum {
-    SolidColor,
     StaticImage,
     BingWallpaper,
-    Acrylic
+    Acrylic,
+    SolidColor,
 }

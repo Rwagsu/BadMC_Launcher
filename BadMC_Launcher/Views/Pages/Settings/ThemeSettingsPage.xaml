@@ -15,6 +15,10 @@
         <userConverters:AccentColorModeToIndexConverter x:Key="AccentColorModeToIndexConverter" />
         <userConverters:HexToColorConverter x:Key="HexToColorConverter" />
         <converters:ColorToDisplayNameConverter x:Key="ColorToDisplayNameConverter" />
+        
+        <converters:BoolToObjectConverter x:Key="BoolToOpacityConverter"
+                                          FalseValue="0"
+                                          TrueValue="1" />
 
         <animations:ImplicitAnimationSet x:Name="ShowTransitions">
             <animations:OffsetAnimation EasingMode="EaseOut"
@@ -80,7 +84,7 @@
             </controls:SettingsCard>
 
             <!-- Accent color setting -->
-            <controls:SettingsExpander x:Uid="/ViewResources/ThemeSettingsPage_AccentColorSettingsExpander">
+            <controls:SettingsExpander x:Uid="/ViewResources/ThemeSettingsPage_AccentColorSettings_Expander">
                 <!-- Icons -->
                 <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xE790;" />
@@ -88,6 +92,7 @@
 
                 <!-- Items -->
                 <controls:SettingsExpander.Items>
+                    <!-- Accent color Type -->
                     <controls:SettingsCard x:Uid="/ViewResources/ThemeSettingsPage_AccentColorMode_SettingsCard">
                         <!-- Icons -->
                         <controls:SettingsCard.HeaderIcon>
@@ -157,73 +162,179 @@
                             </ComboBoxItem>
                         </ComboBox>
                     </controls:SettingsCard>
-                    <controls:SettingsCard Description="{x:Bind GetAccentSettingsCardDescription(AccentColorModeComboBox.SelectedIndex), Mode=OneWay}"
-                                           Header="{x:Bind GetAccentSettingsCardHeader(AccentColorModeComboBox.SelectedIndex), Mode=OneWay}"
-                                           HeaderIcon="{x:Bind GetAccentSettingsCardIcon(AccentColorModeComboBox.SelectedIndex), Mode=OneWay}">
-                        <controls:SwitchPresenter TargetType="x:Int32" Value="{Binding SelectedIndex, ElementName=AccentColorModeComboBox, Mode=OneWay}">
-                            <controls:Case Value="0">
-                                <Image animations:Implicit.HideAnimations="{StaticResource HideTransitions}" animations:Implicit.ShowAnimations="{StaticResource ShowTransitions}" />
-                            </controls:Case>
-                            <controls:Case Value="1">
-                                <controls:ColorPickerButton SelectedColor="{Binding AccentColorHex, Mode=TwoWay, Converter={StaticResource HexToColorConverter}}">
-                                    <Interactivity:Interaction.Behaviors>
-                                        <Interactivity:EventTriggerBehavior EventName="LosingFocus">
-                                            <Interactivity:InvokeCommandAction Command="{Binding SetAccentColorHexCommand}" />
-                                        </Interactivity:EventTriggerBehavior>
-                                    </Interactivity:Interaction.Behaviors>
-                                </controls:ColorPickerButton>
-                            </controls:Case>
-                            <controls:Case Value="2">
-                                <GridView x:Name="MonetColorsGridView" ItemsSource="{Binding ImageMonetColors}">
-                                    <!-- Styles -->
-                                    <GridView.ItemContainerStyle>
-                                        <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
-                                            <Setter Property="Margin" Value="4,4,4,4" />
+
+                    <!-- System -->
+                    <controls:SettingsCard x:Uid="/ViewResources/ThemeSettingsPage_SystemAccentColor_SettingsCard" Visibility="{x:Bind AccentColorModeToVisibility(viewModel.AccentColorMode, 0), Mode=OneWay}">
+                        <!-- Icons -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xEB68;" />
+                        </controls:SettingsCard.HeaderIcon>
+                        <!-- Content -->
+                        <!-- TODO: IMAGE -->
+                    </controls:SettingsCard>
+
+                    <!-- Custom -->
+                    <controls:SettingsCard x:Uid="/ViewResources/ThemeSettingsPage_SolidColorAccentColor_SettingsCard" Visibility="{x:Bind AccentColorModeToVisibility(viewModel.AccentColorMode, 1), Mode=OneWay}">
+                        <!-- Icons -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE790;" />
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <!-- Content -->
+                        <controls:ColorPickerButton SelectedColor="{Binding AccentColorHex, Mode=TwoWay, Converter={StaticResource HexToColorConverter}}">
+                            <Interactivity:Interaction.Behaviors>
+                                <Interactivity:EventTriggerBehavior EventName="LosingFocus">
+                                    <Interactivity:InvokeCommandAction Command="{Binding SetAccentColorHexCommand}" />
+                                </Interactivity:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </controls:ColorPickerButton>
+                    </controls:SettingsCard>
+
+                    <!-- ImageMonet -->
+                    <controls:SettingsCard x:Uid="/ViewResources/ThemeSettingsPage_ImageMonetAccentColor_SettingsCard" Visibility="{x:Bind AccentColorModeToVisibility(viewModel.AccentColorMode, 2), Mode=OneWay}">
+                        <!-- Icons -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xEE71;" />
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <!-- Content -->
+                        <Button>
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <Ellipse Width="16"
+                                             Height="16"
+                                             Fill="{Binding SelectedImageMonetColor}" />
+                                    <TextBlock Text="{x:Bind viewModel.SelectedImageMonetColor.Color.ToString(), Mode=OneWay}" />
+                                </StackPanel>
+                            </Button.Content>
+
+                            <Button.Flyout>
+                                <Flyout>
+                                    <Flyout.FlyoutPresenterStyle>
+                                        <Style TargetType="FlyoutPresenter">
+                                            <Setter Property="Padding" Value="0" />
+                                            <Setter Property="CornerRadius" Value="8" />
                                         </Style>
-                                    </GridView.ItemContainerStyle>
+                                    </Flyout.FlyoutPresenterStyle>
 
-                                    <!-- Template -->
-                                    <GridView.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border Width="48"
-                                                    Height="48"
-                                                    Margin="2"
-                                                    Background="{Binding}"
-                                                    CornerRadius="4"
-                                                    ToolTipService.ToolTip="{Binding Converter={StaticResource ColorToDisplayNameConverter}}" />
-                                        </DataTemplate>
-                                    </GridView.ItemTemplate>
+                                    <ScrollViewer>
+                                        <StackPanel Width="300"
+                                                    Height="300"
+                                                    Margin="16,16,16,0"
+                                                    Spacing="8">
+                                            <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_ImageMonetAccentColorSelectTitle_TextBlock" Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                            <controls:SwitchPresenter>
+                                                <controls:Case Value="0">
+                                                    <StackPanel x:Name="MinecraftFolderEmptyTipsStackPanel"
+                                                                Grid.Row="1"
+                                                                HorizontalAlignment="Center"
+                                                                VerticalAlignment="Center"
+                                                                animations:Implicit.HideAnimations="{StaticResource HideTransitions}"
+                                                                animations:Implicit.ShowAnimations="{StaticResource ShowTransitions}"
+                                                                Spacing="8">
+                                                        <!-- Animation -->
+                                                        <FontIcon HorizontalAlignment="Center"
+                                                                  FontSize="40"
+                                                                  Glyph="&#xEE71;" />
+                                                        <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_ImageMonetAccentColorsEmptyTitle_TextBlock"
+                                                                   HorizontalAlignment="Center"
+                                                                   Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                                        <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_ImageMonetAccentColorsEmptySubTitle_TextBlock" HorizontalAlignment="Center" />
+                                                    </StackPanel>
+                                                </controls:Case>
+                                                <controls:Case IsDefault="True">
+                                                    <GridView x:Name="MonetColorsGridView"
+                                                              animations:Implicit.HideAnimations="{StaticResource HideTransitions}"
+                                                              animations:Implicit.ShowAnimations="{StaticResource ShowTransitions}"
+                                                              ItemsSource="{Binding ImageMonetColors}"
+                                                              SelectedItem="{Binding SelectedImageMonetColor, Mode=TwoWay}">
+                                                        <!-- Styles -->
+                                                        <GridView.ItemContainerStyle>
+                                                            <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
+                                                                <Setter Property="Margin" Value="4,4,4,4" />
+                                                            </Style>
+                                                        </GridView.ItemContainerStyle>
 
-                                    <!-- SelectionChanged Event -->
-                                    <Interactivity:Interaction.Behaviors>
-                                        <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
-                                            <Interactivity:InvokeCommandAction Command="{Binding SetMonetAndApplyCommand}" CommandParameter="{Binding SelectedItem, ElementName=MonetColorsGridView}" />
-                                        </Interactivity:EventTriggerBehavior>
-                                    </Interactivity:Interaction.Behaviors>
-                                </GridView>
-                            </controls:Case>
-                            <controls:Case Value="3">
-                                <controls:ColorPickerButton x:Name="MonetColorPickerButton" SelectedColor="{Binding ColorMonetColorHex, Mode=TwoWay, Converter={StaticResource HexToColorConverter}}">
-                                    <Interactivity:Interaction.Behaviors>
-                                        <Interactivity:EventTriggerBehavior EventName="LosingFocus">
-                                            <Interactivity:InvokeCommandAction Command="{Binding SetMonetAndApplyCommand}" CommandParameter="{Binding SelectedColor, ElementName=MonetColorPickerButton}" />
-                                        </Interactivity:EventTriggerBehavior>
-                                    </Interactivity:Interaction.Behaviors>
-                                </controls:ColorPickerButton>
-                            </controls:Case>
-                        </controls:SwitchPresenter>
+                                                        <!-- Template -->
+                                                        <GridView.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border Width="48"
+                                                                        Height="48"
+                                                                        Margin="2"
+                                                                        Background="{Binding}"
+                                                                        CornerRadius="4"
+                                                                        ToolTipService.ToolTip="{Binding Color, Converter={StaticResource ColorToDisplayNameConverter}}" />
+                                                            </DataTemplate>
+                                                        </GridView.ItemTemplate>
+
+                                                        <!-- SelectionChanged Event -->
+                                                        <Interactivity:Interaction.Behaviors>
+                                                            <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
+                                                                <Interactivity:InvokeCommandAction Command="{Binding SetMonetAndApplyCommand}" CommandParameter="{Binding SelectedItem, ElementName=MonetColorsGridView}" />
+                                                            </Interactivity:EventTriggerBehavior>
+                                                        </Interactivity:Interaction.Behaviors>
+                                                    </GridView>
+                                                </controls:Case>
+                                            </controls:SwitchPresenter>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </controls:SettingsCard>
+
+                    <!-- ColorMonet -->
+                    <controls:SettingsCard x:Uid="/ViewResources/ThemeSettingsPage_ColorMonetAccentColor_SettingsCard" Visibility="{x:Bind AccentColorModeToVisibility(viewModel.AccentColorMode, 3), Mode=OneWay}">
+                        <!-- Icons -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xF354;" />
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <!-- Content -->
+                        <controls:ColorPickerButton SelectedColor="{Binding MonetColorHex, Mode=TwoWay, Converter={StaticResource HexToColorConverter}}">
+                            <Interactivity:Interaction.Behaviors>
+                                <Interactivity:EventTriggerBehavior EventName="LosingFocus">
+                                    <Interactivity:InvokeCommandAction Command="{Binding SetMonetColorHexCommand}" />
+                                </Interactivity:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </controls:ColorPickerButton>
+                    </controls:SettingsCard>
+
+                    <!-- MonetPlan -->
+                    <controls:SettingsCard x:Uid="/ViewResources/ThemeSettingsPage_MonetPlan_SettingsCard" Visibility="{x:Bind AccentColorModeToVisibility(viewModel.AccentColorMode, 4), Mode=OneWay}">
+                        <!-- Icons -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xF133;" />
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <!-- Content -->
+                        <ComboBox PlaceholderText="NOT IMPLEMENTED." />
                     </controls:SettingsCard>
                 </controls:SettingsExpander.Items>
 
                 <!-- Content -->
                 <Border Padding="8,4"
                         Background="{ThemeResource AccentFillColorDefaultBrush}"
-                        CornerRadius="4"
-                        ToolTipService.ToolTip="{Binding Path=Background, Converter={StaticResource ColorToDisplayNameConverter}}">
+                        CornerRadius="4">
                     <TextBlock Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
                                Style="{ThemeResource BodyStrongTextBlockStyle}"
                                Text="{Binding ViewAccentColorHex}" />
                 </Border>
+            </controls:SettingsExpander>
+
+            <!-- TODO: Background, WindowName, Language啊啊啊啊啊啊啊啊啊啊!!!!!!!(っ °Д °;)っ -->
+            <!-- Background setting -->
+            <controls:SettingsExpander x:Uid="/ViewResources/ThemeSettingsPage_BackgroundSettings_Expander">
+                <!-- Icons -->
+                <controls:SettingsExpander.HeaderIcon>
+                    <FontIcon Glyph="&#xE8B9;" />
+                </controls:SettingsExpander.HeaderIcon>
+
+                <!-- Items -->
+                <controls:SettingsExpander.Items>
+                    <!-- Background type -->
+
+                </controls:SettingsExpander.Items>
             </controls:SettingsExpander>
         </StackPanel>
     </ScrollViewer>

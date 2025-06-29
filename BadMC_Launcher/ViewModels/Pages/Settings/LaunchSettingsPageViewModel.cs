@@ -12,6 +12,7 @@ using BadMC_Launcher.Views.ContentDialogs.Settings;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using Hardware.Info;
 using MinecraftLaunch.Base.Models.Game;
 using MinecraftLaunch.Utilities;
 using Serilog;
@@ -26,6 +27,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     private readonly MinecraftConfigsService minecraftService = App.GetService<MinecraftConfigsService>();
     private readonly ResourceLoader sourceService = App.GetService<ResourceLoader>();
     private readonly LaunchSettingsService launchSettingsService = App.GetService<LaunchSettingsService>();
+    private readonly HardwareInfo systemInfo = App.GetService<HardwareInfo>();
     private bool isRangeSelectorDragStarted = false;
     private MinecraftFolderViewItem? minecraftFolder;
     private JavaEntry? java;
@@ -255,10 +257,10 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     private async void RefreshMemory(CancellationToken cancellationToken) {
         try {
             while (true) {
-                AppParameters.SystemInfo.RefreshMemoryStatus();
+                systemInfo.RefreshMemoryStatus();
 
-                MaxMemoryView = AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToMb();
-                UsedMemoryView = (AppParameters.SystemInfo.MemoryStatus.TotalPhysical - AppParameters.SystemInfo.MemoryStatus.AvailablePhysical).BytesToMb();
+                MaxMemoryView = systemInfo.MemoryStatus.TotalPhysical.BytesToMb();
+                UsedMemoryView = (systemInfo.MemoryStatus.TotalPhysical - systemInfo.MemoryStatus.AvailablePhysical).BytesToMb();
 
                 if (IsAutoGameMemorySize) {
                     GameMemoryView = MaxMemoryView.GetAutoGameMemoryMb(UsedMemoryView);

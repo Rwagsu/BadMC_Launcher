@@ -20,5 +20,8 @@ public static class AppParameters {
         Height = 600
     };
 
-    public static HardwareInfo SystemInfo { get; } = new();
+    public static HashSet<string> Languages { get; } = new() {
+        "zh-Hans", // Chinese (Simplified, China)
+        "en-US", // English (United States)
+    };
 }

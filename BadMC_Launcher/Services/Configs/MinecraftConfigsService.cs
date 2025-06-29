@@ -13,17 +13,20 @@ using MinecraftLaunch.Base.Models.Game;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Controls.NotificationItem;
 using BadMC_Launcher.Services.Configs;
+using Hardware.Info;
 
 namespace BadMC_Launcher.Services.Configs;
 public class MinecraftConfigsService : ConfigClass {
     private PathService pathService;
     private LaunchSettingsService launchSettingsService;
+    private HardwareInfo systemInfo;
 
     internal bool IsSyncEnabled = false;
 
-    public MinecraftConfigsService(PathService _pathService, LaunchSettingsService _launchSettingsService) {
+    public MinecraftConfigsService(PathService _pathService, LaunchSettingsService _launchSettingsService, HardwareInfo _hardwareInfo) {
         pathService = _pathService;
         launchSettingsService = _launchSettingsService;
+        systemInfo = _hardwareInfo;
 
         //Triggers an event when a property is changed
         MinecraftConfigs.minecraftAccounts.ListChanged += OnListChanged<Account>;
@@ -35,6 +38,7 @@ public class MinecraftConfigsService : ConfigClass {
     public MinecraftConfigsService() {
         pathService = App.GetService<PathService>();
         launchSettingsService = App.GetService<LaunchSettingsService>();
+        systemInfo = App.GetService<HardwareInfo>();
 
         //Triggers an event when a property is changed
         MinecraftConfigs.minecraftAccounts.ListChanged += OnListChanged<Account>;
@@ -232,8 +236,8 @@ public class MinecraftConfigsService : ConfigClass {
         set {
             if (MinecraftConfigs.maxGameMemory != value) {
                 // Check max game memory
-                AppParameters.SystemInfo.RefreshMemoryStatus();
-                if (value == 0 || value > AppParameters.SystemInfo.MemoryStatus.TotalPhysical.BytesToMb() || value <= MinecraftConfigs.minGameMemory) {
+                systemInfo.RefreshMemoryStatus();
+                if (value == 0 || value > systemInfo.MemoryStatus.TotalPhysical.BytesToMb() || value <= MinecraftConfigs.minGameMemory) {
 
                     OnPropertyChanged(nameof(MaxGameMemory));
                     return;
@@ -255,7 +259,7 @@ public class MinecraftConfigsService : ConfigClass {
         set {
             if (MinecraftConfigs.minGameMemory != value) {
                 // Check min game memory
-                AppParameters.SystemInfo.RefreshMemoryStatus();
+                systemInfo.RefreshMemoryStatus();
                     OnPropertyChanged(nameof(MinGameMemory));
                     return;
             }

@@ -153,6 +153,23 @@ public class ThemeConfigsService : ConfigClass {
         }
     }
 
+    public string MonetAccentColorHex {
+        get => ThemeConfigs.monetAccentColorHex;
+        set {
+            if (ThemeConfigs.monetAccentColorHex != value) {
+                ThemeConfigs.monetAccentColorHex = value;
+
+                SetAccentColor();
+
+                // Trigger Event
+                OnPropertyChanged(nameof(MonetAccentColorHex));          
+
+                // Sync Setting
+                SyncSettingSet();
+            }
+        }
+    }
+
     // Window Name
     public string WindowName {
         get => ThemeConfigs.windowName;
@@ -162,6 +179,18 @@ public class ThemeConfigsService : ConfigClass {
 
                 // Trigger Event
                 OnPropertyChanged(nameof(WindowName));
+            }
+        }
+    }
+    // Language
+    public string Language {
+        get => ThemeConfigs.language;
+        set {
+            if (ThemeConfigs.language != value) {
+                ThemeConfigs.language = value;
+
+                // Trigger Event
+                OnPropertyChanged(nameof(Language));
             }
         }
     }
@@ -222,7 +251,6 @@ public class ThemeConfigsService : ConfigClass {
             ThemeConfigs.themeType = jsonClass.ThemeType;
             ThemeConfigs.imageBackgroundName = jsonClass.ImageBackgroundName;
             ThemeConfigs.backgroundStretch = jsonClass.BackgroundStretch;
-            ThemeConfigs.solidColorBackgroundHex = jsonClass.SolidColorBackgroundHex;
             ThemeConfigs.windowName = jsonClass.WindowName;
             return true;
         }

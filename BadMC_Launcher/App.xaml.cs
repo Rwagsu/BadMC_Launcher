@@ -10,6 +10,7 @@ using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages;
 using BadMC_Launcher.Views.Pages.Settings;
 using BadMC_Launcher.Views.UserControls;
+using Hardware.Info;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.UI;
 using Microsoft.UI.Dispatching;
@@ -104,6 +105,7 @@ public partial class App : Application {
                     //Register third-party class
                     services.AddSingleton<HttpClient>();
                     services.AddSingleton<ResourceLoader>();
+                    services.AddSingleton<HardwareInfo>();
 
                     services.AddTransient<Random>();
 

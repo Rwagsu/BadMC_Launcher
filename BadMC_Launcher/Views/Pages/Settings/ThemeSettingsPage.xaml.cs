@@ -23,37 +23,50 @@ namespace BadMC_Launcher.Views.Pages.Settings;
 /// </summary>
 public sealed partial class ThemeSettingsPage : Page {
     private readonly ThemeSettingsPageViewModel viewModel = new ThemeSettingsPageViewModel();
+
     public ThemeSettingsPage() {
         this.InitializeComponent();
         DataContext = viewModel;
     }
 
-    private string GetAccentSettingsCardHeader(int resourceIndex) {
-        var loader =  App.GetService<ResourceLoader>();
-        return resourceIndex switch {
-            0 => loader.GetString("ThemeSettingsPage_SettingsAccentColor_SettingsCardHeader"),
-            1 => loader.GetString("ThemeSettingsPage_SolidColorAccentColor_SettingsCardHeader"),
-            2 => loader.GetString("ThemeSettingsPage_ImageMonetAccentColor_SettingsCardHeader"),
-            _ => string.Empty,
-        };
-    }
-    private string GetAccentSettingsCardDescription(int resourceIndex) {
-        var loader =  App.GetService<ResourceLoader>();
-        return resourceIndex switch {
-            0 => loader.GetString("ThemeSettingsPage_SettingsAccentColor_SettingsCardDescription"),
-            1 => loader.GetString("ThemeSettingsPage_SolidColorAccentColor_SettingsCardDescription"),
-            2 => loader.GetString("ThemeSettingsPage_ImageMonetAccentColor_SettingsCardDescription"),
-            _ => string.Empty
-        };
+    private Visibility AccentColorModeToVisibility(AccentColorModeEnum colorMode, int controlMode) {
+        switch (colorMode) {
+            case AccentColorModeEnum.System:
+                switch (controlMode) {
+                    case 0:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+            case AccentColorModeEnum.Custom:
+                switch (controlMode) {
+                    case 1:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+            case AccentColorModeEnum.ImageMonet:
+                switch (controlMode) {
+                    case 2:
+                    case 4:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+            case AccentColorModeEnum.ColorMonet:
+                switch (controlMode) {
+                    case 3:
+                    case 4:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+            default:
+                return Visibility.Collapsed;
+        }
     }
 
-    private FontIcon GetAccentSettingsCardIcon(int resourceIndex) {
-        var loader =  App.GetService<ResourceLoader>();
-        return resourceIndex switch {
-            0 => new FontIcon() { Glyph = "\uEB68" },
-            1 => new FontIcon() { Glyph = "\uE790" },
-            2 => new FontIcon() { Glyph = "\uEE71" },
-            _ => new FontIcon() { Glyph = "\uE790" }
-        };
+    private int EnumToInt(Enum value) {
+        return Convert.ToInt32(value);
     }
 }

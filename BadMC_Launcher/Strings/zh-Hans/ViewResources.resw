@@ -302,7 +302,7 @@
   <data name="MainPage_SearchResource.PlaceholderText" xml:space="preserve">
     <value>搜点什么？ψ(｀∇´)ψ</value>
   </data>
-  <data name="MinecraftFolderContentDialog_AddMinecraftFolderButton.Text" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_AddMinecraftFolder_Button.Text" xml:space="preserve">
     <value>添加新的 Minecraft 版本文件夹</value>
   </data>
   <data name="MinecraftFolderContentDialog_DeleteMinecraftFolderMenuFlyoutItem.Text" xml:space="preserve">
@@ -311,28 +311,28 @@
   <data name="MinecraftFolderContentDialog_LocalViewMenuFlyoutItem.Text" xml:space="preserve">
     <value>在文件管理器中显示</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderListEmptyTipsHyperLinkButton.Content" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderListEmptyTips_HyperLinkButton.Content" xml:space="preserve">
     <value>从本地添加 Minecraft 版本文件夹</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderListEmptyTipsTextBlock.Text" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderListEmptyTips_TextBlock.Text" xml:space="preserve">
     <value>找不到任何 Minecraft 版本文件夹 :(</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameApplyButton.Content" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameApply_Button.Content" xml:space="preserve">
     <value>应用</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameCancelButton.Content" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameCancel_Button.Content" xml:space="preserve">
     <value>取消</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameErrorTextBlock.Text" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameError_TextBlock.Text" xml:space="preserve">
     <value>名称不可为空或与其它项重名.</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenamePathHyperLinkButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRenamePath_HyperLinkButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>等等！点击时将会关闭重命名！（Flyout太难了修不了 QAQ）</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenamePathTextBlock.Text" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRenamePath_TextBlock.Text" xml:space="preserve">
     <value>路径</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameTextBlock.Text" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRename_TextBlock.Text" xml:space="preserve">
     <value>重命名 (不影响本地文件夹)</value>
   </data>
   <data name="MinecraftFolderContentDialog_RenameMinecraftFolderMenuFlyoutItem.Text" xml:space="preserve">
@@ -362,10 +362,10 @@
   <data name="ThemeSettingsPage_ColorThemes_Dark.Content" xml:space="preserve">
     <value>深色</value>
   </data>
-  <data name="ThemeSettingsPage_AccentColorSettingsExpander.Header" xml:space="preserve">
+  <data name="ThemeSettingsPage_AccentColorSettings_Expander.Header" xml:space="preserve">
     <value>应用强调色</value>
   </data>
-  <data name="ThemeSettingsPage_AccentColorSettingsExpander.Description" xml:space="preserve">
+  <data name="ThemeSettingsPage_AccentColorSettings_Expander.Description" xml:space="preserve">
     <value>设置控件的强调色.</value>
   </data>
   <data name="ThemeSettingsPage_AccentColorMode_SettingsCard.Header" xml:space="preserve">
@@ -397,5 +397,50 @@
   </data>
   <data name="ThemeSettingsPage_AccentColorThemes_ColorMonetTips.ToolTipService.ToolTip" xml:space="preserve">
     <value>使用 Monet 从一个颜色中计算出所有合适的颜色当作强调色并将其应用到你的主题中.</value>
+  </data>
+  <data name="ThemeSettingsPage_SystemAccentColor_SettingsCard.Header" xml:space="preserve">
+    <value>这只是一只非常可爱的小怪物 ヽ(*・ω・)ﾉ </value>
+  </data>
+  <data name="ThemeSettingsPage_SystemAccentColor_SettingsCard.Description" xml:space="preserve">
+    <value>啊对了, 你在找什么? (´･ω･`)?</value>
+  </data>
+  <data name="ThemeSettingsPage_SolidColorAccentColor_SettingsCard.Header" xml:space="preserve">
+    <value>手动设置强调色</value>
+  </data>
+  <data name="ThemeSettingsPage_SolidColorAccentColor_SettingsCard.Description" xml:space="preserve">
+    <value>通过手动选取颜色设置应用的强调色.</value>
+  </data>
+  <data name="ThemeSettingsPage_ImageMonetAccentColor_SettingsCard.Header" xml:space="preserve">
+    <value>从图片背景中选择</value>
+  </data>
+  <data name="ThemeSettingsPage_ImageMonetAccentColor_SettingsCard.Description" xml:space="preserve">
+    <value>使用 Monet 从背景中选择颜色并更改整个主题系统, 该设置仅在设置了图片背景的情况下生效.</value>
+  </data>
+  <data name="ThemeSettingsPage_ColorMonetAccentColor_SettingsCard.Header" xml:space="preserve">
+    <value>手动选取 Monet 主题色</value>
+  </data>
+  <data name="ThemeSettingsPage_ColorMonetAccentColor_SettingsCard.Description" xml:space="preserve">
+    <value>手动选取一个颜色并使用 Monet 生成主题色.</value>
+  </data>
+  <data name="ThemeSettingsPage_MonetPlan_SettingsCard.Header" xml:space="preserve">
+    <value>Monet 方案</value>
+  </data>
+  <data name="ThemeSettingsPage_MonetPlan_SettingsCard.Description" xml:space="preserve">
+    <value>选择一个 Monet 颜色方案. (这可能会更改你的主题颜色.)</value>
+  </data>
+  <data name="ThemeSettingsPage_ImageMonetAccentColorSelectTitle_TextBlock.Text" xml:space="preserve">
+    <value>选择一个颜色.</value>
+  </data>
+  <data name="ThemeSettingsPage_ImageMonetAccentColorsEmptyTitle_TextBlock.Text" xml:space="preserve">
+    <value>这里没有颜色.</value>
+  </data>
+  <data name="ThemeSettingsPage_ImageMonetAccentColorsEmptySubTitle_TextBlock.Text" xml:space="preserve">
+    <value>是否忘记了设置图像背景?</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundSettings_Expander.Header" xml:space="preserve">
+    <value>更改启动器背景</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundSettings_Expander.Description" xml:space="preserve">
+    <value>设置启动器背景的显示方案.</value>
   </data>
 </root>

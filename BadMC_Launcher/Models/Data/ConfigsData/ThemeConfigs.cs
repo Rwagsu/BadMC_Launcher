@@ -22,5 +22,9 @@ internal static class ThemeConfigs {
     
     internal static string accentColorHex = App.Current.Resources["AccentFillColorDefaultBrush"] is SolidColorBrush solidColorBrush ? solidColorBrush.Color.ToHex() : "#0077FF";
 
+    internal static string monetAccentColorHex = App.Current.Resources["AccentFillColorDefaultBrush"] is SolidColorBrush solidColorBrush ? solidColorBrush.Color.ToHex() : "#0077FF";
+
     internal static string windowName = "BadMC Launcher";
+
+    internal static string language = Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride ?? "en-US";
 }

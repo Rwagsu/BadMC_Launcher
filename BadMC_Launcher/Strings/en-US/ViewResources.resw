@@ -302,7 +302,7 @@ If something in this setting has been changed in an version-specific customizati
   <data name="MainPage_SearchResource.PlaceholderText" xml:space="preserve">
     <value>Try searching for what? ψ(｀∇´)ψ</value>
   </data>
-  <data name="MinecraftFolderContentDialog_AddMinecraftFolderButton.Text" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_AddMinecraftFolder_Button.Text" xml:space="preserve">
     <value>Adding a new Minecraft versions folder</value>
   </data>
   <data name="MinecraftFolderContentDialog_DeleteMinecraftFolderMenuFlyoutItem.Text" xml:space="preserve">
@@ -311,28 +311,28 @@ If something in this setting has been changed in an version-specific customizati
   <data name="MinecraftFolderContentDialog_LocalViewMenuFlyoutItem.Text" xml:space="preserve">
     <value>View in File Manager</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderListEmptyTipsHyperLinkButton.Content" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderListEmptyTips_HyperLinkButton.Content" xml:space="preserve">
     <value>Add a Minecraft versions folder from local</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderListEmptyTipsTextBlock.Text" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderListEmptyTips_TextBlock.Text" xml:space="preserve">
     <value>Can't find any Minecraft versions folder :(</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameApplyButton.Content" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameApply_Button.Content" xml:space="preserve">
     <value>Apply</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameCancelButton.Content" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameCancel_Button.Content" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameErrorTextBlock.Text" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameError_TextBlock.Text" xml:space="preserve">
     <value>The name must not be empty or duplicated.</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenamePathHyperLinkButton.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRenamePath_HyperLinkButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>etc! Renaming will be turned off when clicked! (Flyout is too hard so I can't fix it QAQ)</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenamePathTextBlock.Text" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRenamePath_TextBlock.Text" xml:space="preserve">
     <value>Path</value>
   </data>
-  <data name="MinecraftFolderContentDialog_MinecraftFolderRenameTextBlock.Text" xml:space="preserve">
+  <data name="MinecraftFolderContentDialog_MinecraftFolderRename_TextBlock.Text" xml:space="preserve">
     <value>Rename (Does not affect local folder)</value>
   </data>
   <data name="MinecraftFolderContentDialog_RenameMinecraftFolderMenuFlyoutItem.Text" xml:space="preserve">
@@ -347,7 +347,7 @@ If something in this setting has been changed in an version-specific customizati
   <data name="SettingsDashboardPage_SideBar.PaneTitle" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="ThemeSettingsPage_AccentColorSettingsExpander.Header" xml:space="preserve">
+  <data name="ThemeSettingsPage_AccentColorSettings_Expander.Header" xml:space="preserve">
     <value>Application accent colors</value>
   </data>
   <data name="ThemeSettingsPage_ColorThemes_Dark.Content" xml:space="preserve">
@@ -365,7 +365,7 @@ If something in this setting has been changed in an version-specific customizati
   <data name="ThemeSettingsPage_ColorThemeSettingsCard.Header" xml:space="preserve">
     <value>Color theme</value>
   </data>
-  <data name="ThemeSettingsPage_AccentColorSettingsExpander.Description" xml:space="preserve">
+  <data name="ThemeSettingsPage_AccentColorSettings_Expander.Description" xml:space="preserve">
     <value>Sets the control's accent color.</value>
   </data>
 </root>

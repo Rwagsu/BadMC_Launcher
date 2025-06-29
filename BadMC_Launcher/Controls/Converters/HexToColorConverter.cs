@@ -15,7 +15,7 @@ public class HexToColorConverter : IValueConverter {
             return hex.ToColor();
         }
         // Default to white if the value is not a valid hex string
-        return "FFFFFFFF".ToColor(); 
+        return "#FFFFFFFF".ToColor(); 
     }
 
     object IValueConverter.ConvertBack(object value, Type targetType, object parameter, string language) {
@@ -23,6 +23,6 @@ public class HexToColorConverter : IValueConverter {
             return color.ToHex();
         }
         // Default to white if the value is not a Color
-        return "FFFFFFFF";
+        return "#FFFFFFFF";
     }
 }

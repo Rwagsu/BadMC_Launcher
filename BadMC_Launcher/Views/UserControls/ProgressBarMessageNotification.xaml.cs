@@ -12,7 +12,7 @@ namespace BadMC_Launcher.Views.UserControls;
 public sealed partial class ProgressBarMessageNotification : UserControl {
     private readonly CancellationTokenSource cancellationToken = new CancellationTokenSource();
 
-    // Register property
+    // Register properties
     public static readonly DependencyProperty NotificationItemProperty = DependencyProperty.Register(
          nameof(NotificationItem),
          typeof(ProgressBarNotificationItem),

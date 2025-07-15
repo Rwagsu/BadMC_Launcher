@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -14,7 +13,10 @@ using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Views.UserControls;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Uno.Extensions.Toolkit;
+using Windows.UI;
 
 namespace BadMC_Launcher.Services.Configs;
 public class ThemeConfigsService : ConfigClass {
@@ -31,12 +33,14 @@ public class ThemeConfigsService : ConfigClass {
         pathService = _pathService;
         resourceLoader = _resourceLoader;
         notificationService = _notificationService;
+        SetAccentColor();
     }
 
     public ThemeConfigsService() {
         pathService = App.GetService<PathService>();
         resourceLoader = App.GetService<ResourceLoader>();
         notificationService = App.GetService<NotificationService>();
+        
     }
 
     // Background
@@ -142,10 +146,8 @@ public class ThemeConfigsService : ConfigClass {
             if (ThemeConfigs.accentColorHex != value) {
                 ThemeConfigs.accentColorHex = value;
 
-                SetAccentColor();
-
                 // Trigger Event
-                OnPropertyChanged(nameof(AccentColorHex));          
+                OnPropertyChanged(nameof(AccentColorHex));
 
                 // Sync Setting
                 SyncSettingSet();
@@ -158,8 +160,6 @@ public class ThemeConfigsService : ConfigClass {
         set {
             if (ThemeConfigs.monetAccentColorHex != value) {
                 ThemeConfigs.monetAccentColorHex = value;
-
-                SetAccentColor();
 
                 // Trigger Event
                 OnPropertyChanged(nameof(MonetAccentColorHex));          
@@ -201,16 +201,31 @@ public class ThemeConfigsService : ConfigClass {
         }
     }
 
-    private void SetAccentColor() {
+    public void SetAccentColor() {
+        if (ThemeConfigs.accentMode == AccentColorModeEnum.Custom) {
+            if (ThemeConfigs.accentColorHex != null) {
+                var color = ThemeConfigs.accentColorHex.ToColor();
+                //App.Current.Resources["SystemAccentColorLight1"] = "#FF0000".ToColor();
+                //App.Current.Resources["SystemAccentColorLight2"] = "#FF0000".ToColor();
+                //App.Current.Resources["SystemAccentColorLight3"] = "#FF0000".ToColor();
+                //App.Current.Resources["SystemAccentColorDark1"] = "#FF0000".ToColor();
+                //App.Current.Resources["SystemAccentColorDark2"] = "#FF0000".ToColor();
+                //App.Current.Resources["SystemAccentColorDark3"] = "#FF0000".ToColor();
+                //App.Current.Resources["SystemAccentColor"] = "#FF0000".ToColor();
+            }
+        }
+    }
+
+    public void GetMonetColorsFromBackground() {
         // TODO
     }
 
-    private void GetMonetColorsFromBackground() {
+    public void UseMonet() {
         // TODO
     }
 
-    private void UseMonet() {
-        // TODO
+    public void SetTextColor(bool isDark) {
+        
     }
 
     public async Task<Brush> SetBackground(BackgroundTypeEnum backgroundType) {
@@ -225,24 +240,24 @@ public class ThemeConfigsService : ConfigClass {
                         notificationService.ShowNotification(new ToastMessageNotificationItem(MessageSeverityEnum.Error,
                             resourceLoader.GetString("ToastNotification_BackgroundErrorTitle"),
                             $"{resourceLoader.GetString("ToastNotification_BackgroundErrorMessage")} {path}"));
-                        return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1)); ;
+                        return SetBrush(Color.FromArgb(0, 119, 255, 1)); ;
                     }
                     return SetBrush(new BitmapImage(new Uri(path)));
                 case BackgroundTypeEnum.BingWallpaper:
                     var bingWallpaperPath = await GetBingWallpaperUrl();
                     if (string.IsNullOrEmpty(bingWallpaperPath)) {
-                        return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1));
+                        return SetBrush(Color.FromArgb(0, 119, 255, 1));
                     }
                     return SetBrush(new BitmapImage(new Uri(bingWallpaperPath)));
                 case BackgroundTypeEnum.Acrylic:
                     //TODO: Only MacOS
-                    return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1));
+                    return SetBrush(Color.FromArgb(0, 119, 255, 1));
                 default:
-                    var color = ColorTranslator.FromHtml(ThemeConfigs.solidColorBackgroundHex);
-                    return SetBrush(Windows.UI.Color.FromArgb(color.A, color.R, color.G, color.B));
+                    var color = ThemeConfigs.solidColorBackgroundHex.ToColor();
+                    return SetBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
             }
         }
-        return SetBrush(Windows.UI.Color.FromArgb(0, 119, 255, 1));
+        return SetBrush(Color.FromArgb(0, 119, 255, 1));
     }
 
     public override bool SyncSettingGet() {
@@ -265,8 +280,8 @@ public class ThemeConfigsService : ConfigClass {
         return false;
     }
     public Brush SetBrush<T>(T color) {
-        if (typeof(T) == typeof(Windows.UI.Color) && color != null) {
-            return new SolidColorBrush((Windows.UI.Color)(object)color);
+        if (typeof(T) == typeof(Color) && color != null) {
+            return new SolidColorBrush((Color)(object)color);
         }
         if (typeof(T) == typeof(BitmapImage) && color != null) {
             return new ImageBrush() {

@@ -368,4 +368,10 @@ If something in this setting has been changed in an version-specific customizati
   <data name="ThemeSettingsPage_AccentColorSettings_Expander.Description" xml:space="preserve">
     <value>Sets the control's accent color.</value>
   </data>
+  <data name="ColorPickerButton_Apply_Button.Content" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="ColorPickerButton_Cancel_Button.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>

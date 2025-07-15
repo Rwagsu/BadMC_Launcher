@@ -120,6 +120,7 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
     [RelayCommand]
     private void SetMonetColorHex() {
         themeService.MonetAccentColorHex = MonetColorHex;
+        Application.Current.Resources["AccentFillColorDefaultBrush"] = new SolidColorBrush() { Color = AccentColorHex.ToColor() };
     }
 
     partial void OnAccentColorModeChanged(AccentColorModeEnum value) {
@@ -129,7 +130,7 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
     private void GetAccentColorHex() {
         var resource = Application.Current.Resources["AccentFillColorDefaultBrush"];
         if (resource is SolidColorBrush brush) {
-            ViewAccentColorHex = brush.Color.ToHex();
+            ViewAccentColorHex = brush.Color.ToNoAlphaHex();
         }
     }
 

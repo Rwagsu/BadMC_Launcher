@@ -24,7 +24,7 @@ namespace BadMC_Launcher.Views.UserControls;
 public sealed partial class ToastMessageNotification : UserControl {
     private readonly CancellationTokenSource cancellationToken = new CancellationTokenSource();
 
-    // Register property
+    // Register properties
     public static readonly DependencyProperty NotificationItemProperty = DependencyProperty.Register(
          nameof(NotificationItem),
          typeof(ToastMessageNotificationItem),

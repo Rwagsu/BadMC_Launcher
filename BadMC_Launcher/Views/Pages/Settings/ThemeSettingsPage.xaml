@@ -8,6 +8,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:BadMC_Launcher.Views.Pages.Settings"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:userControls="using:BadMC_Launcher.Views.UserControls"
       xmlns:userConverters="using:BadMC_Launcher.Controls.Converters"
       mc:Ignorable="d">
     <Page.Resources>
@@ -15,7 +16,7 @@
         <userConverters:AccentColorModeToIndexConverter x:Key="AccentColorModeToIndexConverter" />
         <userConverters:HexToColorConverter x:Key="HexToColorConverter" />
         <converters:ColorToDisplayNameConverter x:Key="ColorToDisplayNameConverter" />
-        
+
         <converters:BoolToObjectConverter x:Key="BoolToOpacityConverter"
                                           FalseValue="0"
                                           TrueValue="1" />
@@ -143,6 +144,20 @@
                                     <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_ImageMonet"
                                                VerticalAlignment="Center"
                                                TextWrapping="Wrap" />
+                                    <Border Background="{ThemeResource SystemFillColorCriticalBrush}" CornerRadius="4">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock TextWrapping="Wrap">
+                                                <Run x:Uid="/ViewResources/Global_NotImplemented_ToolTipRun" />
+                                                <LineBreak />
+                                                <Run Text="https://github.com/BadBC-Studio/BadMC_Launcher/issues/6" />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+
+                                        <TextBlock x:Uid="/ViewResources/Global_NotImplemented_TextBlock"
+                                                   Margin="8,4"
+                                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                                   Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    </Border>
                                 </StackPanel>
                             </ComboBoxItem>
 
@@ -158,6 +173,21 @@
                                     <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_ColorMonet"
                                                VerticalAlignment="Center"
                                                TextWrapping="Wrap" />
+
+                                    <Border Background="{ThemeResource SystemFillColorCriticalBrush}" CornerRadius="4">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock TextWrapping="Wrap">
+                                                <Run x:Uid="/ViewResources/Global_NotImplemented_ToolTipRun" />
+                                                <LineBreak />
+                                                <Run Text="https://github.com/BadBC-Studio/BadMC_Launcher/issues/6" />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+
+                                        <TextBlock x:Uid="/ViewResources/Global_NotImplemented_TextBlock"
+                                                   Margin="8,4"
+                                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                                   Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    </Border>
                                 </StackPanel>
                             </ComboBoxItem>
                         </ComboBox>
@@ -181,13 +211,13 @@
                         </controls:SettingsCard.HeaderIcon>
 
                         <!-- Content -->
-                        <controls:ColorPickerButton SelectedColor="{Binding AccentColorHex, Mode=TwoWay, Converter={StaticResource HexToColorConverter}}">
+                        <userControls:ColorPickerButton SelectedColor="{Binding AccentColorHex, Mode=TwoWay, Converter={StaticResource HexToColorConverter}}">
                             <Interactivity:Interaction.Behaviors>
-                                <Interactivity:EventTriggerBehavior EventName="LosingFocus">
+                                <Interactivity:EventTriggerBehavior EventName="ColorChanged">
                                     <Interactivity:InvokeCommandAction Command="{Binding SetAccentColorHexCommand}" />
                                 </Interactivity:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
-                        </controls:ColorPickerButton>
+                        </userControls:ColorPickerButton>
                     </controls:SettingsCard>
 
                     <!-- ImageMonet -->
@@ -204,7 +234,7 @@
                                     <Ellipse Width="16"
                                              Height="16"
                                              Fill="{Binding SelectedImageMonetColor}" />
-                                    <TextBlock Text="{x:Bind viewModel.SelectedImageMonetColor.Color.ToString(), Mode=OneWay}" />
+                                    <TextBlock Text="{x:Bind ToNoAlphaHex(viewModel.SelectedImageMonetColor.Color), Mode=OneWay}" />
                                 </StackPanel>
                             </Button.Content>
 
@@ -291,13 +321,13 @@
                         </controls:SettingsCard.HeaderIcon>
 
                         <!-- Content -->
-                        <controls:ColorPickerButton SelectedColor="{Binding MonetColorHex, Mode=TwoWay, Converter={StaticResource HexToColorConverter}}">
+                        <userControls:ColorPickerButton SelectedColor="{Binding MonetColorHex, Mode=TwoWay, Converter={StaticResource HexToColorConverter}}">
                             <Interactivity:Interaction.Behaviors>
-                                <Interactivity:EventTriggerBehavior EventName="LosingFocus">
+                                <Interactivity:EventTriggerBehavior EventName="ColorChanged">
                                     <Interactivity:InvokeCommandAction Command="{Binding SetMonetColorHexCommand}" />
                                 </Interactivity:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
-                        </controls:ColorPickerButton>
+                        </userControls:ColorPickerButton>
                     </controls:SettingsCard>
 
                     <!-- MonetPlan -->
@@ -333,7 +363,21 @@
                 <!-- Items -->
                 <controls:SettingsExpander.Items>
                     <!-- Background type -->
+                    <controls:SettingsCard x:Uid="/ViewResources/ThemeSettingsPage_BackgroundType_SettingsCard" Visibility="{x:Bind AccentColorModeToVisibility(viewModel.AccentColorMode, 3), Mode=OneWay}">
+                        <!-- Icons -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xF354;" />
+                        </controls:SettingsCard.HeaderIcon>
 
+                        <!-- Content -->
+                        <userControls:ColorPickerButton SelectedColor="{Binding MonetColorHex, Mode=TwoWay, Converter={StaticResource HexToColorConverter}}">
+                            <Interactivity:Interaction.Behaviors>
+                                <Interactivity:EventTriggerBehavior EventName="ColorChanged">
+                                    <Interactivity:InvokeCommandAction Command="{Binding SetMonetColorHexCommand}" />
+                                </Interactivity:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </userControls:ColorPickerButton>
+                    </controls:SettingsCard>
                 </controls:SettingsExpander.Items>
             </controls:SettingsExpander>
         </StackPanel>

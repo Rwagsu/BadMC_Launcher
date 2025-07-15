@@ -10,6 +10,7 @@ using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages;
 using BadMC_Launcher.Views.Pages.Settings;
 using BadMC_Launcher.Views.UserControls;
+using CommunityToolkit.WinUI.Helpers;
 using Hardware.Info;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.UI;
@@ -127,6 +128,7 @@ public partial class App : Application {
                 })
                 .UseToolkit()
             );
+        
         MainWindow = builder.Window;
 
 #if DEBUG
@@ -136,8 +138,20 @@ public partial class App : Application {
 
         Host = builder.Build();
 
+       
+
         // Get Configs
         GetSettings();
+
+        Resources["SystemAccentColorLight1"] = "#FF0000".ToColor();
+        Resources["SystemAccentColorLight2"] = "#FF0000".ToColor();
+        Resources["SystemAccentColorLight3"] = "#FF0000".ToColor();
+        Resources["SystemAccentColorDark1"] = "#FF0000".ToColor();
+        Resources["SystemAccentColorDark2"] = "#FF0000".ToColor();
+        Resources["SystemAccentColorDark3"] = "#FF0000".ToColor();
+        Resources["SystemAccentColor"] = "#FF0000".ToColor();
+
+        GetService<ThemeConfigsService>().SetAccentColor();
 
         // Do not repeat app initialization when the Window already has content,
         // just ensure that the window is active
@@ -158,8 +172,6 @@ public partial class App : Application {
 
         // Get ThemeService
         AppThemeService = MainWindow.GetThemeService();
-
-        GetService<ThemeConfigsService>();
 
         //Set MainWindow Configs
         MainWindow.AppWindow.Title = GetService<ThemeConfigsService>().WindowName;
@@ -220,6 +232,7 @@ public partial class App : Application {
         GetService<MinecraftConfigsService>().SyncSettingGet();
         GetService<MinecraftConfigsService>().IsSyncEnabled = true;
         GetService<ThemeConfigsService>().SyncSettingGet();
+        GetService<ThemeConfigsService>().SetAccentColor();
         GetService<ThemeConfigsService>().isSyncEnabled = true;
     }
 }

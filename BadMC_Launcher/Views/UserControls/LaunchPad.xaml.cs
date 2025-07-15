@@ -10,7 +10,7 @@ using Windows.System;
 
 namespace BadMC_Launcher.Views.UserControls;
 public sealed partial class LaunchPad : UserControl {
-    // Register property
+    // Register properties
     public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(
          nameof(IsOpen),
          typeof(bool),

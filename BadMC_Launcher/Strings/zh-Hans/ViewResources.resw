@@ -443,4 +443,23 @@
   <data name="ThemeSettingsPage_BackgroundSettings_Expander.Description" xml:space="preserve">
     <value>设置启动器背景的显示方案.</value>
   </data>
+  <data name="ColorPickerButton_Apply_Button.Content" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="ColorPickerButton_Cancel_Button.Content" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Global_NotImplemented_TextBlock.Text" xml:space="preserve">
+    <value>未实现</value>
+  </data>
+  <data name="Global_NotImplemented_ToolTipRun.Text" xml:space="preserve">
+    <value>由于在实现功能时出现问题, 该功能目前不可用.
+从该链接中获取详细信息:</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_SettingsCard.Header" xml:space="preserve">
+    <value>背景类型</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_SettingsCard.Description" xml:space="preserve">
+    <value>指示应用该如何显示背景.</value>
+  </data>
 </root>

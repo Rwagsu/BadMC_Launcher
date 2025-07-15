@@ -10,12 +10,10 @@ using BadMC_Launcher.Controls.NotificationItem;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Data.ConfigsData;
 using BadMC_Launcher.Models.Enums;
-using BadMC_Launcher.Views.UserControls;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Uno.Extensions.Toolkit;
 using Windows.UI;
 
 namespace BadMC_Launcher.Services.Configs;
@@ -23,7 +21,7 @@ public class ThemeConfigsService : ConfigClass {
     private readonly PathService pathService;
     private readonly ResourceLoader resourceLoader;
     private readonly NotificationService notificationService;
-    private IThemeService? AppThemeService => App.Current.AppThemeService;
+    private IThemeService? AppThemeService => null;
 
     internal bool isSyncEnabled = false;
 
@@ -33,14 +31,12 @@ public class ThemeConfigsService : ConfigClass {
         pathService = _pathService;
         resourceLoader = _resourceLoader;
         notificationService = _notificationService;
-        SetAccentColor();
     }
 
     public ThemeConfigsService() {
         pathService = App.GetService<PathService>();
         resourceLoader = App.GetService<ResourceLoader>();
         notificationService = App.GetService<NotificationService>();
-        
     }
 
     // Background
@@ -129,10 +125,8 @@ public class ThemeConfigsService : ConfigClass {
             if (ThemeConfigs.accentMode != value) {
                 ThemeConfigs.accentMode = value;
 
-                SetAccentColor();
-
                 // Trigger Event
-                OnPropertyChanged(nameof(AccentMode));          
+                OnPropertyChanged(nameof(AccentMode));
 
                 // Sync Setting
                 SyncSettingSet();
@@ -201,17 +195,17 @@ public class ThemeConfigsService : ConfigClass {
         }
     }
 
-    public void SetAccentColor() {
+    private void SetAccentColor() {
         if (ThemeConfigs.accentMode == AccentColorModeEnum.Custom) {
-            if (ThemeConfigs.accentColorHex != null) {
+            if (!string.IsNullOrWhiteSpace(ThemeConfigs.accentColorHex)) {
                 var color = ThemeConfigs.accentColorHex.ToColor();
-                //App.Current.Resources["SystemAccentColorLight1"] = "#FF0000".ToColor();
-                //App.Current.Resources["SystemAccentColorLight2"] = "#FF0000".ToColor();
-                //App.Current.Resources["SystemAccentColorLight3"] = "#FF0000".ToColor();
-                //App.Current.Resources["SystemAccentColorDark1"] = "#FF0000".ToColor();
-                //App.Current.Resources["SystemAccentColorDark2"] = "#FF0000".ToColor();
-                //App.Current.Resources["SystemAccentColorDark3"] = "#FF0000".ToColor();
-                //App.Current.Resources["SystemAccentColor"] = "#FF0000".ToColor();
+                App.Current.Resources["SystemAccentColorLight1"] = "#FF0000".ToColor();
+                App.Current.Resources["SystemAccentColorLight2"] = "#FF0000".ToColor();
+                App.Current.Resources["SystemAccentColorLight3"] = "#FF0000".ToColor();
+                App.Current.Resources["SystemAccentColorDark1"] = "#FF0000".ToColor();
+                App.Current.Resources["SystemAccentColorDark2"] = "#FF0000".ToColor();
+                App.Current.Resources["SystemAccentColorDark3"] = "#FF0000".ToColor();
+                App.Current.Resources["SystemAccentColor"] = "#FF0000".ToColor();
             }
         }
     }
@@ -250,6 +244,7 @@ public class ThemeConfigsService : ConfigClass {
                     }
                     return SetBrush(new BitmapImage(new Uri(bingWallpaperPath)));
                 case BackgroundTypeEnum.Acrylic:
+
                     //TODO: Only MacOS
                     return SetBrush(Color.FromArgb(0, 119, 255, 1));
                 default:
@@ -267,6 +262,20 @@ public class ThemeConfigsService : ConfigClass {
             ThemeConfigs.imageBackgroundName = jsonClass.ImageBackgroundName;
             ThemeConfigs.backgroundStretch = jsonClass.BackgroundStretch;
             ThemeConfigs.windowName = jsonClass.WindowName;
+
+            if (!string.IsNullOrWhiteSpace(AccentColorHex)) {
+                if (AccentMode == AccentColorModeEnum.Custom) {
+                    SetAccentColor();
+                }
+            }
+            else {
+                AccentColorHex = App.Current.Resources["SystemAccentColor"] is SolidColorBrush solidColorBrush ? solidColorBrush.Color.ToHex() : "#0077FF";
+            }
+
+            if (string.IsNullOrWhiteSpace(MonetAccentColorHex)) {
+                MonetAccentColorHex = App.Current.Resources["SystemAccentColor"] is SolidColorBrush solidColorBrush ? solidColorBrush.Color.ToHex() : "#0077FF";
+            }
+
             return true;
         }
         return false;

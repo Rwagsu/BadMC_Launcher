@@ -20,9 +20,9 @@ internal static class ThemeConfigs {
 
     internal static AccentColorModeEnum accentMode = AccentColorModeEnum.System;
     
-    internal static string accentColorHex = App.Current.Resources["AccentFillColorDefaultBrush"] is SolidColorBrush solidColorBrush ? solidColorBrush.Color.ToHex() : "#0077FF";
+    internal static string accentColorHex = "";
 
-    internal static string monetAccentColorHex = App.Current.Resources["AccentFillColorDefaultBrush"] is SolidColorBrush solidColorBrush ? solidColorBrush.Color.ToHex() : "#0077FF";
+    internal static string monetAccentColorHex = "";
 
     internal static string windowName = "BadMC Launcher";
 

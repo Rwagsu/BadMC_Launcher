@@ -239,6 +239,7 @@ public class PathService {
     /// <returns>Returns a value indicating whether the folder or file has been opened.</returns>
     public bool TryOpenFolderOrFileFromPath(string path) {
         try {
+            // TODO: NOT WORK ON WINDOWS 10!
             if (CheckPath(path) && Path.Exists(path)) {
                 using (Process.Start(new ProcessStartInfo(path) {
                     UseShellExecute = true,

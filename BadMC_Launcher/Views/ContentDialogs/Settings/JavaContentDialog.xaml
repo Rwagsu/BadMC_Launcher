@@ -142,7 +142,6 @@
             <FontIcon HorizontalAlignment="Center"
                       FontSize="40"
                       Glyph="&#xE8F6;" />
-            <TextBlock Text="{Binding JavasList.Count, Mode=OneWay}" />
             <TextBlock x:Uid="/ViewResources/JavaContentDialog_JavaListEmptyTipsTextBlock"
                        HorizontalAlignment="Center"
                        Style="{ThemeResource BodyStrongTextBlockStyle}" />

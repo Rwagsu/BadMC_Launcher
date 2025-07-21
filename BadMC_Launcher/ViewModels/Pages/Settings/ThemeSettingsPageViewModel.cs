@@ -25,6 +25,8 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
 
         // TODO: 改颜色
         ImageMonetColors = new ObservableCollection<SolidColorBrush>();
+
+        #region MonetDEBUG
         ImageMonetColors.Add(new SolidColorBrush("#0077FF".ToColor()));
         ImageMonetColors.Add(new SolidColorBrush("#FF0000".ToColor()));
         ImageMonetColors.Add(new SolidColorBrush("#CDFCDF".ToColor()));
@@ -32,6 +34,7 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
         ImageMonetColors.Add(new SolidColorBrush("#ABCDF5".ToColor()));
         ImageMonetColors.Add(new SolidColorBrush("#00AAFF".ToColor()));
         SelectedImageMonetColor = new SolidColorBrush("#0077FF".ToColor());
+        #endregion
 
         AccentColorHex = themeService.AccentColorHex;
         MonetColorHex = themeService.MonetAccentColorHex;
@@ -119,8 +122,7 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
 
     [RelayCommand]
     private void SetMonetColorHex() {
-        themeService.MonetAccentColorHex = MonetColorHex;
-        Application.Current.Resources["AccentFillColorDefaultBrush"] = new SolidColorBrush() { Color = AccentColorHex.ToColor() };
+        //TODO: 万恶的Monet
     }
 
     partial void OnAccentColorModeChanged(AccentColorModeEnum value) {
@@ -128,9 +130,9 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
     }
 
     private void GetAccentColorHex() {
-        var resource = Application.Current.Resources["AccentFillColorDefaultBrush"];
-        if (resource is SolidColorBrush brush) {
-            ViewAccentColorHex = brush.Color.ToNoAlphaHex();
+        var resource = Application.Current.Resources["SystemAccentColor"];
+        if (resource is Color color) {
+            ViewAccentColorHex = color.ToNoAlphaHex();
         }
     }
 

@@ -408,7 +408,7 @@
     <value>手动设置强调色</value>
   </data>
   <data name="ThemeSettingsPage_SolidColorAccentColor_SettingsCard.Description" xml:space="preserve">
-    <value>通过手动选取颜色设置应用的强调色.</value>
+    <value>通过手动选取颜色设置应用的强调色. (重启后生效)</value>
   </data>
   <data name="ThemeSettingsPage_ImageMonetAccentColor_SettingsCard.Header" xml:space="preserve">
     <value>从图片背景中选择</value>

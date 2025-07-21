@@ -293,8 +293,6 @@
                         </Button>
                     </Grid>
 
-                    <userControls:ColorPickerButton />
-
                     <!-- LaunchPad -->
                     <userControls:LaunchPad x:Name="LaunchPadControl"
                                             Grid.Column="1"

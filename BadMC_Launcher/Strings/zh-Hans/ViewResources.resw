@@ -462,4 +462,10 @@
   <data name="ThemeSettingsPage_BackgroundType_SettingsCard.Description" xml:space="preserve">
     <value>指示应用该如何显示背景.</value>
   </data>
+  <data name="ThemeSettingsPage_BackgroundType_StaticImageTips.ToolTipService.ToolTip" xml:space="preserve">
+    <value>使用静态图片作为应用背景.</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_StaticImage.Text" xml:space="preserve">
+    <value>静态图像</value>
+  </data>
 </root>

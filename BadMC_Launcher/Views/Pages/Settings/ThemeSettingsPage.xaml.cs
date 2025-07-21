@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.ViewModels.Pages.Settings;
+using Flurl.Util;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;

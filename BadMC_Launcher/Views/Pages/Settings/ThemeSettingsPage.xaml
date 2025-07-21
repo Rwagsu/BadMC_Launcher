@@ -12,8 +12,7 @@
       xmlns:userConverters="using:BadMC_Launcher.Controls.Converters"
       mc:Ignorable="d">
     <Page.Resources>
-        <userConverters:ThemeTypeToIndexConverter x:Key="ThemeTypeToIndexConverter" />
-        <userConverters:AccentColorModeToIndexConverter x:Key="AccentColorModeToIndexConverter" />
+        <userConverters:EnumToIndexConverter x:Key="EnumToIndexConverter" />
         <userConverters:HexToColorConverter x:Key="HexToColorConverter" />
         <converters:ColorToDisplayNameConverter x:Key="ColorToDisplayNameConverter" />
 
@@ -54,7 +53,7 @@
                 </controls:SettingsCard.HeaderIcon>
 
                 <!-- Content -->
-                <controls:Segmented SelectedIndex="{Binding ThemeType, Converter={StaticResource ThemeTypeToIndexConverter}, Mode=TwoWay}">
+                <controls:Segmented SelectedIndex="{Binding ThemeType, Converter={StaticResource EnumToIndexConverter}, Mode=TwoWay}">
                     <Interactivity:Interaction.Behaviors>
                         <Interactivity:EventTriggerBehavior EventName="SelectionChanged">
                             <Interactivity:InvokeCommandAction Command="{Binding SetThemeTypeCommand}" />
@@ -101,7 +100,7 @@
                         </controls:SettingsCard.HeaderIcon>
 
                         <!-- Content -->
-                        <ComboBox x:Name="AccentColorModeComboBox" SelectedIndex="{Binding AccentColorMode, Converter={StaticResource AccentColorModeToIndexConverter}, Mode=TwoWay}">
+                        <ComboBox x:Name="AccentColorModeComboBox" SelectedIndex="{Binding AccentColorMode, Converter={StaticResource EnumToIndexConverter}, Mode=TwoWay}">
                             <!-- System -->
                             <ComboBoxItem x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_SystemTips">
                                 <StackPanel Padding="0,2"
@@ -146,7 +145,7 @@
                                                TextWrapping="Wrap" />
                                     <Border Background="{ThemeResource SystemFillColorCriticalBrush}" CornerRadius="4">
                                         <ToolTipService.ToolTip>
-                                            <TextBlock TextWrapping="Wrap">
+                                            <TextBlock IsTextSelectionEnabled="True" TextWrapping="Wrap">
                                                 <Run x:Uid="/ViewResources/Global_NotImplemented_ToolTipRun" />
                                                 <LineBreak />
                                                 <Run Text="https://github.com/BadBC-Studio/BadMC_Launcher/issues/6" />
@@ -176,7 +175,7 @@
 
                                     <Border Background="{ThemeResource SystemFillColorCriticalBrush}" CornerRadius="4">
                                         <ToolTipService.ToolTip>
-                                            <TextBlock TextWrapping="Wrap">
+                                            <TextBlock IsTextSelectionEnabled="True" TextWrapping="Wrap">
                                                 <Run x:Uid="/ViewResources/Global_NotImplemented_ToolTipRun" />
                                                 <LineBreak />
                                                 <Run Text="https://github.com/BadBC-Studio/BadMC_Launcher/issues/6" />
@@ -363,20 +362,103 @@
                 <!-- Items -->
                 <controls:SettingsExpander.Items>
                     <!-- Background type -->
-                    <controls:SettingsCard x:Uid="/ViewResources/ThemeSettingsPage_BackgroundType_SettingsCard" Visibility="{x:Bind AccentColorModeToVisibility(viewModel.AccentColorMode, 3), Mode=OneWay}">
+                    <controls:SettingsCard x:Uid="/ViewResources/ThemeSettingsPage_BackgroundType_SettingsCard">
                         <!-- Icons -->
                         <controls:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xF354;" />
                         </controls:SettingsCard.HeaderIcon>
 
                         <!-- Content -->
-                        <userControls:ColorPickerButton SelectedColor="{Binding MonetColorHex, Mode=TwoWay, Converter={StaticResource HexToColorConverter}}">
-                            <Interactivity:Interaction.Behaviors>
-                                <Interactivity:EventTriggerBehavior EventName="ColorChanged">
-                                    <Interactivity:InvokeCommandAction Command="{Binding SetMonetColorHexCommand}" />
-                                </Interactivity:EventTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                        </userControls:ColorPickerButton>
+                        <ComboBox SelectedIndex="{Binding BackgroundType, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
+                            <!-- System -->
+                            <ComboBoxItem x:Uid="/ViewResources/ThemeSettingsPage_BackgroundType_StaticImageTips">
+                                <StackPanel Padding="0,2"
+                                            Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Width="24"
+                                              Height="24"
+                                              VerticalAlignment="Center"
+                                              Glyph="&#xE8B9;" />
+                                    <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_BackgroundType_StaticImage"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
+                            </ComboBoxItem>
+
+                            <!-- Custom -->
+                            <ComboBoxItem x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_CustomTips">
+                                <StackPanel Padding="0,2"
+                                            Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Width="24"
+                                              Height="24"
+                                              VerticalAlignment="Center"
+                                              Glyph="&#xE790;" />
+                                    <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_Custom"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
+                            </ComboBoxItem>
+
+                            <!-- ImageMonet -->
+                            <ComboBoxItem x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_ImageMonetTips">
+                                <StackPanel Padding="0,2"
+                                            Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Width="24"
+                                              Height="24"
+                                              VerticalAlignment="Center"
+                                              Glyph="&#xEE71;" />
+                                    <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_ImageMonet"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap" />
+                                    <Border Background="{ThemeResource SystemFillColorCriticalBrush}" CornerRadius="4">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock IsTextSelectionEnabled="True" TextWrapping="Wrap">
+                                                <Run x:Uid="/ViewResources/Global_NotImplemented_ToolTipRun" />
+                                                <LineBreak />
+                                                <Run Text="https://github.com/BadBC-Studio/BadMC_Launcher/issues/6" />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+
+                                        <TextBlock x:Uid="/ViewResources/Global_NotImplemented_TextBlock"
+                                                   Margin="8,4"
+                                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                                   Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    </Border>
+                                </StackPanel>
+                            </ComboBoxItem>
+
+                            <!-- ColorMonet -->
+                            <ComboBoxItem x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_ColorMonetTips">
+                                <StackPanel Padding="0,2"
+                                            Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Width="24"
+                                              Height="24"
+                                              VerticalAlignment="Center"
+                                              Glyph="&#xE794;" />
+                                    <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_ColorMonet"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap" />
+
+                                    <Border Background="{ThemeResource SystemFillColorCriticalBrush}" CornerRadius="4">
+                                        <ToolTipService.ToolTip>
+                                            <TextBlock IsTextSelectionEnabled="True" TextWrapping="Wrap">
+                                                <Run x:Uid="/ViewResources/Global_NotImplemented_ToolTipRun" />
+                                                <LineBreak />
+                                                <Run Text="https://github.com/BadBC-Studio/BadMC_Launcher/issues/6" />
+                                            </TextBlock>
+                                        </ToolTipService.ToolTip>
+
+                                        <TextBlock x:Uid="/ViewResources/Global_NotImplemented_TextBlock"
+                                                   Margin="8,4"
+                                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                                   Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    </Border>
+                                </StackPanel>
+                            </ComboBoxItem>
+                        </ComboBox>
                     </controls:SettingsCard>
                 </controls:SettingsExpander.Items>
             </controls:SettingsExpander>

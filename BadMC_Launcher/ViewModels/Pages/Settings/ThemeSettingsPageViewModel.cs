@@ -46,7 +46,6 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
         WindowName = themeService.WindowName;
         Languages = AppParameters.Languages;
         Language = themeService.Language;
-
         GetAccentColorHex();
 
         themeService.PropertyChanged += OnThemeConfigChanged;

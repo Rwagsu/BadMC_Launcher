@@ -466,6 +466,21 @@
     <value>使用静态图片作为应用背景.</value>
   </data>
   <data name="ThemeSettingsPage_BackgroundType_StaticImage.Text" xml:space="preserve">
-    <value>静态图像</value>
+    <value>静态图片</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_BingWallpaperTips.ToolTipService.ToolTip" xml:space="preserve">
+    <value>从 Bing API 获取每日 Bing 壁纸并当作启动器壁纸 (需要网络连接)</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_BingWallpaper.Text" xml:space="preserve">
+    <value>Bing 每日壁纸</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_BingWallpaperWebTip.Text" xml:space="preserve">
+    <value>需要网络</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_AcrylicTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>使用 Acrylic (亚克力) 作为你的启动器背景.</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_Acrylic.Text" xml:space="preserve">
+    <value>Acrylic (亚克力)</value>
   </data>
 </root>

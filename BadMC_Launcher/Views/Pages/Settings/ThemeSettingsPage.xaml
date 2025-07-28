@@ -370,7 +370,7 @@
 
                         <!-- Content -->
                         <ComboBox SelectedIndex="{Binding BackgroundType, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
-                            <!-- System -->
+                            <!-- Static image -->
                             <ComboBoxItem x:Uid="/ViewResources/ThemeSettingsPage_BackgroundType_StaticImageTips">
                                 <StackPanel Padding="0,2"
                                             Orientation="Horizontal"
@@ -385,8 +385,8 @@
                                 </StackPanel>
                             </ComboBoxItem>
 
-                            <!-- Custom -->
-                            <ComboBoxItem x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_CustomTips">
+                            <!-- Bing wallpaper -->
+                            <ComboBoxItem x:Uid="/ViewResources/ThemeSettingsPage_BackgroundType_BingWallpaperTips">
                                 <StackPanel Padding="0,2"
                                             Orientation="Horizontal"
                                             Spacing="6">
@@ -394,22 +394,28 @@
                                               Height="24"
                                               VerticalAlignment="Center"
                                               Glyph="&#xE790;" />
-                                    <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_Custom"
+                                    <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_BackgroundType_BingWallpaper"
                                                VerticalAlignment="Center"
                                                TextWrapping="Wrap" />
+                                    <Border Background="{ThemeResource SystemFillColorCautionBrush}" CornerRadius="4">
+                                        <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_BackgroundType_BingWallpaperWebTip"
+                                                   Margin="8,4"
+                                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                                   Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    </Border>
                                 </StackPanel>
                             </ComboBoxItem>
 
-                            <!-- ImageMonet -->
-                            <ComboBoxItem x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_ImageMonetTips">
+                            <!-- Acrylic -->
+                            <ComboBoxItem x:Uid="/ViewResources/ThemeSettingsPage_BackgroundType_AcrylicTip">
                                 <StackPanel Padding="0,2"
                                             Orientation="Horizontal"
                                             Spacing="6">
                                     <FontIcon Width="24"
                                               Height="24"
                                               VerticalAlignment="Center"
-                                              Glyph="&#xEE71;" />
-                                    <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_ImageMonet"
+                                              Glyph="&#xF133;" />
+                                    <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_BackgroundType_Acrylic"
                                                VerticalAlignment="Center"
                                                TextWrapping="Wrap" />
                                     <Border Background="{ThemeResource SystemFillColorCriticalBrush}" CornerRadius="4">
@@ -429,35 +435,6 @@
                                 </StackPanel>
                             </ComboBoxItem>
 
-                            <!-- ColorMonet -->
-                            <ComboBoxItem x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_ColorMonetTips">
-                                <StackPanel Padding="0,2"
-                                            Orientation="Horizontal"
-                                            Spacing="6">
-                                    <FontIcon Width="24"
-                                              Height="24"
-                                              VerticalAlignment="Center"
-                                              Glyph="&#xE794;" />
-                                    <TextBlock x:Uid="/ViewResources/ThemeSettingsPage_AccentColorThemes_ColorMonet"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap" />
-
-                                    <Border Background="{ThemeResource SystemFillColorCriticalBrush}" CornerRadius="4">
-                                        <ToolTipService.ToolTip>
-                                            <TextBlock IsTextSelectionEnabled="True" TextWrapping="Wrap">
-                                                <Run x:Uid="/ViewResources/Global_NotImplemented_ToolTipRun" />
-                                                <LineBreak />
-                                                <Run Text="https://github.com/BadBC-Studio/BadMC_Launcher/issues/6" />
-                                            </TextBlock>
-                                        </ToolTipService.ToolTip>
-
-                                        <TextBlock x:Uid="/ViewResources/Global_NotImplemented_TextBlock"
-                                                   Margin="8,4"
-                                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                                                   Style="{ThemeResource BodyStrongTextBlockStyle}" />
-                                    </Border>
-                                </StackPanel>
-                            </ComboBoxItem>
                         </ComboBox>
                     </controls:SettingsCard>
                 </controls:SettingsExpander.Items>

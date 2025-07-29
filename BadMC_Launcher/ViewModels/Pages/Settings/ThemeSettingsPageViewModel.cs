@@ -27,13 +27,13 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
         ImageMonetColors = new ObservableCollection<SolidColorBrush>();
 
         #region MonetDEBUG
-        ImageMonetColors.Add(new SolidColorBrush("#0077FF".ToColor()));
-        ImageMonetColors.Add(new SolidColorBrush("#FF0000".ToColor()));
-        ImageMonetColors.Add(new SolidColorBrush("#CDFCDF".ToColor()));
-        ImageMonetColors.Add(new SolidColorBrush("#CDF555".ToColor()));
-        ImageMonetColors.Add(new SolidColorBrush("#ABCDF5".ToColor()));
-        ImageMonetColors.Add(new SolidColorBrush("#00AAFF".ToColor()));
-        SelectedImageMonetColor = new SolidColorBrush("#0077FF".ToColor());
+        //ImageMonetColors.Add(new SolidColorBrush("#0077FF".ToColor()));
+        //ImageMonetColors.Add(new SolidColorBrush("#FF0000".ToColor()));
+        //ImageMonetColors.Add(new SolidColorBrush("#CDFCDF".ToColor()));
+        //ImageMonetColors.Add(new SolidColorBrush("#CDF555".ToColor()));
+        //ImageMonetColors.Add(new SolidColorBrush("#ABCDF5".ToColor()));
+        //ImageMonetColors.Add(new SolidColorBrush("#00AAFF".ToColor()));
+        //SelectedImageMonetColor = new SolidColorBrush("#0077FF".ToColor());
         #endregion
 
         AccentColorHex = themeService.AccentColorHex;
@@ -104,16 +104,19 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
     [ObservableProperty]
     public partial string Language { get; set; }
 
+    // Theme
     [RelayCommand]
     private void SetThemeType() {
         themeService.ThemeType = ThemeType;
     }
 
+    // Accent Color
     [RelayCommand]
     private void SetAccentColorHex() {
         themeService.AccentColorHex = AccentColorHex;
     }
 
+    // Monet colors
     [RelayCommand]
     private void SetMonetAndApply(Brush parameter) {
         // TODO: 万恶的Monet
@@ -124,8 +127,18 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
         //TODO: 万恶的Monet
     }
 
+    // Background
+    [RelayCommand]
+    private void SetSolidColorBackgroundHex() {
+        themeService.SolidColorBackgroundHex = SolidColorBackgroundHex;
+    }
+
     partial void OnAccentColorModeChanged(AccentColorModeEnum value) {
         themeService.AccentMode = value;
+    }
+
+    partial void OnBackgroundTypeChanged(BackgroundTypeEnum value) {
+        themeService.BackgroundType = value;
     }
 
     private void GetAccentColorHex() {

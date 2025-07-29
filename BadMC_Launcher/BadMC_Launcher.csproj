@@ -79,6 +79,7 @@
         <UnoImage Include="Assets\Icons\JavaIcons\*" />
         <None Remove="Views\ContentDialogs\Settings\JvmArgumentsContentDialog.xaml" />
         <None Remove="Views\Pages\Settings\ThemeSettingsPage.xaml" />
+        <None Remove="Views\UserControls\Badge.xaml" />
         <None Remove="Views\UserControls\ColorPickerButton.xaml" />
         <None Remove="Views\UserControls\ToastMessageNotification.xaml" />
         <UnoImage Include="Assets\Icons\appicon_foreground.png" />
@@ -106,6 +107,11 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Strings\zh-Hans\Views\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Page Update="Views\UserControls\Badge.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
     <ItemGroup>
       <Page Update="Views\UserControls\ColorPickerButton.xaml">

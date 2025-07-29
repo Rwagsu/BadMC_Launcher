@@ -45,7 +45,5 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D48ABA40-866E-4A92-B9F1-24BE0CC05649}
-		RESX_NeutralResourcesLanguage = zh-Hans
-		RESX_SaveFilesImmediatelyUponChange = True
 	EndGlobalSection
 EndGlobal

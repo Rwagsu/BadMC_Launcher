@@ -68,5 +68,39 @@ public sealed partial class ThemeSettingsPage : Page {
         }
     }
 
+    private Visibility BackgroundTypeToVisibility(BackgroundTypeEnum backgroundType, int controlMode) {
+        switch (backgroundType) {
+            // Static image
+            case BackgroundTypeEnum.StaticImage:
+                switch (controlMode) {
+                    case 0:
+                    case 2:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+
+            // Bing wallpaper
+            case BackgroundTypeEnum.BingWallpaper:
+                switch (controlMode) {
+                    case 2:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+
+            // Solid color background
+            case BackgroundTypeEnum.SolidColor:
+                switch (controlMode) {
+                    case 1:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+            default:
+                return Visibility.Collapsed;
+        }
+    }
+
     private string ToNoAlphaHex(Color color) => color.ToNoAlphaHex();
 }

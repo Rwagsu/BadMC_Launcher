@@ -1,11 +1,10 @@
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using BadMC_Launcher.Controls;
 using BadMC_Launcher.Controls.MainSearch;
 using BadMC_Launcher.Interfaces;
 using BadMC_Launcher.Models.Data.ViewData;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Configs;
-using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Views.UserControls;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -13,17 +12,16 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media.Animation;
-using Uno.Extensions;
 
 namespace BadMC_Launcher.ViewModels.Pages;
 
 public partial class MainPageViewModel : ObservableObject {
     private bool isLaunchPadLightEliminationEnabled;
+    ThemeConfigsService themeService = App.GetService<ThemeConfigsService>();
 
     public MainPageViewModel() {
         //Init Property
-        WindowName = App.GetService<ThemeConfigsService>().WindowName;
+        WindowName = themeService.WindowName;
         IsLaunchPadOpen = true;
 
         IsMainSideBarToolShow = false;
@@ -36,6 +34,7 @@ public partial class MainPageViewModel : ObservableObject {
         SearchText = string.Empty;
 
         SetBackground();
+        themeService.PropertyChanged += ThemeService_PropertyChanged;
     }
 
     [ObservableProperty]
@@ -175,8 +174,7 @@ public partial class MainPageViewModel : ObservableObject {
     }
 
     private async void SetBackground() {
-        var themeConfigsService = App.GetService<ThemeConfigsService>();
-        AppBackground = await themeConfigsService.SetBackground(themeConfigsService.BackgroundType);
+        AppBackground = await themeService.SetBackground(themeService.BackgroundType);
     }
 
     private RequestMessage<T> SendInvokeFuncMessage<T>(Enum tokenEnum) {
@@ -192,6 +190,34 @@ public partial class MainPageViewModel : ObservableObject {
             sourceElement = VisualTreeHelper.GetParent(sourceElement);
         }
         return false;
+    }
+
+    private async void ThemeService_PropertyChanged(object? sender, PropertyChangedEventArgs args) {
+        if (args.PropertyName != nameof(ThemeConfigsService.BackgroundType)) {
+            // Check BackgroundType
+            switch (themeService.BackgroundType) {
+                case BackgroundTypeEnum.StaticImage:
+                    if (args.PropertyName != nameof(ThemeConfigsService.ImageBackgroundName) && args.PropertyName != nameof(ThemeConfigsService.BackgroundStretch)) {
+                        return;
+                    }
+                    break;
+                case BackgroundTypeEnum.BingWallpaper:
+                    if (args.PropertyName != nameof(ThemeConfigsService.BackgroundStretch)) {
+                        return;
+                    }
+                    break;
+                case BackgroundTypeEnum.SolidColor:
+                    if (args.PropertyName != nameof(ThemeConfigsService.SolidColorBackgroundHex)) {
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+            }
+        }
+
+        // Set background
+        AppBackground = await themeService.SetBackground(themeService.BackgroundType);
     }
 }
  

@@ -399,7 +399,7 @@
     <value>使用 Monet 从一个颜色中计算出所有合适的颜色当作强调色并将其应用到你的主题中.</value>
   </data>
   <data name="ThemeSettingsPage_SystemAccentColor_SettingsCard.Header" xml:space="preserve">
-    <value>这只是一只非常可爱的小怪物 ヽ(*・ω・)ﾉ </value>
+    <value>这只是一只非常可爱的小怪物 ヽ(*・ω・)ﾉ</value>
   </data>
   <data name="ThemeSettingsPage_SystemAccentColor_SettingsCard.Description" xml:space="preserve">
     <value>啊对了, 你在找什么? (´･ω･`)?</value>
@@ -449,18 +449,12 @@
   <data name="ColorPickerButton_Cancel_Button.Content" xml:space="preserve">
     <value>取消</value>
   </data>
-  <data name="Global_NotImplemented_TextBlock.Text" xml:space="preserve">
+  <data name="Global_NotImplemented_Badge.Text" xml:space="preserve">
     <value>未实现</value>
   </data>
   <data name="Global_NotImplemented_ToolTipRun.Text" xml:space="preserve">
     <value>由于在实现功能时出现问题, 该功能目前不可用.
 从该链接中获取详细信息:</value>
-  </data>
-  <data name="ThemeSettingsPage_BackgroundType_SettingsCard.Header" xml:space="preserve">
-    <value>背景类型</value>
-  </data>
-  <data name="ThemeSettingsPage_BackgroundType_SettingsCard.Description" xml:space="preserve">
-    <value>指示应用该如何显示背景.</value>
   </data>
   <data name="ThemeSettingsPage_BackgroundType_StaticImageTips.ToolTipService.ToolTip" xml:space="preserve">
     <value>使用静态图片作为应用背景.</value>
@@ -482,5 +476,29 @@
   </data>
   <data name="ThemeSettingsPage_BackgroundType_Acrylic.Text" xml:space="preserve">
     <value>Acrylic (亚克力)</value>
+  </data>
+  <data name="ThemeSettingsPage_StaticImage_SelectImageSettingsCard.Header" xml:space="preserve">
+    <value>设置背景图片</value>
+  </data>
+  <data name="ThemeSettingsPage_StaticImage_SelectImageSettingsCard.Description" xml:space="preserve">
+    <value>从本地文件夹选取一张背景图片. (仅支持静态图片)</value>
+  </data>
+  <data name="ThemeSettingsPage_SolidColor_SelectColorSettingsCard.Header" xml:space="preserve">
+    <value>设置背景颜色</value>
+  </data>
+  <data name="ThemeSettingsPage_SolidColor_SelectColorSettingsCard.Description" xml:space="preserve">
+    <value>使用颜色选取器设置背景颜色.</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundStretch_StretchTypeSettingsCard.Header" xml:space="preserve">
+    <value>设置背景图片拉伸模式</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundStretch_StretchTypeSettingsCard.Description" xml:space="preserve">
+    <value>设置背景图片如何适应启动器窗口.</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_SolidColorTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>使用自定义颜色作为启动器背景.</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_SolidColor.Text" xml:space="preserve">
+    <value>自定义颜色</value>
   </data>
 </root>

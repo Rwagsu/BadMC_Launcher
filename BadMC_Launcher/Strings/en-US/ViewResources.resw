@@ -425,12 +425,6 @@ If something in this setting has been changed in an version-specific customizati
   <data name="ThemeSettingsPage_BackgroundType_BingWallpaperWebTip.Text" xml:space="preserve">
     <value>Network required</value>
   </data>
-  <data name="ThemeSettingsPage_BackgroundType_SettingsCard.Description" xml:space="preserve">
-    <value>Instructions on how to display the background.</value>
-  </data>
-  <data name="ThemeSettingsPage_BackgroundType_SettingsCard.Header" xml:space="preserve">
-    <value>Background type</value>
-  </data>
   <data name="ThemeSettingsPage_BackgroundType_StaticImage.Text" xml:space="preserve">
     <value>Static image</value>
   </data>
@@ -475,5 +469,36 @@ If something in this setting has been changed in an version-specific customizati
   </data>
   <data name="ThemeSettingsPage_SystemAccentColor_SettingsCard.Header" xml:space="preserve">
     <value>It's just a very cute little monster ヽ(*・ω・)ﾉ</value>
+  </data>
+  <data name="Global_NotImplemented_ToolTipRun.Text" xml:space="preserve">
+    <value>Due to issues encountered during implementation, this feature is currently unavailable.
+For more information, please visit the following link:</value>
+  </data>
+  <data name="Global_NotImplemented_Badge.Text" xml:space="preserve">
+    <value>Unrealized</value>
+  </data>
+  <data name="ThemeSettingsPage_StaticImage_SelectImageSettingsCard.Header" xml:space="preserve">
+    <value>Set background image</value>
+  </data>
+  <data name="ThemeSettingsPage_StaticImage_SelectImageSettingsCard.Description" xml:space="preserve">
+    <value>Select a background image from your local folder. (Only static images are supported.)</value>
+  </data>
+  <data name="ThemeSettingsPage_SolidColor_SelectColorSettingsCard.Header" xml:space="preserve">
+    <value>Set background color</value>
+  </data>
+  <data name="ThemeSettingsPage_SolidColor_SelectColorSettingsCard.Description" xml:space="preserve">
+    <value>Use the color picker to set the background color.</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundStretch_StretchTypeSettingsCard.Header" xml:space="preserve">
+    <value>Set background image stretch mode</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundStretch_StretchTypeSettingsCard.Description" xml:space="preserve">
+    <value>How to set a background image to fit the launcher window.</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_SolidColorTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Use custom color as launcher background.</value>
+  </data>
+  <data name="ThemeSettingsPage_BackgroundType_SolidColor.Text" xml:space="preserve">
+    <value>Custom color</value>
   </data>
 </root>

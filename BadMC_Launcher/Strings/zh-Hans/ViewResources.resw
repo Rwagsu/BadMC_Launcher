@@ -501,4 +501,22 @@
   <data name="ThemeSettingsPage_BackgroundType_SolidColor.Text" xml:space="preserve">
     <value>自定义颜色</value>
   </data>
+  <data name="ThemeSettingsPage_StaticImage_SelectImageButton.Text" xml:space="preserve">
+    <value>更改背景图片</value>
+  </data>
+  <data name="BackgroundImageContentDialog_StaticImagesEmptyTitle_TextBlock.Text" xml:space="preserve">
+    <value>这里没有图片.</value>
+  </data>
+  <data name="BackgroundImageContentDialog_StaticImagesEmptySubTitle_TextBlock.Text" xml:space="preserve">
+    <value>仅支持 PNG, JPEG 和 JPG.</value>
+  </data>
+  <data name="BackgroundImageContentDialog_ContentDialog.Title" xml:space="preserve">
+    <value>选择一个图片</value>
+  </data>
+  <data name="BackgroundImageContentDialog_ContentDialog.PrimaryButtonText" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="BackgroundImageContentDialog_ContentDialog.CloseButtonText" xml:space="preserve">
+    <value>取消</value>
+  </data>
 </root>

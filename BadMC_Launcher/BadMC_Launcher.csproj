@@ -77,6 +77,7 @@
 
         <UnoImage Include="Assets\Icons\MinecraftIcons\*" />
         <UnoImage Include="Assets\Icons\JavaIcons\*" />
+        <None Remove="Views\ContentDialogs\Settings\BackgroundImageContentDialog.xaml" />
         <None Remove="Views\ContentDialogs\Settings\JvmArgumentsContentDialog.xaml" />
         <None Remove="Views\Pages\Settings\ThemeSettingsPage.xaml" />
         <None Remove="Views\UserControls\Badge.xaml" />
@@ -107,6 +108,11 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Strings\zh-Hans\Views\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Page Update="Views\ContentDialogs\Settings\BackgroundImageContentDialog.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
     <ItemGroup>
       <Page Update="Views\UserControls\Badge.xaml">

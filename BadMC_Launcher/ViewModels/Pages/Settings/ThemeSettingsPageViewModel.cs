@@ -39,8 +39,6 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
         AccentColorHex = themeService.AccentColorHex;
         MonetColorHex = themeService.MonetAccentColorHex;
         BackgroundType = themeService.BackgroundType;
-        BackgroundNames = new ObservableCollection<string>();
-        BackgroundName = themeService.ImageBackgroundName;
         BackgroundStretch = themeService.BackgroundStretch;
         SolidColorBackgroundHex = themeService.SolidColorBackgroundHex;
         WindowName = themeService.WindowName;
@@ -82,12 +80,6 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
     // Background
     [ObservableProperty]
     public partial BackgroundTypeEnum BackgroundType { get; set; }
-
-    [ObservableProperty]
-    public partial ObservableCollection<string> BackgroundNames { get; set; }
-
-    [ObservableProperty]
-    public partial string BackgroundName { get; set; }
 
     [ObservableProperty]
     public partial Stretch BackgroundStretch { get; set; }
@@ -156,11 +148,6 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
                 if (themeService.BackgroundType != BackgroundType) {
                     BackgroundType = themeService.BackgroundType;
                     // TODO: Update Monet Colors
-                }
-                break;
-            case nameof(ThemeConfigsService.ImageBackgroundName):
-                if (themeService.ImageBackgroundName != BackgroundName && !string.IsNullOrWhiteSpace(themeService.ImageBackgroundName)) {
-                    BackgroundName = themeService.ImageBackgroundName;
                 }
                 break;
             case nameof(ThemeConfigsService.BackgroundStretch):

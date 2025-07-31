@@ -501,4 +501,10 @@ For more information, please visit the following link:</value>
   <data name="ThemeSettingsPage_BackgroundType_SolidColor.Text" xml:space="preserve">
     <value>Custom color</value>
   </data>
+  <data name="BackgroundImageContentDialog_ContentDialog.PrimaryButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="BackgroundImageContentDialog_ContentDialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>

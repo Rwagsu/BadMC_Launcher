@@ -4,6 +4,7 @@ using BadMC_Launcher.Classes.DataClasses;
 using BadMC_Launcher.Classes.UI;
 using BadMC_Launcher.Controls;
 using BadMC_Launcher.Controls.Minecraft;
+using BadMC_Launcher.Controls.NotificationItem;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Configs;
@@ -193,7 +194,7 @@ public partial class LaunchSettingsPageViewModel : ObservableObject {
     private void OpenMultiPlayerPage() {
         // TODO: 等着吧（恼）
 
-        Debug.WriteLine("草你怎么真点了我还没做完啊Σ(っ °Д °;)っ");
+        App.GetService<NotificationService>().ShowNotification(new TipMessageNotificationItem(MessageSeverityEnum.Error, "草你怎么真点了我还没做完啊Σ(っ °Д °;)っ"));
     }
 
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]

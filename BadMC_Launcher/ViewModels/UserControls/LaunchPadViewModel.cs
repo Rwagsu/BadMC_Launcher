@@ -81,7 +81,7 @@ public partial class LaunchPadViewModel : ObservableObject {
 
     [RelayCommand(CanExecute = nameof(SetIsNotActiveMinecraftEntryEmpty))]
     public void LaunchMinecraftJava() {
-        App.GetService<NotificationService>().ShowNotification(new ToastMessageNotificationItem(
+        App.GetService<NotificationService>().ShowNotification(new TipMessageNotificationItem(
             MessageSeverityEnum.Important,
             "Tip of the Day",
             "This is a tip to help you use the app better.",

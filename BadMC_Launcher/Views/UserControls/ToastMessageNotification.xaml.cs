@@ -27,7 +27,7 @@ public sealed partial class ToastMessageNotification : UserControl {
     // Register properties
     public static readonly DependencyProperty NotificationItemProperty = DependencyProperty.Register(
          nameof(NotificationItem),
-         typeof(ToastMessageNotificationItem),
+         typeof(TipMessageNotificationItem),
          typeof(ToastMessageNotification),
          new PropertyMetadata(null)
     );
@@ -40,8 +40,8 @@ public sealed partial class ToastMessageNotification : UserControl {
     public event EventHandler? NotificationHided;
 
     // Properties
-    public ToastMessageNotificationItem? NotificationItem {
-        get => (ToastMessageNotificationItem?)GetValue(NotificationItemProperty);
+    public TipMessageNotificationItem? NotificationItem {
+        get => (TipMessageNotificationItem?)GetValue(NotificationItemProperty);
         set => SetValue(NotificationItemProperty, value);
     }
 

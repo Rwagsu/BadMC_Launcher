@@ -293,6 +293,8 @@
                         </Button>
                     </Grid>
 
+                    <Button Content="OwOWOWOWOWOWOOWOWO" Click="Button_Click"/>
+
                     <!-- LaunchPad -->
                     <userControls:LaunchPad x:Name="LaunchPadControl"
                                             Grid.Column="1"

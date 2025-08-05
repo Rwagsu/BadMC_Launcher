@@ -6,9 +6,34 @@
                xmlns:controls="using:CommunityToolkit.WinUI.Controls"
                xmlns:converters="using:CommunityToolkit.WinUI.Converters"
                xmlns:local="using:BadMC_Launcher.Views.ContentDialogs.Settings"
-               x:Uid="BackgroundImageContentDialog_ContentDialog"
+               xmlns:userConverters="using:BadMC_Launcher.Controls.Converters"
+               x:Uid="/ViewResources/BackgroundImageContentDialog_ContentDialog"
                PrimaryButtonStyle="{ThemeResource AccentButtonStyle}"
                Style="{ThemeResource DefaultContentDialogStyle}">
+    <ContentDialog.Resources>
+        <userConverters:StringPathToImageConverter x:Key="StringPathToImageConverter" />
+
+        <animations:ImplicitAnimationSet x:Name="ShowTransitions">
+            <animations:OffsetAnimation EasingMode="EaseOut"
+                                        From="0,24,0"
+                                        To="0"
+                                        Duration="0:0:0.4" />
+            <animations:OpacityAnimation EasingMode="EaseOut"
+                                         From="0"
+                                         To="1"
+                                         Duration="0:0:0.2" />
+        </animations:ImplicitAnimationSet>
+        <animations:ImplicitAnimationSet x:Name="HideTransitions">
+            <animations:OffsetAnimation EasingMode="EaseOut"
+                                        From="0"
+                                        To="0,24,0"
+                                        Duration="0:0:0.2" />
+            <animations:OpacityAnimation EasingMode="EaseOut"
+                                         From="1"
+                                         To="0"
+                                         Duration="0:0:0.1" />
+        </animations:ImplicitAnimationSet>
+    </ContentDialog.Resources>
     <Grid>
         <controls:SwitchPresenter HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
@@ -39,7 +64,18 @@
                     </Grid.RowDefinitions>
 
                     <!-- ViewImage -->
-                    <FlipView ItemsSource="{Binding BackgroundNames}" SelectedItem="{Binding BackgroundName, Mode=TwoWay}" />
+                    <FlipView x:Name="ImageView"
+                              ItemsSource="{Binding BackgroundNames}"
+                              SelectedItem="{Binding BackgroundName, Mode=TwoWay}">
+                        <FlipView.ItemTemplate>
+                            <DataTemplate>
+                                <Image HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       Source="{Binding Converter={StaticResource StringPathToImageConverter}}"
+                                       Stretch="UniformToFill" />
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
 
                     <!-- Images -->
                     <GridView animations:Implicit.HideAnimations="{StaticResource HideTransitions}"
@@ -59,8 +95,11 @@
                                 <Border Width="80"
                                         Height="80"
                                         Margin="2"
-                                        Background="{x:Bind ToBitmapImage()}"
-                                        CornerRadius="4" />
+                                        CornerRadius="4">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding Converter={StaticResource StringPathToImageConverter}}" />
+                                    </Border.Background>
+                                </Border>
                             </DataTemplate>
                         </GridView.ItemTemplate>
 

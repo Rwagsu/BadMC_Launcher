@@ -125,6 +125,7 @@ public partial class App : Application {
                     services.AddTransient<MinecraftFolderContentDialog>();
                     services.AddTransient<JavaContentDialog>();
                     services.AddTransient<JvmArgumentsContentDialog>();
+                    services.AddTransient<BackgroundImageContentDialog>();
                 })
                 .UseToolkit()
             );

@@ -235,7 +235,7 @@ public class ThemeConfigsService : ConfigClass {
                 case BackgroundTypeEnum.StaticImage:
                     var path = Path.Combine(AppDataPath.pathsList["AssetsPath"], "Wallpapers", ThemeConfigs.imageBackgroundName);
                     if (!pathService.CheckPath(path)) {
-                        notificationService.ShowNotification(new ToastMessageNotificationItem(MessageSeverityEnum.Error,
+                        notificationService.ShowNotification(new TipMessageNotificationItem(MessageSeverityEnum.Error,
                             resourceLoader.GetString("ToastNotification_BackgroundErrorTitle"),
                             $"{resourceLoader.GetString("ToastNotification_BackgroundErrorMessage")} {path}"));
                         return SetBrush(Color.FromArgb(0, 119, 255, 1)); ;
@@ -308,7 +308,7 @@ public class ThemeConfigsService : ConfigClass {
                     return "https://cn.bing.com" + url;
                 }
             }
-            notificationService.ShowNotification(new ToastMessageNotificationItem(
+            notificationService.ShowNotification(new TipMessageNotificationItem(
                 MessageSeverityEnum.Error,
                 resourceLoader.GetString("ToastNotification_BingWallpaperErrorTitle"),
                 resourceLoader.GetString("ToastNotification_BingWallpaperJsonErrorMessage")));
@@ -316,13 +316,13 @@ public class ThemeConfigsService : ConfigClass {
         catch (Exception ex) {
             switch (ex) {
                 case HttpRequestException:
-                    notificationService.ShowNotification(new ToastMessageNotificationItem(
+                    notificationService.ShowNotification(new TipMessageNotificationItem(
                         MessageSeverityEnum.Error,
                         resourceLoader.GetString("ToastNotification_BingWallpaperErrorTitle"),
                         resourceLoader.GetString("ToastNotification_BingWallpaperGetErrorMessage")));
                     break;
                 case JsonException:
-                    notificationService.ShowNotification(new ToastMessageNotificationItem(
+                    notificationService.ShowNotification(new TipMessageNotificationItem(
                         MessageSeverityEnum.Error,
                         resourceLoader.GetString("ToastNotification_BingWallpaperErrorTitle"),
                         resourceLoader.GetString("ToastNotification_BingWallpaperJsonErrorMessage")

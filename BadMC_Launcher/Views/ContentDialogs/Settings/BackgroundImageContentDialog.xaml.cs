@@ -22,6 +22,4 @@ public sealed partial class BackgroundImageContentDialog : ContentDialog
 	{
 		this.InitializeComponent();
 	}
-
-    BitmapImage ToBitmapImage(string imagePath) => imagePath.FindImageFromBackground();
 }

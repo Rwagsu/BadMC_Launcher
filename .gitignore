@@ -405,3 +405,5 @@ solution-config.props
 # Publish Profiles
 !**/Properties/PublishProfiles/*.pubxml
 /.idea
+/.VSCodeCounter/2025-08-01_23-37-58
+/ResXManager.config.xml

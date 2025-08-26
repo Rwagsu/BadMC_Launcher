@@ -6,6 +6,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using BadMC_Launcher.Classes;
+using BadMC_Launcher.Classes.DataClasses;
 using BadMC_Launcher.Controls.NotificationItem;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Models.Data.ConfigsData;
@@ -13,6 +14,7 @@ using BadMC_Launcher.Models.Enums;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.WinUI.Helpers;
+using Microsoft.UI;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.UI;
 
@@ -198,14 +200,16 @@ public class ThemeConfigsService : ConfigClass {
     private void SetAccentColor() {
         if (ThemeConfigs.accentMode == AccentColorModeEnum.Custom) {
             if (!string.IsNullOrWhiteSpace(ThemeConfigs.accentColorHex)) {
-                var color = ThemeConfigs.accentColorHex.ToColor();
-                App.Current.Resources["SystemAccentColorLight1"] = "#FF0000".ToColor();
-                App.Current.Resources["SystemAccentColorLight2"] = "#FF0000".ToColor();
-                App.Current.Resources["SystemAccentColorLight3"] = "#FF0000".ToColor();
-                App.Current.Resources["SystemAccentColorDark1"] = "#FF0000".ToColor();
-                App.Current.Resources["SystemAccentColorDark2"] = "#FF0000".ToColor();
-                App.Current.Resources["SystemAccentColorDark3"] = "#FF0000".ToColor();
-                App.Current.Resources["SystemAccentColor"] = "#FF0000".ToColor();
+                var lightColorHsl = ThemeConfigs.accentColorHex.ToColor().ToHsl();
+                var colors = new AccentColors(ThemeConfigs.accentColorHex.ToColor());
+
+                App.Current.Resources["SystemAccentColor"] = colors.MainColor;
+                App.Current.Resources["SystemAccentColorLight1"] = colors.LightColorPrimary;
+                App.Current.Resources["SystemAccentColorLight2"] = colors.LightColorSecondary;
+                App.Current.Resources["SystemAccentColorLight3"] = colors.LightColorTertiary;
+                App.Current.Resources["SystemAccentColorDark1"] = colors.DarkColorPrimary;
+                App.Current.Resources["SystemAccentColorDark2"] = colors.DarkColorSecondary;
+                App.Current.Resources["SystemAccentColorDark3"] = colors.DarkColorTertiary;
             }
         }
     }
@@ -231,7 +235,7 @@ public class ThemeConfigsService : ConfigClass {
                 case BackgroundTypeEnum.StaticImage:
                     var path = Path.Combine(AppDataPath.pathsList["AssetsPath"], "Wallpapers", ThemeConfigs.imageBackgroundName);
                     if (!pathService.CheckPath(path)) {
-                        notificationService.ShowNotification(new ToastMessageNotificationItem(MessageSeverityEnum.Error,
+                        notificationService.ShowNotification(new TipMessageNotificationItem(MessageSeverityEnum.Error,
                             resourceLoader.GetString("ToastNotification_BackgroundErrorTitle"),
                             $"{resourceLoader.GetString("ToastNotification_BackgroundErrorMessage")} {path}"));
                         return SetBrush(Color.FromArgb(0, 119, 255, 1)); ;
@@ -263,17 +267,8 @@ public class ThemeConfigsService : ConfigClass {
             ThemeConfigs.backgroundStretch = jsonClass.BackgroundStretch;
             ThemeConfigs.windowName = jsonClass.WindowName;
 
-            if (!string.IsNullOrWhiteSpace(AccentColorHex)) {
-                if (AccentMode == AccentColorModeEnum.Custom) {
-                    SetAccentColor();
-                }
-            }
-            else {
-                AccentColorHex = App.Current.Resources["SystemAccentColor"] is SolidColorBrush solidColorBrush ? solidColorBrush.Color.ToHex() : "#0077FF";
-            }
-
-            if (string.IsNullOrWhiteSpace(MonetAccentColorHex)) {
-                MonetAccentColorHex = App.Current.Resources["SystemAccentColor"] is SolidColorBrush solidColorBrush ? solidColorBrush.Color.ToHex() : "#0077FF";
+            if (AccentMode == AccentColorModeEnum.Custom) {
+                SetAccentColor();
             }
 
             return true;
@@ -313,7 +308,7 @@ public class ThemeConfigsService : ConfigClass {
                     return "https://cn.bing.com" + url;
                 }
             }
-            notificationService.ShowNotification(new ToastMessageNotificationItem(
+            notificationService.ShowNotification(new TipMessageNotificationItem(
                 MessageSeverityEnum.Error,
                 resourceLoader.GetString("ToastNotification_BingWallpaperErrorTitle"),
                 resourceLoader.GetString("ToastNotification_BingWallpaperJsonErrorMessage")));
@@ -321,13 +316,13 @@ public class ThemeConfigsService : ConfigClass {
         catch (Exception ex) {
             switch (ex) {
                 case HttpRequestException:
-                    notificationService.ShowNotification(new ToastMessageNotificationItem(
+                    notificationService.ShowNotification(new TipMessageNotificationItem(
                         MessageSeverityEnum.Error,
                         resourceLoader.GetString("ToastNotification_BingWallpaperErrorTitle"),
                         resourceLoader.GetString("ToastNotification_BingWallpaperGetErrorMessage")));
                     break;
                 case JsonException:
-                    notificationService.ShowNotification(new ToastMessageNotificationItem(
+                    notificationService.ShowNotification(new TipMessageNotificationItem(
                         MessageSeverityEnum.Error,
                         resourceLoader.GetString("ToastNotification_BingWallpaperErrorTitle"),
                         resourceLoader.GetString("ToastNotification_BingWallpaperJsonErrorMessage")

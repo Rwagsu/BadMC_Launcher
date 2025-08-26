@@ -252,13 +252,13 @@ public class PathService {
         catch (Exception ex) {
             switch (ex) {
                 case Win32Exception:
-                    notificationService.ShowNotification(new ToastMessageNotificationItem(
+                    notificationService.ShowNotification(new TipMessageNotificationItem(
                     MessageSeverityEnum.Error,
                     resourceLoader.GetString("ToastNotification_Win32ErrorTitle"),
                     $"{path}\n\n{ex.Message}"));
                     break;
                 case FileNotFoundException:
-                    notificationService.ShowNotification(new ToastMessageNotificationItem(
+                    notificationService.ShowNotification(new TipMessageNotificationItem(
                     MessageSeverityEnum.Error,
                     resourceLoader.GetString("ToastNotification_FileNotFoundErrorTitle"),
                     $"{path}\n\n{ex.Message}"));
@@ -325,7 +325,7 @@ public class PathService {
     private bool ShowErrorToast(Exception ex, string filePath = "") {
         switch (ex) {
             case JsonException:
-                notificationService.ShowNotification(new ToastMessageNotificationItem(
+                notificationService.ShowNotification(new TipMessageNotificationItem(
                     MessageSeverityEnum.Error,
                     resourceLoader.GetString("ToastNotification_ReadJsonErrorTitle"),
                     $"{resourceLoader.GetString("ToastNotification_JsonErrorMessage")}\n{filePath}\n\n{ex.Message}") {
@@ -350,19 +350,19 @@ public class PathService {
                 break;
             case SecurityException:
             case UnauthorizedAccessException:
-                notificationService.ShowNotification(new ToastMessageNotificationItem(
+                notificationService.ShowNotification(new TipMessageNotificationItem(
                     MessageSeverityEnum.Error,
                     resourceLoader.GetString("ToastNotification_UnauthorizedAccessErrorTitle"),
                     $"{resourceLoader.GetString("ToastNotification_UnauthorizedAccessErrorMessage")}\n{filePath}\n\n{ex.Message}"));
                 break;
             case PathTooLongException:
-                notificationService.ShowNotification(new ToastMessageNotificationItem(
+                notificationService.ShowNotification(new TipMessageNotificationItem(
                    MessageSeverityEnum.Error,
                    resourceLoader.GetString("ToastNotification_PathTooLongErrorTitle"),
                    $"{resourceLoader.GetString("ToastNotification_PathTooLongErrorMessage")}\n{filePath}\n\n{ex.Message}"));
                 break;
             case IOException:
-                notificationService.ShowNotification(new ToastMessageNotificationItem(
+                notificationService.ShowNotification(new TipMessageNotificationItem(
                    MessageSeverityEnum.Error,
                    resourceLoader.GetString("ToastNotification_IOErrorTitle"),
                    $"{resourceLoader.GetString("ToastNotification_IOErrorMessage")}\n{filePath}\n\n{ex.Message}"));

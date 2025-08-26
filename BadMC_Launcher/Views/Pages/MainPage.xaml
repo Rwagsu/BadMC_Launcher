@@ -293,7 +293,7 @@
                         </Button>
                     </Grid>
 
-                    <userControls:ColorPickerButton />
+                    <Button Content="OwOWOWOWOWOWOOWOWO" Click="Button_Click"/>
 
                     <!-- LaunchPad -->
                     <userControls:LaunchPad x:Name="LaunchPadControl"

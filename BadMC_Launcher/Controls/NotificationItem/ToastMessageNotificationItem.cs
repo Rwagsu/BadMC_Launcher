@@ -5,8 +5,8 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace BadMC_Launcher.Controls.NotificationItem;
 
-public partial class ToastMessageNotificationItem : ObservableObject, INotificationItem {
-    public ToastMessageNotificationItem(MessageSeverityEnum notificationSeverity,
+public partial class TipMessageNotificationItem : ObservableObject, INotificationItem {
+    public TipMessageNotificationItem(MessageSeverityEnum notificationSeverity,
         string title,
         string message = "",
         IconSource? notificationIcon = null,

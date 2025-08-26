@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.ViewModels.Pages.Settings;
+using Flurl.Util;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -58,6 +59,40 @@ public sealed partial class ThemeSettingsPage : Page {
                 switch (controlMode) {
                     case 3:
                     case 4:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+            default:
+                return Visibility.Collapsed;
+        }
+    }
+
+    private Visibility BackgroundTypeToVisibility(BackgroundTypeEnum backgroundType, int controlMode) {
+        switch (backgroundType) {
+            // Static image
+            case BackgroundTypeEnum.StaticImage:
+                switch (controlMode) {
+                    case 0:
+                    case 2:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+
+            // Bing wallpaper
+            case BackgroundTypeEnum.BingWallpaper:
+                switch (controlMode) {
+                    case 2:
+                        return Visibility.Visible;
+                    default:
+                        return Visibility.Collapsed;
+                }
+
+            // Solid color background
+            case BackgroundTypeEnum.SolidColor:
+                switch (controlMode) {
+                    case 1:
                         return Visibility.Visible;
                     default:
                         return Visibility.Collapsed;

@@ -25,25 +25,25 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
 
         // TODO: 改颜色
         ImageMonetColors = new ObservableCollection<SolidColorBrush>();
-        ImageMonetColors.Add(new SolidColorBrush("#0077FF".ToColor()));
-        ImageMonetColors.Add(new SolidColorBrush("#FF0000".ToColor()));
-        ImageMonetColors.Add(new SolidColorBrush("#CDFCDF".ToColor()));
-        ImageMonetColors.Add(new SolidColorBrush("#CDF555".ToColor()));
-        ImageMonetColors.Add(new SolidColorBrush("#ABCDF5".ToColor()));
-        ImageMonetColors.Add(new SolidColorBrush("#00AAFF".ToColor()));
-        SelectedImageMonetColor = new SolidColorBrush("#0077FF".ToColor());
+
+        #region MonetDEBUG
+        //ImageMonetColors.Add(new SolidColorBrush("#0077FF".ToColor()));
+        //ImageMonetColors.Add(new SolidColorBrush("#FF0000".ToColor()));
+        //ImageMonetColors.Add(new SolidColorBrush("#CDFCDF".ToColor()));
+        //ImageMonetColors.Add(new SolidColorBrush("#CDF555".ToColor()));
+        //ImageMonetColors.Add(new SolidColorBrush("#ABCDF5".ToColor()));
+        //ImageMonetColors.Add(new SolidColorBrush("#00AAFF".ToColor()));
+        //SelectedImageMonetColor = new SolidColorBrush("#0077FF".ToColor());
+        #endregion
 
         AccentColorHex = themeService.AccentColorHex;
         MonetColorHex = themeService.MonetAccentColorHex;
         BackgroundType = themeService.BackgroundType;
-        BackgroundNames = new ObservableCollection<string>();
-        BackgroundName = themeService.ImageBackgroundName;
         BackgroundStretch = themeService.BackgroundStretch;
         SolidColorBackgroundHex = themeService.SolidColorBackgroundHex;
         WindowName = themeService.WindowName;
         Languages = AppParameters.Languages;
         Language = themeService.Language;
-
         GetAccentColorHex();
 
         themeService.PropertyChanged += OnThemeConfigChanged;
@@ -82,12 +82,6 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
     public partial BackgroundTypeEnum BackgroundType { get; set; }
 
     [ObservableProperty]
-    public partial ObservableCollection<string> BackgroundNames { get; set; }
-
-    [ObservableProperty]
-    public partial string BackgroundName { get; set; }
-
-    [ObservableProperty]
     public partial Stretch BackgroundStretch { get; set; }
 
     [ObservableProperty]
@@ -102,16 +96,19 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
     [ObservableProperty]
     public partial string Language { get; set; }
 
+    // Theme
     [RelayCommand]
     private void SetThemeType() {
         themeService.ThemeType = ThemeType;
     }
 
+    // Accent Color
     [RelayCommand]
     private void SetAccentColorHex() {
         themeService.AccentColorHex = AccentColorHex;
     }
 
+    // Monet colors
     [RelayCommand]
     private void SetMonetAndApply(Brush parameter) {
         // TODO: 万恶的Monet
@@ -119,18 +116,27 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
 
     [RelayCommand]
     private void SetMonetColorHex() {
-        themeService.MonetAccentColorHex = MonetColorHex;
-        Application.Current.Resources["AccentFillColorDefaultBrush"] = new SolidColorBrush() { Color = AccentColorHex.ToColor() };
+        //TODO: 万恶的Monet
+    }
+
+    // Background
+    [RelayCommand]
+    private void SetSolidColorBackgroundHex() {
+        themeService.SolidColorBackgroundHex = SolidColorBackgroundHex;
     }
 
     partial void OnAccentColorModeChanged(AccentColorModeEnum value) {
         themeService.AccentMode = value;
     }
 
+    partial void OnBackgroundTypeChanged(BackgroundTypeEnum value) {
+        themeService.BackgroundType = value;
+    }
+
     private void GetAccentColorHex() {
-        var resource = Application.Current.Resources["AccentFillColorDefaultBrush"];
-        if (resource is SolidColorBrush brush) {
-            ViewAccentColorHex = brush.Color.ToNoAlphaHex();
+        var resource = Application.Current.Resources["SystemAccentColor"];
+        if (resource is Color color) {
+            ViewAccentColorHex = color.ToNoAlphaHex();
         }
     }
 
@@ -142,11 +148,6 @@ public partial class ThemeSettingsPageViewModel : ObservableObject {
                 if (themeService.BackgroundType != BackgroundType) {
                     BackgroundType = themeService.BackgroundType;
                     // TODO: Update Monet Colors
-                }
-                break;
-            case nameof(ThemeConfigsService.ImageBackgroundName):
-                if (themeService.ImageBackgroundName != BackgroundName && !string.IsNullOrWhiteSpace(themeService.ImageBackgroundName)) {
-                    BackgroundName = themeService.ImageBackgroundName;
                 }
                 break;
             case nameof(ThemeConfigsService.BackgroundStretch):

@@ -4,6 +4,7 @@ using BadMC_Launcher.Interfaces;
 using BadMC_Launcher.Models.Enums;
 using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.ViewModels.Pages;
+using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.UserControls;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -69,7 +70,7 @@ public sealed partial class MainPage : Page {
     }
 
     private void ShowNotification(object recipient, ValueChangedMessage<INotificationItem> message) {
-        if (message.Value is ToastMessageNotificationItem toastMessage) {
+        if (message.Value is TipMessageNotificationItem toastMessage) {
             var toastControl = new ToastMessageNotification() { NotificationItem = toastMessage };
             toastControl.NotificationHided += (s, e) => {
                 if (s is UIElement element) {
@@ -97,7 +98,7 @@ public sealed partial class MainPage : Page {
             NotificationsStackPanel.Children.Add(progressBarControl);
         }
         else {
-                App.GetService<NotificationService>().ShowNotification(new ToastMessageNotificationItem(
+                App.GetService<NotificationService>().ShowNotification(new TipMessageNotificationItem(
                     MessageSeverityEnum.Error,
                     App.GetService<ResourceLoader>().GetString("ToastNotification_NotificationNotFoundTitle"),
                     $"{message.Value.GetType().FullName ?? message.Value.GetType().ToString()} + {App.GetService<ResourceLoader>().GetString("ToastNotification_NotificationNotFoundMessage")}"));
@@ -107,12 +108,19 @@ public sealed partial class MainPage : Page {
     private void ShowNotification(object recipient, ValueChangedMessage<(INotificationItem, Func<INotificationItem, UIElement, UIElement>)> message) {
         var control = App.GetService<NotificationService>().GetNotificationControl(message.Value.Item1, message.Value.Item2);
         if (control == null) {
-            App.GetService<NotificationService>().ShowNotification(new ToastMessageNotificationItem(
+            App.GetService<NotificationService>().ShowNotification(new TipMessageNotificationItem(
                 MessageSeverityEnum.Error,
                 App.GetService<ResourceLoader>().GetString("ToastNotification_NotificationNotFoundTitle"),
                 $"{message.Value.GetType().FullName ?? message.Value.GetType().ToString()} + {App.GetService<ResourceLoader>().GetString("ToastNotification_NotificationNotFoundMessage")}"));
             return;
         }
         NotificationsStackPanel.Children.Add(control);
+    }
+
+    private async void Button_Click(object sender, RoutedEventArgs e) {
+        var dialog = App.GetService<BackgroundImageContentDialog>();
+        dialog.XamlRoot = XamlRoot;
+
+        await dialog.ShowAsync();
     }
 }

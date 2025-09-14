@@ -6,6 +6,7 @@ on:
       - 'BadMC_Launcher/**'
     branches-ignore:
       - Backup
+      - Dev
 
   workflow_call:
     secrets:

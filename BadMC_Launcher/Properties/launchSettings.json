@@ -1,12 +1,4 @@
 {
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:8080",
-      "sslPort": 0
-    }
-  },
   "profiles": {
     "BadMC_Launcher (WinAppSDK Unpackaged)": {
       "commandName": "Project",
@@ -14,7 +6,8 @@
     },
     "BadMC_Launcher (WinAppSDK Packaged)": {
       "commandName": "MsixPackage",
-      "compatibleTargetFramework": "windows"
+      "compatibleTargetFramework": "windows",
+      "nativeDebugging": false
     },
     "BadMC_Launcher (Desktop)": {
       "commandName": "Project",
@@ -25,6 +18,14 @@
       "commandLineArgs": "{ProjectDir}/bin/Debug/net9.0-desktop/BadMC_Launcher.dll",
       "distributionName": "",
       "compatibleTargetFramework": "desktop"
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:8080",
+      "sslPort": 0
     }
   }
 }

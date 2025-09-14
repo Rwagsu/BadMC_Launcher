@@ -1,19 +1,29 @@
-using BadMC_Launcher.Classes;
-using BadMC_Launcher.Classes.MainSearch;
-using BadMC_Launcher.Models.Datas;
-using BadMC_Launcher.Services;
+using System.Reflection.Metadata;
+using BadMC_Launcher.Controls;
+using BadMC_Launcher.Controls.MainSearch;
+using BadMC_Launcher.Helpers;
+using BadMC_Launcher.Models.Data;
+using BadMC_Launcher.Services.Configs;
+using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Services.ViewServices;
-using BadMC_Launcher.Servicess;
-using BadMC_Launcher.Servicess.Settings;
-using BadMC_Launcher.ViewModels.Pages;
+using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages;
-using BadMC_Launcher.Views.Pages.MainSideBarPages;
+using BadMC_Launcher.Views.Pages.Settings;
+using BadMC_Launcher.Views.UserControls;
+using CommunityToolkit.WinUI.Helpers;
+using Hardware.Info;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.UI;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.Windows.ApplicationModel.Resources;
+using Microsoft.UI.Dispatching;
+using Microsoft.UI.Input;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls.AnimatedVisuals;
 using Serilog;
+using Uno.Extensions.Toolkit;
 using Uno.Resizetizer;
+using Windows.Foundation;
+using Windows.Graphics;
 
 namespace BadMC_Launcher;
 public partial class App : Application {
@@ -22,22 +32,38 @@ public partial class App : Application {
     /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>
     public App() {
-        InitializeComponent();
+        this.InitializeComponent();
+
+        // Get the current DispatcherQueue for the app, used for UI operations
+        AppDispatcher = DispatcherQueue.GetForCurrentThread();
+
+        // Check if the app data path exists, if not create it
+        AppDataPath.pathsList.Values.ForEach(item => {
+            if (!Directory.Exists(item)) {
+                Directory.CreateDirectory(item);
+            }
+        });
     }
 
     public static new App Current => (App)Application.Current;
 
-    protected Window? MainWindow { get; private set; }
-    public IHost? Host { get; private set; }
+    public IThemeService? AppThemeService { get; private set; }
+
+    public DispatcherQueue AppDispatcher { get; private set; }
+
+    internal Window? MainWindow { get; private set; }
+    internal IHost? Host { get; private set; }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args) {
+
         var builder = this.CreateBuilder(args)
             .Configure(host => host
 #if DEBUG
                 // Switch to Development environment when running in DEBUG
                 .UseEnvironment(Environments.Development)
 #endif
-                .UseLogging(configure: (context, logBuilder) => {
+                .UseLogging(configure: (context, logBuilder) =>
+                {
                     // Configure log levels for different categories of logging
                     logBuilder
                         .SetMinimumLevel(
@@ -46,7 +72,7 @@ public partial class App : Application {
                                 LogLevel.Warning)
 
                         // Default filters for core Uno Platform namespaces
-                        .CoreLogLevel(LogLevel.Information);
+                        .CoreLogLevel(LogLevel.Warning);
 
                     // Uno Platform namespace filter groups
                     // Uncomment individual methods to see more detailed logging
@@ -61,7 +87,7 @@ public partial class App : Application {
                     //// Binder memory references tracking
                     //logBuilder.BinderMemoryReferenceLogLevel(LogLevel.Debug);
                     //// DevServer and HotReload related
-                    //logBuilder.HotReloadCoreLogLevel(LogLevel.Debug);
+                    //logBuilder.HotReloadCoreLogLevel(LogLevel.Information);
                     //// Debug JS interop
                     //logBuilder.WebAssemblyLogLevel(LogLevel.Debug);
 
@@ -71,48 +97,50 @@ public partial class App : Application {
                         .MinimumLevel.Error()
                         .WriteTo.Console()
                         .WriteTo.File(
-                            path: Path.Combine(AppDataPath.LogsPath, "AppLog.log"), // 更改日志文件的存储位置
+                            path: Path.Combine(AppDataPath.pathsList["LogsPath"], "AppLog.log"),
                             rollingInterval: RollingInterval.Day,
                             retainedFileCountLimit: 10
                         );
                 })
                 .ConfigureServices((context, services) => {
-                    // TODO: Register your services
                     //Register third-party class
                     services.AddSingleton<HttpClient>();
                     services.AddSingleton<ResourceLoader>();
+                    services.AddSingleton<HardwareInfo>();
 
-                    //Regist class
+                    services.AddTransient<Random>();
+
+                    //Register class
                     services.AddSingleton<ExceptionHandlingService>();
-                    services.AddSingleton<FileService>();
-                    services.AddSingleton<MinecraftConfigService>();
-                    services.AddSingleton<ThemeSettingService>();
-                    services.AddSingleton<MainSideBarManagerService>();
-                    services.AddSingleton<MainMenuService>();
+                    services.AddSingleton<PathService>();
+                    services.AddSingleton<MinecraftConfigsService>();
+                    services.AddSingleton<ThemeConfigsService>();
+                    services.AddSingleton<MainSideBarService>();
+                    services.AddSingleton<SettingsService>();
                     services.AddSingleton<AppAssetsService>();
-                    services.AddTransient<SingleMinecraftConfigService>();
+                    services.AddSingleton<LaunchSettingsService>();
+                    services.AddSingleton<NotificationService>();
+
+                    //Register ContentDialogs
+                    services.AddTransient<MinecraftFolderContentDialog>();
+                    services.AddTransient<JavaContentDialog>();
+                    services.AddTransient<JvmArgumentsContentDialog>();
+                    services.AddTransient<BackgroundImageContentDialog>();
                 })
+                .UseToolkit()
             );
+        
         MainWindow = builder.Window;
-        Host = builder.Build();
-
-        //Get Configs
-        GetSettings();
-
-        MainWindow.AppWindow.Title = GetService<ThemeSettingService>().WindowName;
-        MainWindow.AppWindow.Resize(AppParameters.windowSize);
-        MainWindow.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-        //TODO: 要是Uno Platform 3月还没回信，那自定义拖拽区域估计只能自己写啦（悲）不过Desktop的三大金刚键肯定得自己写啦（大悲）
-#if WINDOWS
-        MainWindow.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-        MainWindow.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-
-#endif
 
 #if DEBUG
         MainWindow.UseStudio();
 #endif
         MainWindow.SetWindowIcon();
+
+        Host = builder.Build();
+
+        // Get Configs
+        GetSettings();
 
         // Do not repeat app initialization when the Window already has content,
         // just ensure that the window is active
@@ -131,11 +159,45 @@ public partial class App : Application {
             rootFrame.Navigate(typeof(MainPage), args.Arguments);
         }
 
-        //Regist Pages
-        GlobalRegister();
+        // Get ThemeService
+        AppThemeService = MainWindow.GetThemeService();
+
+        //Set MainWindow Configs
+        MainWindow.AppWindow.Title = GetService<ThemeConfigsService>().WindowName;
+        MainWindow.AppWindow.Resize(AppParameters.WindowSize);
+        MainWindow.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
+
+#if WINAPPSDK_PACKAGED
+        // TODO: 不等了拖拽三大金刚自己写(恼)
+        MainWindow.AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
+        MainWindow.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
+        MainWindow.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+
+        // Set TitleBar area
+        var nonClientInputSrc = InputNonClientPointerSource.GetForWindowId(MainWindow.AppWindow.Id);
+        var buttonsNonClientArea = UIHelper.FindElementByName(MainWindow.Content, "AppTitleBarButtons") as FrameworkElement;
+
+        if (buttonsNonClientArea != null) {
+            GeneralTransform transformButtons = buttonsNonClientArea.TransformToVisual(null);
+            Rect bounds = transformButtons.TransformBounds(new Rect(0, 0, buttonsNonClientArea.ActualWidth, buttonsNonClientArea.ActualHeight));
+
+            var scale = MainWindow.Content.XamlRoot?.RasterizationScale ?? 0.0;
+            var transparentRect = new RectInt32() {
+                X = (int)Math.Round(bounds.X * scale),
+                Y = (int)Math.Round(bounds.Y * scale),
+                Width = (int)Math.Round(bounds.Width * scale),
+                Height = (int)Math.Round(bounds.Height * scale)
+            };
+            var rects = new RectInt32[] { transparentRect };
+
+            nonClientInputSrc.SetRegionRects(NonClientRegionKind.Passthrough, rects);
+        }
+#endif
 
         // Ensure the current window is active
         MainWindow.Activate();
+
+        
     }
 
     //Get Service
@@ -147,34 +209,14 @@ public partial class App : Application {
                 return service;
             }
         }
+
         throw new InvalidOperationException("Service not found.");
     }
 
     private static void GetSettings() {
-        GetService<MinecraftConfigService>().SyncSettingGet();
-        GetService<MinecraftConfigService>().isSyncEnabled = true;
-        GetService<ThemeSettingService>().SyncSettingGet();
-        GetService<ThemeSettingService>().isSyncEnabled = true;
-    }
-
-    private void GlobalRegister() {
-        //Register MainSideBarItem
-        GetService<MainSideBarManagerService>().Register(new MainSideBarItem() {
-            ItemName = App.GetService<ResourceLoader>().GetString("MainPage_MainMenuNameResource"),
-            ItemIcon = new FontIcon() { Glyph = "\uE74C" },
-            NavigatePage = typeof(MainMenuPage),
-        });
-
-        GetService<MainSideBarManagerService>().Register(new MainSideBarItem() {
-            ItemName = App.GetService<ResourceLoader>().GetString("MainPage_MainMenuNameResource"),
-            ItemIcon = new FontIcon() { Glyph = "\uE74C" },
-            NavigatePage = typeof(MainMenuPage),
-        });
-
-        //Register MainMenuSearchFilterItem
-        GetService<MainMenuService>().Register(new MainMenuSearchMinecraftEntryFilter() {
-            ItemName = GetService<ResourceLoader>().GetString("MainMenuPage_SearchFilterMinecraftEntryNameResource"),
-            IconGlyph = "\uE7FC"
-        });
+        GetService<MinecraftConfigsService>().SyncSettingGet();
+        GetService<MinecraftConfigsService>().IsSyncEnabled = true;
+        GetService<ThemeConfigsService>().SyncSettingGet();
+        GetService<ThemeConfigsService>().isSyncEnabled = true;
     }
 }

@@ -23,7 +23,7 @@ public static class MinecraftEntryExtension {
             if (vanillaEntry.Version.Type == MinecraftVersionType.Release) {
                 return MinecraftEntryImageEnum.Creeper;
             }
-            else if (vanillaEntry.Version.Type == MinecraftVersionType.PreRelease || vanillaEntry.Version.Type == MinecraftVersionType.Snapshot) {
+            else if (vanillaEntry.Version.Type == MinecraftVersionType.Snapshot) {
                 return MinecraftEntryImageEnum.Drowned;
             }
             else if (vanillaEntry.Version.Type == MinecraftVersionType.OldAlpha || vanillaEntry.Version.Type == MinecraftVersionType.OldBeta) {

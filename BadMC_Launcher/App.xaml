@@ -5,15 +5,15 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- Load WinUI resources -->
+                <!--  Load WinUI resources  -->
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- Load Uno.UI.Toolkit resources -->
+                <!--  Load Uno.UI.Toolkit resources  -->
                 <ToolkitResources xmlns="using:Uno.Toolkit.UI" />
 
-                <!-- Load CommunityToolkit.WinUI resources -->
+                <!--  Load CommunityToolkit.WinUI resources  -->
                 <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.Controls.Segmented/Segmented/Segmented.xaml" />
 
-                <!-- Load local resources -->
+                <!--  Load local resources  -->
                 <ResourceDictionary Source="/Dictionaries/Styles/ButtonStyle.xaml" />
                 <ResourceDictionary Source="/Dictionaries/Templates/ItemTemplate/MinecraftFolderItemsTemplate.xaml" />
                 <ResourceDictionary Source="/Dictionaries/Templates/ItemTemplate/MinecraftItemsTemplate.xaml" />
@@ -21,7 +21,7 @@
                 <ResourceDictionary Source="/Dictionaries/Templates/MainMenuSearchTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Add resources here -->
+            <!--  Add resources here  -->
 
         </ResourceDictionary>
     </Application.Resources>

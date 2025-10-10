@@ -5,12 +5,14 @@
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap rescap">
 
-  <Identity  Version="0.0.1.1" Name="BadMC-Launcher" Publisher="CN=BadBC"/>
+  <Identity Name="org.BadBC.BadMCLauncher" Version="0.0.0.1" Publisher="CN=BadBC"/>
   <Properties >
   
   <DisplayName>BadMC Launcher</DisplayName>
   
   <PublisherDisplayName>BadBC</PublisherDisplayName>
+  
+  <Logo>Assets\Icons\PackageIcons\PackageLogo.png</Logo>
   </Properties >
 
   <Dependencies>
@@ -26,7 +28,7 @@
     <Application Id="App"
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
-      <uap:VisualElements BackgroundColor="#FFFFFF" DisplayName="BadMC Launcher">
+      <uap:VisualElements BackgroundColor="#0077FF" DisplayName="BadMC Launcher" Square150x150Logo="Assets\Icons\PackageIcons\MediumTile.png" Square44x44Logo="Assets\Icons\PackageIcons\AppIcon.png" Description="A New Minecraft Launcher">
         <uap:DefaultTile/>
       </uap:VisualElements >
     </Application>

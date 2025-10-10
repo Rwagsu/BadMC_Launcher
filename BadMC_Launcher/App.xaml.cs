@@ -1,6 +1,3 @@
-using System.Reflection.Metadata;
-using BadMC_Launcher.Controls;
-using BadMC_Launcher.Controls.MainSearch;
 using BadMC_Launcher.Helpers;
 using BadMC_Launcher.Models.Data;
 using BadMC_Launcher.Services.Configs;
@@ -8,54 +5,37 @@ using BadMC_Launcher.Services.Settings;
 using BadMC_Launcher.Services.ViewServices;
 using BadMC_Launcher.Views.ContentDialogs.Settings;
 using BadMC_Launcher.Views.Pages;
-using BadMC_Launcher.Views.Pages.Settings;
-using BadMC_Launcher.Views.UserControls;
-using CommunityToolkit.WinUI.Helpers;
 using Hardware.Info;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.UI;
-using Microsoft.UI.Dispatching;
 using Microsoft.UI.Input;
 using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls.AnimatedVisuals;
 using Serilog;
-using Uno.Extensions.Toolkit;
 using Uno.Resizetizer;
 using Windows.Foundation;
 using Windows.Graphics;
 
 namespace BadMC_Launcher;
-public partial class App : Application {
+
+public partial class App : Application
+{
     /// <summary>
     /// Initializes the singleton application object. This is the first line of authored code
     /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>
-    public App() {
+    public App()
+    {
         this.InitializeComponent();
-
-        // Get the current DispatcherQueue for the app, used for UI operations
-        AppDispatcher = DispatcherQueue.GetForCurrentThread();
-
-        // Check if the app data path exists, if not create it
-        AppDataPath.pathsList.Values.ForEach(item => {
-            if (!Directory.Exists(item)) {
-                Directory.CreateDirectory(item);
-            }
-        });
     }
 
     public static new App Current => (App)Application.Current;
 
     public IThemeService? AppThemeService { get; private set; }
 
-    public DispatcherQueue AppDispatcher { get; private set; }
-
     internal Window? MainWindow { get; private set; }
     internal IHost? Host { get; private set; }
 
-    protected override void OnLaunched(LaunchActivatedEventArgs args) {
-
+    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    {
         var builder = this.CreateBuilder(args)
             .Configure(host => host
 #if DEBUG
@@ -102,7 +82,12 @@ public partial class App : Application {
                             retainedFileCountLimit: 10
                         );
                 })
-                .ConfigureServices((context, services) => {
+                .UseConfiguration(configure: configBuilder =>
+                    configBuilder
+                        .EmbeddedSource<App>()
+                )
+                .ConfigureServices((context, services) =>
+                {
                     //Register third-party class
                     services.AddSingleton<HttpClient>();
                     services.AddSingleton<ResourceLoader>();
@@ -127,9 +112,7 @@ public partial class App : Application {
                     services.AddTransient<JvmArgumentsContentDialog>();
                     services.AddTransient<BackgroundImageContentDialog>();
                 })
-                .UseToolkit()
             );
-        
         MainWindow = builder.Window;
 
 #if DEBUG
@@ -139,12 +122,10 @@ public partial class App : Application {
 
         Host = builder.Build();
 
-        // Get Configs
-        GetSettings();
-
         // Do not repeat app initialization when the Window already has content,
         // just ensure that the window is active
-        if (MainWindow.Content is not Frame rootFrame) {
+        if (MainWindow.Content is not Frame rootFrame)
+        {
             // Create a Frame to act as the navigation context and navigate to the first page
             rootFrame = new Frame();
 
@@ -152,7 +133,8 @@ public partial class App : Application {
             MainWindow.Content = rootFrame;
         }
 
-        if (rootFrame.Content == null) {
+        if (rootFrame.Content == null)
+        {
             // When the navigation stack isn't restored navigate to the first page,
             // configuring the new page by passing required information as a navigation
             // parameter
@@ -196,8 +178,6 @@ public partial class App : Application {
 
         // Ensure the current window is active
         MainWindow.Activate();
-
-        
     }
 
     //Get Service

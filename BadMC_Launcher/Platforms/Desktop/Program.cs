@@ -1,12 +1,21 @@
-using BadMC_Launcher;
 using Uno.UI.Hosting;
 
-var host = UnoPlatformHostBuilder.Create()
-    .App(() => new App())
-    .UseX11()
-    .UseLinuxFrameBuffer()
-    .UseMacOS()
-    .UseWin32()
-    .Build();
+namespace BadMC_Launcher;
 
-host.Run();
+internal class Program
+{
+    [STAThread]
+    public static void Main(string[] args)
+    {
+
+        var host = UnoPlatformHostBuilder.Create()
+            .App(() => new App())
+            .UseX11()
+            .UseLinuxFrameBuffer()
+            .UseMacOS()
+            .UseWin32()
+            .Build();
+
+        host.Run();
+    }
+}

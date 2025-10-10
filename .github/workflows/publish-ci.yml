@@ -6,7 +6,6 @@ on:
       - 'BadMC_Launcher/**'
     branches-ignore:
       - Backup
-      - Dev
 
   workflow_call:
     secrets:
@@ -14,7 +13,7 @@ on:
         required: true
 
 env:
-  NET_VERSION: 9.0.201
+  NET_VERSION: 10.0.100-rc1
 
 jobs:
   PublishApp:
@@ -127,7 +126,7 @@ jobs:
 
           msbuild /r `
             /t:publish `
-            /p:TargetFramework=net9.0-windows10.0.26100 `
+            /p:net10.0-windows10.0.26100 `
             /p:Configuration=Release `
             /p:Platform=$platform `
             /p:PublishDir="publish/WinUIUnpackaged/$platform/"
@@ -155,7 +154,7 @@ jobs:
 
           $platform = "${{ matrix.platform }}"
 
-          dotnet publish -f net9.0-desktop `
+          dotnet publish -f net10.0-desktop `
             -r win-$platform `
             -o "publish/WinDesktop/$platform/" `
             -p:Platform=$platform `
@@ -190,7 +189,7 @@ jobs:
             /p:Configuration=Release `
             /p:SelfContained=False `
             /p:PublishProfile="Properties/PublishProfiles/win-$platform-clickonce.pubxml" `
-            /p:TargetFramework=net9.0-desktop `
+            /p:TargetFramework=net10.0-desktop `
             /p:UnoClickOncePublishDir="publish/WinDesktop_ClickOnce/$platform/"
 
           $exePath = "publish/WinDesktop_ClickOnce/$platform/*"
